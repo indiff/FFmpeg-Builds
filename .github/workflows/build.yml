@@ -18,7 +18,7 @@ on:
         default: false
         required: false
   schedule:
-    - cron: '50 17 * * *'
+    - cron: '03 18 * * *'
 
 env:
   DOCKER_BUILDKIT: 1
