@@ -10,7 +10,10 @@ ffbuild_enabled() {
 
 ffbuild_dockerdl() {
     # https://downloads.xvid.com/downloads/xvidcore-1.3.7.tar.gz
-    echo "retry-tool sh -c \"rm -rf xvidcore xvidcore-1.3.7.tar.gz && wget https://downloads.xvid.com/downloads/xvidcore-1.3.7.tar.gz && tar xvf xvidcore-1.3.7.tar.gz && rm -f xvidcore-1.3.7.tar.gz && mv xvidcore xvid\" && cd xvid"
+    # echo "retry-tool sh -c \"rm -rf xvidcore xvidcore-1.3.7.tar.gz && wget https://downloads.xvid.com/downloads/xvidcore-1.3.7.tar.gz && tar xvf xvidcore-1.3.7.tar.gz && rm -f xvidcore-1.3.7.tar.gz && mv xvidcore xvid\" && cd xvid"
+    
+	echo "retry-tool sh -c \"rm -rf xvid xvid2200.zip && wget https://github.com/indiff/FFmpeg-Builds/releases/download/xvid2200/xvid2200.zip && unzip xvid2200.zip -d xvid && rm -f xvid2200.zip\" && cd xvid"
+
     #echo "retry-tool sh -c \"rm -rf xvid && svn --non-interactive checkout --username 'anonymous'  '${SCRIPT_REPO}@${SCRIPT_REV}' xvid\" && cd xvid"
     #svn forbidden can not checkout
 }
