@@ -24,6 +24,7 @@ ffbuild_dockerbuild() {
         -e 's/GCC_MAJOR=.*/GCC_MAJOR=10/' \
         -e 's/GCC_MINOR=.*/GCC_MINOR=0/' \
         configure.in
+     chmod +x bootstrap.sh
 
     ./bootstrap.sh
 
@@ -39,6 +40,7 @@ ffbuild_dockerbuild() {
         echo "Unknown target"
         return -1
     fi
+    chmod +x configure
 
     ./configure "${myconf[@]}"
     make -j$(nproc)
