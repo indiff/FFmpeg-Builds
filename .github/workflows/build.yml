@@ -18,7 +18,7 @@ on:
         default: true
         required: false
   schedule:
-    - cron: '06 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
+    - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
 env:
   DOCKER_BUILDKIT: 1
