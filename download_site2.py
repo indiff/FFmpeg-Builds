@@ -90,7 +90,7 @@ if __name__ == "__main__":
     username = sys.argv[3] if len(sys.argv) > 3 else None
     password = sys.argv[4] if len(sys.argv) > 4 else None
 
-    # 默认使用 anonymous 用户名和空密码
+    # 默认使用 anonymous 用户名和空密码 
     auth = ('anonymous', '') if username is None and password is None else (username, password)
     download_site(remote_url, local_directory, auth=auth)
     # python download_site2.py https://svn.xvid.org/trunk/xvidcore/ xvid_cache

@@ -10,15 +10,15 @@ on:
       doRelease:
         description: 'Publish new release'
         type: boolean
-        default: false
+        default: true
         required: false
       buildOnly:
         description: 'Only build ffmpeg'
         type: boolean
-        default: false
+        default: true
         required: false
   schedule:
-    - cron: '03 18 * * *'
+    - cron: '05 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
 env:
   DOCKER_BUILDKIT: 1
@@ -300,10 +300,10 @@ jobs:
           gh release create "$TAGNAME" --target "master" --title "$NAME" latest_artifacts/*
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Update Wiki
-        run: ./util/update_wiki.sh artifacts ${{ steps.create_release.outputs.tag_name }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      # - name: Update Wiki
+      #   run: ./util/update_wiki.sh artifacts ${{ steps.create_release.outputs.tag_name }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
       - name: Prune old releases
         run: ./util/prunetags.sh
         env:
