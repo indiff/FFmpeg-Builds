@@ -276,9 +276,11 @@ jobs:
           path: artifacts
       - name: Create release
         id: create_release
-        run: |
+        run: |# timedatectl set-timezone Asia/Shanghai 设置中国时区
           set -xe
           shopt -s nullglob
+          sudo timedatectl set-timezone Asia/Shanghai
+          timedatectl status
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
