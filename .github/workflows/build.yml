@@ -5,7 +5,7 @@ on:
   #  paths-ignore:
   #    - '**.md'
   #    - 'LICENSE'
-  workflow_dispatch:
+  workflow_dispatch: # 手动执行时候可以配置的参数
     inputs:
       doRelease:
         description: 'Publish new release'
@@ -15,7 +15,7 @@ on:
       buildOnly:
         description: 'Only build ffmpeg'
         type: boolean
-        default: true
+        default: false
         required: false
       useMain:
         description: 'Use main branch code'
