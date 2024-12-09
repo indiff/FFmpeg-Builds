@@ -3,6 +3,7 @@ set -xe
 cd "$(dirname "$0")"
 source util/vars.sh dl only
 USE_MAIN="$1"
+IGNORE_STAGES=("50-shaderc" "50-shaderc" "50-shaderc")
 
 if docker info -f "{{println .SecurityOptions}}" | grep rootless >/dev/null 2>&1; then
     UIDARGS=()
@@ -19,12 +20,19 @@ mkdir -p "${PWD}"/.cache/downloads
 
 for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 	STAGENAME="$(basename "$STAGE" | sed 's/.sh$//')"
+	USE_MAIN_FLAG=${USE_MAIN}
+	for valid_stage in "${IGNORE_STAGES[@]}"; do
+		if [ "$STAGENAME" == "$valid_stage" ]; then
+			USE_MAIN_FLAG=false
+			break
+		fi
+	done
 
 	cat <<-EOF >"${DL_SCRIPT_DIR}/${STAGENAME}.sh"
 		set -xe -o pipefail
 		shopt -s dotglob
 
-		source /dl_functions.sh ${USE_MAIN}
+		source /dl_functions.sh ${USE_MAIN_FLAG}
 		source "/$STAGE"
 		STG="\$(ffbuild_dockerdl)"
 
