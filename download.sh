@@ -2,6 +2,7 @@
 set -xe
 cd "$(dirname "$0")"
 source util/vars.sh dl only
+USE_MAIN="$1"
 
 if docker info -f "{{println .SecurityOptions}}" | grep rootless >/dev/null 2>&1; then
     UIDARGS=()
@@ -23,7 +24,7 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 		set -xe -o pipefail
 		shopt -s dotglob
 
-		source /dl_functions.sh
+		source /dl_functions.sh ${USE_MAIN}
 		source "/$STAGE"
 		STG="\$(ffbuild_dockerdl)"
 

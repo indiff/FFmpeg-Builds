@@ -17,6 +17,11 @@ on:
         type: boolean
         default: true
         required: false
+      useMain:
+        description: 'Use main branch code'
+        type: boolean
+        default: true
+        required: false
   schedule:
     - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
@@ -67,7 +72,7 @@ jobs:
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Build target base image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: images/base
           pull: true
@@ -90,7 +95,7 @@ jobs:
       - name: Update Cache
         run: |
           set -e
-          ./download.sh
+          ./download.sh ${{ github.event.inputs.useMain }}
           ./util/clean_cache.sh
       - name: Cleanup
         continue-on-error: true
@@ -136,7 +141,7 @@ jobs:
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Build target base image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: images/base-${{ matrix.target }}
           pull: true
@@ -203,7 +208,7 @@ jobs:
           key: download-cache-${{ steps.dl_cache.outputs.dltagname }}
           fail-on-cache-miss: true
       - name: Build target base image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           pull: true
@@ -276,7 +281,7 @@ jobs:
           path: artifacts
       - name: Create release
         id: create_release
-        run: |# timedatectl set-timezone Asia/Shanghai 设置中国时区
+        run: | # timedatectl set-timezone Asia/Shanghai 设置中国时区
           set -xe
           shopt -s nullglob
           sudo timedatectl set-timezone Asia/Shanghai
