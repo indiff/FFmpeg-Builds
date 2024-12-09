@@ -15,4 +15,4 @@ fi
 
 git -C "$DEST" config advice.detachedHead false
 git -C "$DEST" checkout FETCH_HEAD
-rm -rf "$DEST/.git/"
+# rm -rf "$DEST/.git/"
