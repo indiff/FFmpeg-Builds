@@ -3,7 +3,7 @@ set -xe
 cd "$(dirname "$0")"
 source util/vars.sh dl only
 USE_MAIN="$1"
-IGNORE_STAGES=("50-shaderc" "50-zvbi" "50-shaderc")
+IGNORE_STAGES=("50-shaderc" "50-zvbi")
 
 if docker info -f "{{println .SecurityOptions}}" | grep rootless >/dev/null 2>&1; then
     UIDARGS=()
@@ -39,6 +39,8 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 		if [[ -z "\$STG" ]]; then
 			exit 0
 		fi
+  
+  rm -rf "$STAGENAME/.git/"
 
 		DLHASH="\$(sha256sum <<<"\$STG" | cut -d" " -f1)"
 		DLNAME="$STAGENAME"
