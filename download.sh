@@ -20,13 +20,16 @@ mkdir -p "${PWD}"/.cache/downloads
 
 for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 	STAGENAME="$(basename "$STAGE" | sed 's/.sh$//')"
-	USE_MAIN_FLAG=${USE_MAIN}
-	for valid_stage in "${IGNORE_STAGES[@]}"; do
-		if [ "$STAGENAME" == "$valid_stage" ]; then
-			USE_MAIN_FLAG=false
-			break
-		fi
-	done
+	USE_MAIN_FLAG=""
+	if [[ "$1" == "true" ]]; then
+		USE_MAIN_FLAG=${USE_MAIN}
+		for valid_stage in "${IGNORE_STAGES[@]}"; do
+			if [ "$STAGENAME" == "$valid_stage" ]; then
+				USE_MAIN_FLAG=false
+				break
+			fi
+		done
+	fi
 
 	cat <<-EOF >"${DL_SCRIPT_DIR}/${STAGENAME}.sh"
 		set -xe -o pipefail
@@ -40,7 +43,7 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 			exit 0
 		fi
   
-  rm -rf "$STAGENAME/.git/"
+		rm -rf "$STAGENAME/.git/"
 
 		DLHASH="\$(sha256sum <<<"\$STG" | cut -d" " -f1)"
 		DLNAME="$STAGENAME"
