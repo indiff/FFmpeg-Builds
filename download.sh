@@ -43,8 +43,6 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 			exit 0
 		fi
   
-		rm -rf "$STAGENAME/.git/"
-
 		DLHASH="\$(sha256sum <<<"\$STG" | cut -d" " -f1)"
 		DLNAME="$STAGENAME"
 
