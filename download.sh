@@ -3,7 +3,9 @@ set -xe
 cd "$(dirname "$0")"
 source util/vars.sh dl only
 USE_MAIN="$1"
-IGNORE_STAGES=("50-shaderc" "50-zvbi")
+#USE_MAIN_STAGES=("")
+# 将参数字符串转换为数组
+IFS=' ' read -r -a USE_MAIN_STAGES <<< "$2"
 
 if docker info -f "{{println .SecurityOptions}}" | grep rootless >/dev/null 2>&1; then
     UIDARGS=()
@@ -20,12 +22,12 @@ mkdir -p "${PWD}"/.cache/downloads
 
 for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 	STAGENAME="$(basename "$STAGE" | sed 's/.sh$//')"
-	USE_MAIN_FLAG=""
+	
 	if [[ "$1" == "true" ]]; then
-		USE_MAIN_FLAG=${USE_MAIN}
-		for valid_stage in "${IGNORE_STAGES[@]}"; do
+		USE_MAIN_FLAG=""
+		for valid_stage in "${USE_MAIN_STAGES[@]}"; do
 			if [ "$STAGENAME" == "$valid_stage" ]; then
-				USE_MAIN_FLAG=false
+				USE_MAIN_FLAG=true
 				break
 			fi
 		done
