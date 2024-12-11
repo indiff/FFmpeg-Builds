@@ -35,7 +35,7 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 		set -xe -o pipefail
 		shopt -s dotglob
 
-		source /dl_functions.sh ${USE_MAIN_FLAG}
+		source /dl_functions.sh "$USE_MAIN_FLAG"
 		source "/$STAGE"
 		STG="\$(ffbuild_dockerdl)"
 
