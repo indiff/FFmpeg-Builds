@@ -30,7 +30,7 @@ on:
       pkgName:
           description: 'Delete pkg name'
           type: string
-          default: "ffmpeg-builds/win64"
+          default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
           required: false       
   schedule:
     - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
