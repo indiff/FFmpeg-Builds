@@ -61,7 +61,7 @@ jobs:
       - name: 02 Delete base image win64
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/base-win64"
           package-type: 'container'
           min-versions-to-keep: 0
@@ -69,7 +69,7 @@ jobs:
       - name: 03 Delete base image win64-gpl
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/win64-gpl"
           package-type: 'container'
           min-versions-to-keep: 0
@@ -77,7 +77,7 @@ jobs:
       - name: 04 Delete base image win64-gpl-shared
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/win64-gpl-shared"
           package-type: 'container'
           min-versions-to-keep: 0
@@ -85,7 +85,7 @@ jobs:
       - name: 05 Delete base image win64-lgpl
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/win64-lgpl"
           package-type: 'container'
           min-versions-to-keep: 0
@@ -93,7 +93,7 @@ jobs:
       - name: 06 Delete base image win64-lgpl-shared
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/win64-lgpl-shared"
           package-type: 'container'
           min-versions-to-keep: 0
@@ -101,7 +101,7 @@ jobs:
       - name: 01 Delete base image
         uses: actions/delete-package-versions@v5
         with: 
-          owner: 'github'
+          owner: 'indiff'
           package-name: "ffmpeg-builds/base"
           package-type: 'container'
           min-versions-to-keep: 0
