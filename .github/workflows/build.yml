@@ -58,39 +58,13 @@ jobs:
     if: ${{ github.event.inputs.delPkg == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: 00 Get Image Name
-        id: imagename
-        run: |
-          IMG="${GITHUB_REPOSITORY,,}/base"
-          echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
-          IMG="${GITHUB_REPOSITORY,,}/base-${{ matrix.target }}"
-          echo "rawname_target=${IMG/ /-}" >> $GITHUB_OUTPUT
-          IMG="${GITHUB_REPOSITORY,,}/${{ matrix.target }}-${{ matrix.variant }}"
-          echo "rawname_target_variant=${IMG/ /-}" >> $GITHUB_OUTPUT
       - name: 01 Delete base image
         uses: actions/delete-package-versions@v5
         with: 
-          package-name: ${{ steps.imagename.outputs.rawname }}
+          package-name: "ffmpeg-builds/base"
           package-type: 'container'
           min-versions-to-keep: 1
           delete-only-untagged-versions: 'false'
-          token: ${{ github.token }}
-      - name: 02 Delete base image target
-        uses: actions/delete-package-versions@v5
-        with: 
-          package-name: ${{ steps.imagename.outputs.rawname_target }}
-          package-type: 'container'
-          min-versions-to-keep: 1
-          delete-only-untagged-versions: 'false'
-          token: ${{ github.token }}
-      - name: 03 Delete base image target variant
-        uses: actions/delete-package-versions@v5
-        with: 
-          package-name: ${{ steps.imagename.outputs.rawname_target_variant }}
-          package-type: 'container'
-          min-versions-to-keep: 1
-          delete-only-untagged-versions: 'false'
-          token: ${{ github.token }}
   build_base:
     name: Build base image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
