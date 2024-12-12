@@ -22,11 +22,6 @@ on:
         type: boolean
         default: false
         required: false
-      delPkg:
-        description: 'Delete packages'
-        type: boolean
-        default: false
-        required: false
       useMainStages:
           description: 'Use main branch code stages'
           type: string
@@ -60,20 +55,20 @@ jobs:
           exit 0
   delete_all_packages:
     name: Delete packages
-    if: ${{ github.event.inputs.delPkg == 'true' }}
+    if: ${{ github.event.inputs.pkgName != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Delete image
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: "{{ github.event.inputs.pkgName }"
+          package-name: "${{ github.event.inputs.pkgName }}"
           package-type: 'container'
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'false'
   build_base:
     name: Build base image
-    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.delPkg != 'true' }}
+    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.pkgName == '' }}
     needs: pre_check
     runs-on: ubuntu-latest
     strategy:
@@ -197,7 +192,7 @@ jobs:
           untagged_only: true
   build_targets:
     name: Build target-variant image
-    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.delPkg != 'true' }}
+    if: ${{ github.event.inputs.buildOnly != 'true'}}
     needs: build_target_bases
     runs-on: ubuntu-latest
     strategy:
