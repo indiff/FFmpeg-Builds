@@ -9,9 +9,16 @@ on:
     inputs:
       pkgName:
         description: 'Delete pkg name'
-        type: string
-        default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
+        type: choice
+        default: "ffmpeg-builds/base"
         required: false
+        options: 
+        - ffmpeg-builds/base
+        - ffmpeg-builds/base-win64
+        - ffmpeg-builds/win64-gpl
+        - ffmpeg-builds/win64-lgpl
+        - ffmpeg-builds/win64-gpl-shared
+        - ffmpeg-builds/win64-lgpl-shared
 env:
   DOCKER_BUILDKIT: 1
 
