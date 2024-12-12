@@ -62,7 +62,6 @@ jobs:
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/base"
-          echo "name=ghcr.io/${IMG/ /-}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
           IMG="${GITHUB_REPOSITORY,,}/base-${{ matrix.target }}"
           echo "rawname_target=${IMG/ /-}" >> $GITHUB_OUTPUT
@@ -73,22 +72,25 @@ jobs:
         with: 
           package-name: ${{ steps.imagename.outputs.rawname }}
           package-type: 'container'
-          min-versions-to-keep: 10
+          min-versions-to-keep: 1
           delete-only-untagged-versions: 'false'
+          token: ${{ github.token }}
       - name: 02 Delete base image target
         uses: actions/delete-package-versions@v5
         with: 
           package-name: ${{ steps.imagename.outputs.rawname_target }}
           package-type: 'container'
-          min-versions-to-keep: 10
+          min-versions-to-keep: 1
           delete-only-untagged-versions: 'false'
+          token: ${{ github.token }}
       - name: 03 Delete base image target variant
         uses: actions/delete-package-versions@v5
         with: 
           package-name: ${{ steps.imagename.outputs.rawname_target_variant }}
           package-type: 'container'
-          min-versions-to-keep: 10
+          min-versions-to-keep: 1
           delete-only-untagged-versions: 'false'
+          token: ${{ github.token }}
   build_base:
     name: Build base image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
