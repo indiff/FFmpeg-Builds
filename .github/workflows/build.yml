@@ -63,7 +63,42 @@ jobs:
         with: 
           package-name: "ffmpeg-builds/base"
           package-type: 'container'
-          min-versions-to-keep: 1
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+      - name: 02 Delete base image win64
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: "ffmpeg-builds/base-win64"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+      - name: 03 Delete base image win64-gpl
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: "ffmpeg-builds/win64-gpl"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+      - name: 04 Delete base image win64-gpl-shared
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: "ffmpeg-builds/win64-gpl-shared"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+      - name: 05 Delete base image win64-lgpl
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: "ffmpeg-builds/win64-lgpl"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+      - name: 06 Delete base image win64-lgpl-shared
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: "ffmpeg-builds/win64-lgpl-shared"
+          package-type: 'container'
+          min-versions-to-keep: 0
           delete-only-untagged-versions: 'false'
   build_base:
     name: Build base image
