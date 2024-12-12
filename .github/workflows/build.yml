@@ -26,12 +26,7 @@ on:
           description: 'Use main branch code stages'
           type: string
           default: ""
-          required: false
-      pkgName:
-          description: 'Delete pkg name'
-          type: string
-          default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
-          required: false       
+          required: false     
   schedule:
     - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
@@ -53,22 +48,9 @@ jobs:
             exit 1
           fi
           exit 0
-  delete_all_packages:
-    name: Delete packages
-    if: ${{ github.event.inputs.pkgName != '' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete image
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "${{ github.event.inputs.pkgName }}"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
   build_base:
     name: Build base image
-    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.pkgName == '' }}
+    if: ${{ github.event.inputs.buildOnly != 'true' }}
     needs: pre_check
     runs-on: ubuntu-latest
     strategy:

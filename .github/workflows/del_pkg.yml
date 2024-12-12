@@ -1,0 +1,26 @@
+name: Delete Package (container)
+
+on:
+  workflow_dispatch: # 手动执行时候可以配置的参数
+      pkgName:
+          description: 'Delete pkg name'
+          type: string
+          default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
+          required: false       
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  del_pkg:
+    name: Delete packages
+    if: ${{ github.event.inputs.pkgName != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete image
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: "${{ github.event.inputs.pkgName }}"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
