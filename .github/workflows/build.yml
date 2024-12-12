@@ -10,7 +10,7 @@ on:
       doRelease:
         description: 'Publish new release'
         type: boolean
-        default: true
+        default: false
         required: false
       buildOnly:
         description: 'Only build ffmpeg'
@@ -20,7 +20,7 @@ on:
       useMain:
         description: 'Use main branch code'
         type: boolean
-        default: true
+        default: false
         required: false
       delPkg:
         description: 'Delete packages'
@@ -29,6 +29,11 @@ on:
         required: false
       useMainStages:
           description: 'Use main branch code stages'
+          type: string
+          default: ""
+          required: false       
+      pkgName:
+          description: 'Delete pkg name'
           type: string
           default: ""
           required: false       
@@ -58,51 +63,11 @@ jobs:
     if: ${{ github.event.inputs.delPkg == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: 02 Delete base image win64
+      - name: Delete image
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: "ffmpeg-builds/base-win64"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
-      - name: 03 Delete base image win64-gpl
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "ffmpeg-builds/win64-gpl"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
-      - name: 04 Delete base image win64-gpl-shared
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "ffmpeg-builds/win64-gpl-shared"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
-      - name: 05 Delete base image win64-lgpl
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "ffmpeg-builds/win64-lgpl"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
-      - name: 06 Delete base image win64-lgpl-shared
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "ffmpeg-builds/win64-lgpl-shared"
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'false'
-      - name: 01 Delete base image
-        uses: actions/delete-package-versions@v5
-        with: 
-          owner: 'indiff'
-          package-name: "ffmpeg-builds/base"
+          package-name: "{{ github.event.inputs.pkgName }"
           package-type: 'container'
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'false'
