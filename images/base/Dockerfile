@@ -5,7 +5,8 @@ RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install build-essential yasm nasm \
-        language-pack-zh-hant locales xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
+        systemd language-pack-zh-hans language-pack-zh-hans-base locales  \
+        xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake clang meson ninja-build \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
@@ -13,9 +14,9 @@ RUN \
         ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full \
         python3-setuptools python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
     apt-get -y clean && \
-    locale-gen zh_CN.UTF-8; localectl set-locale LANG=zh_CN.UTF-8 || true ; \
-    timedatectl set-timezone Asia/Shanghai || true; \
-    timedatectl set-ntp true || true; \
+    locale-gen zh_CN.UTF-8; /usr/bin/localectl set-locale LANG=zh_CN.UTF-8 || true ; \
+    /usr/bin/timedatectl set-timezone Asia/Shanghai || true; \
+    /usr/bin/timedatectl set-ntp true || true; \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
