@@ -217,7 +217,7 @@ jobs:
           untagged_only: true
   build_targets:
     name: Build target-variant image
-    if: ${{ github.event.inputs.buildOnly != 'true' }}
+    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.delPkg != 'true' }}
     needs: build_target_bases
     runs-on: ubuntu-latest
     strategy:
