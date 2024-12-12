@@ -1,12 +1,17 @@
 name: Delete Package (container)
 
 on:
+  #push:
+  #  paths-ignore:
+  #    - '**.md'
+  #    - 'LICENSE'
   workflow_dispatch: # 手动执行时候可以配置的参数
+    inputs:
       pkgName:
-          description: 'Delete pkg name'
-          type: string
-          default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
-          required: false       
+        description: 'Delete pkg name'
+        type: string
+        default: "ffmpeg-builds/base-win64-gpl-lgpl-shared"
+        required: false
 env:
   DOCKER_BUILDKIT: 1
 
