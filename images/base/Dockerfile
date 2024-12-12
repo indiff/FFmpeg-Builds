@@ -15,7 +15,8 @@ RUN \
     apt-get -y clean && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
-    git config --global advice.detachedHead false
+    git config --global advice.detachedHead false && \
+    timedatectl set-timezone Asia/Shanghai
 
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
