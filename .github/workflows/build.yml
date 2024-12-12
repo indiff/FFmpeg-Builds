@@ -67,7 +67,7 @@ jobs:
           delete-only-untagged-versions: 'false'
   build_base:
     name: Build base image
-    if: ${{ github.event.inputs.buildOnly != 'true' }}
+    if: ${{ github.event.inputs.buildOnly != 'true' && github.event.inputs.delPkg != 'true' }}
     needs: pre_check
     runs-on: ubuntu-latest
     strategy:
