@@ -22,6 +22,11 @@ on:
         type: boolean
         default: true
         required: false
+      delPkg:
+        description: 'Delete packages'
+        type: boolean
+        default: false
+        required: false
       useMainStages:
           description: 'Use main branch code stages'
           type: string
@@ -48,11 +53,52 @@ jobs:
             exit 1
           fi
           exit 0
+  delete_all_packages:
+    name: Delete packages
+    if: ${{ github.event.inputs.delPkg == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 00 Get Image Name
+        id: imagename
+        run: |
+          IMG="${GITHUB_REPOSITORY,,}/base"
+          echo "name=ghcr.io/${IMG/ /-}" >> $GITHUB_OUTPUT
+          echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
+          IMG="${GITHUB_REPOSITORY,,}/base-${{ matrix.target }}"
+          echo "rawname_target=${IMG/ /-}" >> $GITHUB_OUTPUT
+          IMG="${GITHUB_REPOSITORY,,}/${{ matrix.target }}-${{ matrix.variant }}"
+          echo "rawname_target_variant=${IMG/ /-}" >> $GITHUB_OUTPUT
+      - name: 01 Delete base image
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: ${{ steps.imagename.outputs.rawname }}
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'false'
+      - name: 02 Delete base image target
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: ${{ steps.imagename.outputs.rawname_target }}
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'false'
+      - name: 03 Delete base image target variant
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: ${{ steps.imagename.outputs.rawname_target_variant }}
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'false'
   build_base:
     name: Build base image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
     needs: pre_check
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [win64] # [win64,linux64,linuxarm64]
+        variant: [gpl,lgpl,gpl-shared,lgpl-shared] # [gpl,lgpl,gpl 5.1,gpl 6.1,gpl 7.1,lgpl 5.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 5.1,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 5.1,lgpl-shared 6.1,lgpl-shared 7.1]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
