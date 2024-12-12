@@ -69,21 +69,21 @@ jobs:
           IMG="${GITHUB_REPOSITORY,,}/${{ matrix.target }}-${{ matrix.variant }}"
           echo "rawname_target_variant=${IMG/ /-}" >> $GITHUB_OUTPUT
       - name: 01 Delete base image
-      - uses: actions/delete-package-versions@v5
+        uses: actions/delete-package-versions@v5
         with: 
           package-name: ${{ steps.imagename.outputs.rawname }}
           package-type: 'container'
           min-versions-to-keep: 10
           delete-only-untagged-versions: 'false'
       - name: 02 Delete base image target
-      - uses: actions/delete-package-versions@v5
+        uses: actions/delete-package-versions@v5
         with: 
           package-name: ${{ steps.imagename.outputs.rawname_target }}
           package-type: 'container'
           min-versions-to-keep: 10
           delete-only-untagged-versions: 'false'
       - name: 03 Delete base image target variant
-      - uses: actions/delete-package-versions@v5
+        uses: actions/delete-package-versions@v5
         with: 
           package-name: ${{ steps.imagename.outputs.rawname_target_variant }}
           package-type: 'container'
