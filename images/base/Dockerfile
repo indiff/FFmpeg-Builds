@@ -1,11 +1,11 @@
-FROM ubuntu:24.04
+FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install build-essential yasm nasm \
-        xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
+        language-pack-zh-hant locales xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake clang meson ninja-build \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
@@ -13,10 +13,16 @@ RUN \
         ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full \
         python3-setuptools python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
     apt-get -y clean && \
+    locale-gen zh_CN.UTF-8; localectl set-locale LANG=zh_CN.UTF-8 || true ; \
+    timedatectl set-timezone Asia/Shanghai || true; \
+    timedatectl set-ntp true || true; \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
-    git config --global advice.detachedHead false && \
-    sudo timedatectl set-timezone "Asia/Shanghai"
+    git config --global advice.detachedHead false
+
+ENV LANG zh_CN.UTF-8
+ENV LANGUAGE zh_CN:en
+ENV LC_ALL zh_CN.UTF-8
 
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
