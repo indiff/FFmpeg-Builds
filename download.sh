@@ -2,10 +2,6 @@
 set -xe
 cd "$(dirname "$0")"
 source util/vars.sh dl only
-USE_MAIN="$1"
-#USE_MAIN_STAGES=("")
-# 将参数字符串转换为数组
-IFS=' ' read -r -a USE_MAIN_STAGES <<< "$2"
 
 if docker info -f "{{println .SecurityOptions}}" | grep rootless >/dev/null 2>&1; then
     UIDARGS=()
@@ -22,29 +18,19 @@ mkdir -p "${PWD}"/.cache/downloads
 
 for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 	STAGENAME="$(basename "$STAGE" | sed 's/.sh$//')"
-	
-	if [[ "$1" == "true" ]]; then
-		USE_MAIN_FLAG=""
-		for valid_stage in "${USE_MAIN_STAGES[@]}"; do
-			if [ "$STAGENAME" == "$valid_stage" ]; then
-				USE_MAIN_FLAG=true
-				break
-			fi
-		done
-	fi
 
 	cat <<-EOF >"${DL_SCRIPT_DIR}/${STAGENAME}.sh"
 		set -xe -o pipefail
 		shopt -s dotglob
 
-		source /dl_functions.sh "$USE_MAIN_FLAG"
+		source /dl_functions.sh
 		source "/$STAGE"
 		STG="\$(ffbuild_dockerdl)"
 
 		if [[ -z "\$STG" ]]; then
 			exit 0
 		fi
-  
+
 		DLHASH="\$(sha256sum <<<"\$STG" | cut -d" " -f1)"
 		DLNAME="$STAGENAME"
 

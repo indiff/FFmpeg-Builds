@@ -17,16 +17,6 @@ on:
         type: boolean
         default: false
         required: false
-      useMain:
-        description: 'Use main branch code'
-        type: boolean
-        default: false
-        required: false
-      useMainStages:
-          description: 'Use main branch code stages'
-          type: string
-          default: ""
-          required: false     
   schedule:
     - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
@@ -100,7 +90,7 @@ jobs:
       - name: Update Cache
         run: |
           set -e
-          ./download.sh ${{ github.event.inputs.useMain }} "${{ github.event.inputs.useMainStages }}"
+          ./download.sh
           ./util/clean_cache.sh
       - name: Cleanup
         continue-on-error: true

@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+# 控制文件名扩展行为 globbing， 双星号(**) 模式递归匹配目录所有子目录文件和目录
 shopt -s globstar
 cd "$(dirname "$0")"
 source util/vars.sh
@@ -8,11 +9,12 @@ export LC_ALL=C.UTF-8
 
 rm -f Dockerfile Dockerfile.{dl,final,dl.final}
 
+# 生成 layer 名称, 例如 25-xz.sh -> layer-25-xz
 layername() {
     printf "layer-"
     basename "$1" | sed 's/.sh$//'
 }
-
+# to_dockerfile 
 to_df() {
     _of="${TODF:-Dockerfile}"
     printf "$@" >> "$_of"
