@@ -5,7 +5,7 @@ RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install build-essential yasm nasm \
-        systemd language-pack-zh-hans language-pack-zh-hans-base locales  \
+        systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake clang lld meson ninja-build \
         texinfo texi2html help2man flex bison groff \
@@ -21,7 +21,6 @@ RUN \
     locale-gen zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	echo 'Asia/Shanghai' > /etc/timezone && \
-    /usr/bin/timedatectl set-ntp true && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
