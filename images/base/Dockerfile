@@ -18,9 +18,9 @@ RUN \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    locale-gen zh_CN.UTF-8; /usr/bin/localectl set-locale LANG=zh_CN.UTF-8 || true ; \
-    /usr/bin/timedatectl set-timezone Asia/Shanghai || true; \
-    /usr/bin/timedatectl set-ntp true || true; \
+    locale-gen zh_CN.UTF-8; /usr/bin/localectl set-locale LANG=zh_CN.UTF-8 || true ; && \
+    /usr/bin/timedatectl set-timezone Asia/Shanghai || true; && \
+    /usr/bin/timedatectl set-ntp true || true; && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
