@@ -24,6 +24,17 @@ Builds run daily at 12:00 UTC (or GitHubs idea of that time) and are automatical
 For a list of included dependencies check the scripts.d directory.
 Every file corresponds to its respective package.
 
+## Performance Optimizations
+
+### Build Time Improvements
+
+The build system includes several optimizations to reduce build times:
+- **Selective Cache Strategy**: gpl-shared variants skip cache export to avoid long build times
+- **Minimal Cache Mode**: Uses `mode=min` for registry caching to reduce layer export overhead
+- **Parallel Processing**: Multiple build variants run in parallel
+
+For detailed performance analysis, see [docs/performance-optimization.md](docs/performance-optimization.md).
+
 ## How to make a build
 
 ### Prerequisites
