@@ -4,6 +4,8 @@ SCRIPT_REPO="https://github.com/google/brotli.git"
 SCRIPT_COMMIT="29e040b8cb40fb0527eb21aad3e117cb37762598"
 
 ffbuild_enabled() {
+    # Skip brotli in gpl-shared builds (dependency of libjxl which is disabled)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     return 0
 }
 

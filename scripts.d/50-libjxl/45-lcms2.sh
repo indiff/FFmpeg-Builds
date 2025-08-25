@@ -4,6 +4,8 @@ SCRIPT_REPO="https://github.com/mm2/Little-CMS.git"
 SCRIPT_COMMIT="59feb9ec4995e3d59dc78ae1f2cb7643c193ccd1"
 
 ffbuild_enabled() {
+    # Skip lcms2 in gpl-shared builds (dependency of libjxl which is disabled)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     return 0
 }
 
