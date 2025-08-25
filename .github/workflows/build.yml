@@ -5,7 +5,7 @@ on:
   #  paths-ignore:
   #    - '**.md'
   #    - 'LICENSE'
-  workflow_dispatch: # �ֶ�ִ��ʱ��������õĲ���
+  workflow_dispatch: # 手动执行时候可以配置的参数
     inputs:
       doRelease:
         description: 'Publish new release'
@@ -18,7 +18,7 @@ on:
         default: false
         required: false
   schedule:
-    - cron: '07 5 * * *' # ÿ���賿2�㣨UTC������Ӧÿ������10�㣨CST��, �����Ӧ�����й�ʱ������ 13 ��
+    - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
 
 env:
   DOCKER_BUILDKIT: 1
@@ -303,7 +303,7 @@ jobs:
           path: artifacts
       - name: Create release
         id: create_release
-        run: | # timedatectl set-timezone Asia/Shanghai �����й�ʱ��
+        run: | # timedatectl set-timezone Asia/Shanghai 设置中国时区
           set -xe
           shopt -s nullglob
           sudo timedatectl set-timezone Asia/Shanghai
