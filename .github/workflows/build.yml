@@ -221,6 +221,28 @@ jobs:
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Generate Dockerfile
         run: ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
+      - name: Optimize build settings for gpl-shared
+        if: ${{ contains(matrix.variant, 'gpl-shared') }}
+        run: |
+          # Add optimization flags to Dockerfile for gpl-shared builds to speed up compilation
+          sed -i '/^FROM.*AS base$/a\
+ENV MAKEFLAGS="-j$(nproc)"\
+ENV CFLAGS="-O2 -pipe -g0 -DNDEBUG"\
+ENV CXXFLAGS="-O2 -pipe -g0 -DNDEBUG"\
+ENV LDFLAGS="-s"' Dockerfile
+          
+          # Install ccache and faster build tools for compilation acceleration
+          sed -i '/^FROM.*AS base$/a\
+RUN apt-get update && apt-get install -y ccache lld && rm -rf /var/lib/apt/lists/*\
+ENV PATH="/usr/lib/ccache:$PATH"\
+ENV CCACHE_DIR="/tmp/ccache"\
+ENV CCACHE_MAXSIZE="1G"' Dockerfile
+          
+          # Optimize for gpl-shared specific features
+          sed -i '/^FROM.*AS base$/a\
+ENV FFBUILD_SKIP_TESTS=1\
+ENV FFBUILD_SKIP_DOCS=1\
+ENV FFBUILD_SKIP_EXAMPLES=1' Dockerfile
       - name: Cache
         uses: actions/cache/restore@v4
         with:

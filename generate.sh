@@ -7,6 +7,11 @@ source util/vars.sh
 
 export LC_ALL=C.UTF-8
 
+# Apply gpl-shared specific optimizations
+if [[ "$VARIANT" == *"gpl-shared"* ]]; then
+    source util/optimize_gpl_shared.sh
+fi
+
 rm -f Dockerfile Dockerfile.{dl,final,dl.final}
 
 # 生成 layer 名称, 例如 25-xz.sh -> layer-25-xz

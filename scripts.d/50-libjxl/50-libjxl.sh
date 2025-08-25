@@ -4,6 +4,8 @@ SCRIPT_REPO="https://github.com/libjxl/libjxl.git"
 SCRIPT_COMMIT="1a9611d3162b44ec2207d825808e234119b6e88b"
 
 ffbuild_enabled() {
+    # Skip heavy optional dependencies in gpl-shared builds for faster compilation
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     [[ $ADDINS_STR == *4.4* ]] && return -1
     [[ $ADDINS_STR == *5.0* ]] && return -1
     [[ $ADDINS_STR == *5.1* ]] && return -1

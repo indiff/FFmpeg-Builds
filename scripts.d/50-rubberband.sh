@@ -4,6 +4,8 @@ SCRIPT_REPO="https://github.com/breakfastquay/rubberband.git"
 SCRIPT_COMMIT="e4296ac80b1170018a110bc326fd0d45a0eb27d6"
 
 ffbuild_enabled() {
+    # Skip rubberband in gpl-shared builds for faster compilation (heavy audio processing dependency)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     [[ $VARIANT == lgpl* ]] && return -1
     return 0
 }

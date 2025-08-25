@@ -4,6 +4,8 @@ SCRIPT_REPO="https://source.openmpt.org/svn/openmpt/trunk/OpenMPT"
 SCRIPT_REV="23987"
 
 ffbuild_enabled() {
+    # Skip OpenMPT in gpl-shared builds for faster compilation (heavy C++ dependency)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     [[ $TARGET == winarm64 ]] && return -1
     return 0
 }

@@ -4,6 +4,8 @@ SCRIPT_REPO="https://code.videolan.org/videolan/libplacebo.git"
 SCRIPT_COMMIT="8f86f7a5cab0569fb03a271fa058f84bd8a70331"
 
 ffbuild_enabled() {
+    # Skip libplacebo in gpl-shared builds for faster compilation (heavy GPU processing dependency)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     (( $(ffbuild_ffver) > 600 )) || return -1
     return 0
 }

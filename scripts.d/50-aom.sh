@@ -4,6 +4,8 @@ SCRIPT_REPO="https://aomedia.googlesource.com/aom"
 SCRIPT_COMMIT="1f097193b0353e32c5f0b010642d89d146234804"
 
 ffbuild_enabled() {
+    # Skip AOM in gpl-shared builds for faster compilation (very heavy dependency)
+    [[ $VARIANT == *"gpl-shared"* ]] && return -1
     [[ $TARGET == winarm64 ]] && return -1
     return 0
 }
