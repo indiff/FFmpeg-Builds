@@ -3,12 +3,12 @@ set -e
 
 if [[ $# != 2 ]]; then
     echo "Missing arguments"
-    exit -1
+    exit 1
 fi
 
 if [[ -z "$GITHUB_REPOSITORY" || -z "$GITHUB_TOKEN" || -z "$GITHUB_ACTOR" ]]; then
     echo "Missing environment"
-    exit -1
+    exit 1
 fi
 
 INPUTS="$1"

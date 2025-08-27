@@ -2,7 +2,7 @@
 
 if [[ $# -lt 2 ]]; then
     echo "Invalid Arguments"
-    exit -1
+    exit 1
 fi
 
 TARGET="$1"
@@ -11,7 +11,7 @@ shift 2
 
 if ! [[ -f "variants/${TARGET}-${VARIANT}.sh" ]]; then
     echo "Invalid target/variant"
-    exit -1
+    exit 1
 fi
 
 LICENSE_FILE="COPYING.LGPLv2.1"
@@ -21,7 +21,7 @@ ADDINS_STR=""
 while [[ "$#" -gt 0 ]]; do
     if ! [[ -f "addins/${1}.sh" ]]; then
         echo "Invalid addin: $1"
-        exit -1
+        exit 1
     fi
 
     ADDINS+=( "$1" )
@@ -36,6 +36,11 @@ REGISTRY="${REGISTRY_OVERRIDE:-ghcr.io}"
 BASE_IMAGE="${REGISTRY}/${REPO}/base:latest"
 TARGET_IMAGE="${REGISTRY}/${REPO}/base-${TARGET}:latest"
 IMAGE="${REGISTRY}/${REPO}/${TARGET}-${VARIANT}${ADDINS_STR:+-}${ADDINS_STR}:latest"
+
+# BUILDX_EXPERIMENTAL=1 fixes many issues in case the the host is running an older version of docker
+#  Instead of duplicating this line to all scripts using docker, it was put here in vars.sh, which is
+#   included by all scripts that use docker before docker is used.
+export BUILDX_EXPERIMENTAL=1
 
 ffbuild_ffver() {
     case "$ADDINS_STR" in

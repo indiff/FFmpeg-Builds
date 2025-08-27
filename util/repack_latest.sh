@@ -3,7 +3,7 @@ set -e
 
 if [[ $# -lt 2 ]]; then
     echo "Missing arguments"
-    exit -1
+    exit 1
 fi
 
 RELEASE_DIR="$(realpath "$1")"
