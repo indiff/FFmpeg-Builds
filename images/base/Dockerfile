@@ -1,17 +1,13 @@
-
-FROM scratch AS downloader
-
-#ADD /downloads/setup_lts.x https://deb.nodesource.com/setup_lts.x
-ADD /downloads/node-linux-x64.xz https://nodejs.org/dist/latest/node-v23.8.0-linux-x64.tar.xz
-
-ADD /downloads/sh.rustup.rs https://sh.rustup.rs
-
 FROM ubuntu:25.10
 
 ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
+
 RUN \
+    mkdir -p /downloads && \
+    curl -fsSL -o /downloads/node-linux-x64.xz https://nodejs.org/dist/latest/node-v23.8.0-linux-x64.tar.xz && \
+    curl -fsSL -o /downloads/sh.rustup.rs https://sh.rustup.rs && \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install --no-install-recommends \

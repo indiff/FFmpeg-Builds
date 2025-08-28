@@ -1,15 +1,8 @@
 ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 
-FROM scratch AS downloader
 ARG GH_REPO
-
-ADD https://github.com/crosstool-ng/crosstool-ng.git /downloads/crosstool-ng
-
-ADD https://github.com/yugr/Implib.so.git /downloads/Implib.so
-
 
 FROM $GH_REPO/base:latest
-ARG GH_REPO
 
 ENV FFBUILD_TOOLCHAIN=x86_64-ffbuild-linux-gnu\
     FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"
