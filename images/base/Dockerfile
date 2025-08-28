@@ -63,5 +63,5 @@ ENV DEBIAN_FRONTEND=noninteractive\
  PATH="/opt/cargo/bin:${PATH}"\
  HOST_CC="gcc" \
  HOST_CXX="g++" \
- HOST_CFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=thin -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w" \
- HOST_CXXFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=thin -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w"
+ HOST_CFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=auto -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w" \
+ HOST_CXXFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=auto -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w"
