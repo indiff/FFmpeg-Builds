@@ -32,21 +32,14 @@ RUN \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
-ENV DEBIAN_FRONTEND=noninteractive\
- CARGO_HOME="/opt/cargo"\
- RUSTUP_HOME="/opt/rustup"\
- PATH="/opt/cargo/bin:${PATH}"\
- HOST_CC="gcc" \
- HOST_CXX="g++" \
- HOST_CFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w" \
- HOST_CXXFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w"
 
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
-RUN  printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suites: noble noble-updates noble-backports' 'Components: main universe' 'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' '' >/etc/apt/sources.list.d/ubuntu.sources &&\
- apt-get -y upgrade build-essential ca-certificates yasm nasm\
+RUN  --mount=src=.,dst=/input \
+  printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suites: noble noble-updates noble-backports' 'Components: main universe' 'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' '' >/etc/apt/sources.list.d/ubuntu.sources &&\
+  apt-get -y upgrade build-essential ca-certificates yasm nasm\
   xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq\
   autoconf automake libtool libtool-bin autopoint gettext cmake clang meson ninja-build\
   texinfo texi2html help2man flex bison groff\
@@ -60,8 +53,15 @@ RUN  printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suite
  git config --global advice.detachedHead false &&\
  bash /downloads/sh.rustup.rs -y --no-modify-path && \
  cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git &&\
- cd /input &&\
- for s in *.sh; do cp -p ./$s /usr/bin/${s%.sh}; done &&\
+    for s in /input/*.sh; do cp $s /usr/bin/$(echo $s | sed -e 's|.*/||' -e 's/\.sh$//'); done &&\
  cd /usr/bin &&\
  ln -sfT gcc cc &&\
  ln -sfT g++ c++
+ENV DEBIAN_FRONTEND=noninteractive\
+ CARGO_HOME="/opt/cargo"\
+ RUSTUP_HOME="/opt/rustup"\
+ PATH="/opt/cargo/bin:${PATH}"\
+ HOST_CC="gcc" \
+ HOST_CXX="g++" \
+ HOST_CFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=thin -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w" \
+ HOST_CXXFLAGS="-O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-unroll-loops -flto=thin -fno-math-errno -fno-trapping-math -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -w"
