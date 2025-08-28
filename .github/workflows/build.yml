@@ -5,7 +5,7 @@ on:
   #  paths-ignore:
   #    - '**.md'
   #    - 'LICENSE'
-  workflow_dispatch: # ÊÖ¶¯Ö´ĞĞÊ±ºò¿ÉÒÔÅäÖÃµÄ²ÎÊı
+  workflow_dispatch: # æ‰‹åŠ¨æ‰§è¡Œæ—¶å€™å¯ä»¥é…ç½®çš„å‚æ•°
     inputs:
       doRelease:
         description: 'Publish new release'
@@ -18,7 +18,7 @@ on:
         default: false
         required: false
   schedule:
-    - cron: '07 5 * * *' # Ã¿ÌìÁè³¿2µã£¨UTC£©£¬¶ÔÓ¦Ã¿ÌìÉÏÎç10µã£¨CST£©, ÕâÀï¶ÔÓ¦µÄÊÇÖĞ¹úÊ±ÇøµÄÊÇ 13 µã
+    - cron: '07 5 * * *' # æ¯å¤©å‡Œæ™¨2ç‚¹ï¼ˆUTCï¼‰ï¼Œå¯¹åº”æ¯å¤©ä¸Šåˆ10ç‚¹ï¼ˆCSTï¼‰, è¿™é‡Œå¯¹åº”çš„æ˜¯ä¸­å›½æ—¶åŒºçš„æ˜¯ 13 ç‚¹
 
 env:
   DOCKER_BUILDKIT: 1
@@ -59,7 +59,7 @@ jobs:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -140,7 +140,7 @@ jobs:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -198,7 +198,7 @@ jobs:
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
 
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -264,7 +264,7 @@ jobs:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
@@ -295,7 +295,7 @@ jobs:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -304,7 +304,7 @@ jobs:
           path: artifacts
       - name: Create release
         id: create_release
-        run: | # timedatectl set-timezone Asia/Shanghai ÉèÖÃÖĞ¹úÊ±Çø
+        run: | # timedatectl set-timezone Asia/Shanghai è®¾ç½®ä¸­å›½æ—¶åŒº
           set -xe
           shopt -s nullglob
           sudo timedatectl set-timezone Asia/Shanghai
