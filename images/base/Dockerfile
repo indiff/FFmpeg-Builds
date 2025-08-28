@@ -46,9 +46,7 @@ ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
-RUN --mount=src=.,dst=/input\
- --mount=type=bind,ro,from=downloader,source=/downloads,target=/downloads\
- printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suites: noble noble-updates noble-backports' 'Components: main universe' 'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' '' >/etc/apt/sources.list.d/ubuntu.sources &&\
+RUN  printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suites: noble noble-updates noble-backports' 'Components: main universe' 'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' '' >/etc/apt/sources.list.d/ubuntu.sources &&\
  bash /downloads/setup_lts.x &&\
  apt-get -y upgrade build-essential ca-certificates yasm nasm\
   xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq\
@@ -70,4 +68,3 @@ RUN --mount=src=.,dst=/input\
  cd /usr/bin &&\
  ln -sfT gcc cc &&\
  ln -sfT g++ c++
-

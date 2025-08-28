@@ -1,15 +1,10 @@
 ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
-
-ARG GH_REPO
-
 FROM $GH_REPO/base:latest
 
 ENV FFBUILD_TOOLCHAIN=x86_64-ffbuild-linux-gnu\
     FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"
 
-RUN --mount=type=bind,src=.,dst=/input\
- --mount=type=bind,ro,from=downloader,source=/downloads,target=/downloads\
- cp -vdpR /downloads/crosstool-ng /ct-ng &&\
+RUN cp -vdpR /downloads/crosstool-ng /ct-ng &&\
  cp -v /input/toolchain.cmake / &&\
  cp -v /input/cross.meson / &&\
  cd /ct-ng &&\
