@@ -46,7 +46,6 @@ ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PAT
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
 RUN  printf '%s\n' 'Types: deb' 'URIs: http://archive.ubuntu.com/ubuntu/' 'Suites: noble noble-updates noble-backports' 'Components: main universe' 'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' '' >/etc/apt/sources.list.d/ubuntu.sources &&\
- bash /downloads/setup_lts.x &&\
  apt-get -y upgrade build-essential ca-certificates yasm nasm\
   xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq\
   autoconf automake libtool libtool-bin autopoint gettext cmake clang meson ninja-build\

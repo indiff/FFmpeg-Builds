@@ -4,6 +4,9 @@ FROM $GH_REPO/base:latest
 ENV FFBUILD_TOOLCHAIN=x86_64-ffbuild-linux-gnu\
     FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"
 
+RUN git clone --filter=blob:none --depth=1 https://github.com/yugr/Implib.so /opt/implib
+ADD gen-implib.sh /usr/bin/gen-implib    
+
 RUN cp -vdpR /downloads/crosstool-ng /ct-ng &&\
  cp -v /input/toolchain.cmake / &&\
  cp -v /input/cross.meson / &&\
@@ -40,11 +43,15 @@ RUN cp -vdpR /downloads/crosstool-ng /ct-ng &&\
   echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
   echo "[target.host]\nlinker = \"gcc\"\nar = \"ar\"\n" >> "$CARGO_HOME"/config.toml
 
+
+
 ENV\
   PATH="/opt/ct-ng/bin:${PATH:-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin}"\
   FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=x86_64 --target-os=linux"\
   FFBUILD_CROSS_PREFIX="${FFBUILD_TOOLCHAIN}-"\
   FFBUILD_PREFIX=/opt/ffbuild\
+  FFBUILD_DESTDIR=/opt/ffdest \
+  FFBUILD_DESTPREFIX=/opt/ffdest/opt/ffbuild \
   FFBUILD_CMAKE_TOOLCHAIN=/toolchain.cmake\
   PKG_CONFIG=pkg-config\
   PKG_CONFIG_LIBDIR=/opt/ffbuild/lib/pkgconfig:/opt/ffbuild/share/pkgconfig\
@@ -54,32 +61,8 @@ ENV\
   AR="${FFBUILD_TOOLCHAIN}-gcc-ar"\
   RANLIB="${FFBUILD_TOOLCHAIN}-gcc-ranlib"\
   NM="${FFBUILD_TOOLCHAIN}-gcc-nm"\
-  CFLAGS="-I/opt/ffbuild/include -O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fPIC -DPIC -mtune=native -frename-registers -ftree-vectorize -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-clash-protection -fcf-protection=none -mharden-sls=none -fvisibility-inlines-hidden -w -pthread"\
-  CXXFLAGS="-I/opt/ffbuild/include -O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fPIC -DPIC -mtune=native -frename-registers -ftree-vectorize -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-clash-protection -fcf-protection=none -mharden-sls=none -fvisibility-inlines-hidden -w -pthread"\
-  LDFLAGS="-L/opt/ffbuild/lib -O3 -pipe -Wl,-O1,--relax,--as-needed,-z,relro,-z,lazy -pthread -lm"\
+  CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fPIC -DPIC -mtune=native -frename-registers -ftree-vectorize -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-clash-protection -fcf-protection=none -mharden-sls=none -fvisibility-inlines-hidden -w -pthread"\
+  CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O3 -fno-unroll-loops -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops -fno-ipa-cp-clone -fipa-pta -pipe -fPIC -DPIC -mtune=native -frename-registers -ftree-vectorize -fwrapv -fivopts -fomit-frame-pointer -g0 -DNDEBUG -U_FORTIFY_SOURCE -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-clash-protection -fcf-protection=none -mharden-sls=none -fvisibility-inlines-hidden -w -pthread"\
+  LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O3 -pipe -Wl,-O1,--relax,--as-needed,-z,relro,-z,lazy -pthread -lm"\
   STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition"\
   STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
-
-ADD gen-implib.sh /usr/bin/gen-implib
-RUN git clone --filter=blob:none --depth=1 https://github.com/yugr/Implib.so /opt/implib
-
-ENV PATH="/opt/ct-ng/bin:${PATH}" \
-    FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=x86_64 --target-os=linux" \
-    FFBUILD_CROSS_PREFIX="${FFBUILD_TOOLCHAIN}-" \
-    FFBUILD_PREFIX=/opt/ffbuild \
-    FFBUILD_DESTDIR=/opt/ffdest \
-    FFBUILD_DESTPREFIX=/opt/ffdest/opt/ffbuild \
-    FFBUILD_CMAKE_TOOLCHAIN=/toolchain.cmake \
-    PKG_CONFIG=pkg-config \
-    PKG_CONFIG_LIBDIR=/opt/ffbuild/lib/pkgconfig:/opt/ffbuild/share/pkgconfig \
-    CC="${FFBUILD_TOOLCHAIN}-gcc" \
-    CXX="${FFBUILD_TOOLCHAIN}-g++" \
-    LD="${FFBUILD_TOOLCHAIN}-ld" \
-    AR="${FFBUILD_TOOLCHAIN}-gcc-ar" \
-    RANLIB="${FFBUILD_TOOLCHAIN}-gcc-ranlib" \
-    NM="${FFBUILD_TOOLCHAIN}-gcc-nm" \
-    CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
-    STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
-    STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
