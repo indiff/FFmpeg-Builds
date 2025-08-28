@@ -6,8 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
     mkdir -p /downloads && \
-    curl -fsSL -o /downloads/node-linux-x64.xz https://nodejs.org/dist/latest/node-v23.8.0-linux-x64.tar.xz && \
-    curl -fsSL -o /downloads/sh.rustup.rs https://sh.rustup.rs && \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install --no-install-recommends \
@@ -23,6 +21,8 @@ RUN \
         ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    curl -fsSL -o /downloads/node-linux-x64.xz https://nodejs.org/dist/latest/node-v23.8.0-linux-x64.tar.xz && \
+    curl -fsSL -o /downloads/sh.rustup.rs https://sh.rustup.rs && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
