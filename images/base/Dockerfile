@@ -10,6 +10,9 @@ RUN \
     apt-get -y install --no-install-recommends \
         $([ "$TARGETPLATFORM" != "linux/amd64" ] || echo gcc-multilib g++-multilib) \
         build-essential yasm nasm \
+        pkg-config ca-certificates \
+        libgit2-dev libssh2-1-dev libcurl4-openssl-dev zlib1g-dev \
+        libbz2-dev liblzma-dev libzstd-dev \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \

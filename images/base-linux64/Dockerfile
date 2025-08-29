@@ -50,6 +50,7 @@ RUN git clone --filter=blob:none --depth=1 https://github.com/yugr/Implib.so /op
 
 ENV\
   PATH="/opt/ct-ng/bin:${PATH:-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin}"\
+  LIBGIT2_SYS_USE_PKG_CONFIG=1\
   FFBUILD_TOOLCHAIN=x86_64-ffbuild-linux-gnu\
   FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"\
   FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=x86_64 --target-os=linux"\
@@ -60,6 +61,7 @@ ENV\
   FFBUILD_CMAKE_TOOLCHAIN=/toolchain.cmake\
   PKG_CONFIG=pkg-config\
   PKG_CONFIG_LIBDIR=/opt/ffbuild/lib/pkgconfig:/opt/ffbuild/share/pkgconfig\
+  PKG_CONFIG_PATH=/opt/ffbuild/lib/pkgconfig:/opt/ffbuild/share/pkgconfig:$PKG_CONFIG_PATH\
   CC="${FFBUILD_TOOLCHAIN}-gcc"\
   CXX="${FFBUILD_TOOLCHAIN}-g++"\
   LD="${FFBUILD_TOOLCHAIN}-ld"\
