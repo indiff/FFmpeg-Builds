@@ -27,26 +27,61 @@ GIT_BRANCH="${GIT_BRANCH_OVERRIDE:-$GIT_BRANCH}"
 BUILD_SCRIPT="$(mktemp)"
 trap "rm -f -- '$BUILD_SCRIPT'" EXIT
 
-cat <<EOF >"$BUILD_SCRIPT"
+cat <<'EOF' >"$BUILD_SCRIPT"
     set -xe
+    
+    case "${1:-}" in
+      --bundle=*.zip)
+        zip -9 -r "${1#--bundle=}" "$2"
+        exit $? ;;
+      --bundle=*.tar.xz)
+        tar -cf - "$2" | xz -9zfc -T0 - >"${1#--bundle=}"
+        exit $? ;;
+      --bundle=*)
+        echo "[FATAL] Unknown requested output fname bundle file extension passed to inner docker build script: $1" >&2
+        exit 1 ;;
+    esac
+    
     cd /ffbuild
     rm -rf ffmpeg prefix
 
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
     cd ffmpeg
 
-    ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
-        --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
-        --extra-ldflags="\$FF_LDFLAGS" --extra-ldexeflags="\$FF_LDEXEFLAGS" \
-        --cc="\$CC" --cxx="\$CXX" --ar="\$AR" --ranlib="\$RANLIB" --nm="\$NM" \
-        --extra-version="\$(date +%Y%m%d)"
-    make -j\$(nproc) V=1
+    BRANCH_NAME=\$(basename '$GIT_BRANCH')
+
+    if [ -f "/patches/ffmpeg/\$BRANCH_NAME.patch" ]; then
+        git apply "/patches/ffmpeg/\$BRANCH_NAME.patch"
+    fi
+    # Modify configure so that unknown flags get silently ignored:
+    sed -e '/    echo "See $0 --help for available options."/ a \    return 0' ./configure >./configure.new
+    chmod +x ./configure.new
+    mv -f ./configure.new ./configure
+
+
+     #./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
+     #   --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
+     #   --extra-ldflags="\$FF_LDFLAGS" --extra-ldexeflags="\$FF_LDEXEFLAGS" \
+     #   --cc="\$CC" --cxx="\$CXX" --ar="\$AR" --ranlib="\$RANLIB" --nm="\$NM" \
+     #   --extra-version="\$(date +%Y%m%d)"
+
+    ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" $FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
+        --extra-cflags="$FF_CFLAGS" --extra-cxxflags="$FF_CXXFLAGS" --extra-libs="$FF_LIBS" \
+        --extra-ldflags="$FF_LDFLAGS" --extra-ldexeflags="$FF_LDEXEFLAGS" \
+        --cc="$CC" --cxx="$CXX" --ar="$AR" --ranlib="$RANLIB" --nm="$NM" \
+        --extra-version="$(date +%Y%m%d)"
+    make -j$(nproc) V=1
     make install install-doc
 EOF
 
 [[ -t 1 ]] && TTY_ARG="-t" || TTY_ARG=""
 
-docker run --rm -i $TTY_ARG "${UIDARGS[@]}" -v "$PWD/ffbuild":/ffbuild -v "$BUILD_SCRIPT":/build.sh "$IMAGE" bash /build.sh
+PATCHES_MOUNT=""
+if [ -d "patches/ffmpeg" ]; then
+    PATCHES_MOUNT="-v $PWD/patches:/patches"
+fi
+
+docker run --rm -i $TTY_ARG "${UIDARGS[@]}" -v "$PWD/ffbuild":/ffbuild $PATCHES_MOUNT -v "$BUILD_SCRIPT":/build.sh "$IMAGE" bash /build.sh
 
 if [[ -n "$FFBUILD_OUTPUT_DIR" ]]; then
     mkdir -p "$FFBUILD_OUTPUT_DIR"
@@ -73,6 +108,8 @@ else
     docker run --rm -i $TTY_ARG "${UIDARGS[@]}" -v "${ARTIFACTS_PATH}":/out -v "${PWD}/${BUILD_NAME}":"/${BUILD_NAME}" -w / "$IMAGE" tar cJf "/out/${OUTPUT_FNAME}" "$BUILD_NAME"
 fi
 cd -
+
+docker run --rm -i $TTY_ARG "${UIDARGS[@]}" -v "${ARTIFACTS_PATH}":/out -v "$PWD/ffbuild/pkgroot/${BUILD_NAME}":"/${BUILD_NAME}" "$BUILD_SCRIPT":/build.sh -w / "$IMAGE" bash /build.sh --bundle="/out/${OUTPUT_FNAME}" "$BUILD_NAME"
 
 rm -rf ffbuild
 
