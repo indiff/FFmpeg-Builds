@@ -2,3 +2,8 @@
 /ffbuild/
 /artifacts/
 /.cache/
+
+# Performance comparison results
+/benchmark_results/
+/performance_comparison_results/
+/performance_results/

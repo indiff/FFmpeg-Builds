@@ -66,3 +66,33 @@ All of those can be optionally combined with any combination of addins:
 * `4.4`/`5.0`/`5.1`/`6.0`/`6.1`/`7.0`/`7.1` to build from the respective release branch instead of master.
 * `debug` to not strip debug symbols from the binaries. This increases the output size by about 250MB.
 * `lto` build all dependencies and ffmpeg with -flto=auto (HIGHLY EXPERIMENTAL, broken for Windows, sometimes works for Linux)
+
+## Performance Comparison
+
+To help choose the optimal FFmpeg variant for your use case, this repository includes performance comparison tools:
+
+### Quick Comparison
+```bash
+# Compare default configurations (linux64 with main variants)
+./performance_comparison.sh
+
+# Test with simulation mode (no actual building required)
+DRY_RUN=true ./performance_comparison.sh
+
+# Test specific targets and variants
+TARGETS="linux64 linuxarm64" VARIANTS="gpl lgpl gpl-shared lgpl-shared" ./performance_comparison.sh
+```
+
+### Available Tools
+* **`performance_comparison.sh`** - Comprehensive performance analysis with detailed reports
+* **`benchmark.sh`** - Quick benchmarking for basic comparisons
+* **`performance_test.sh`** - Advanced testing with custom parameters
+
+### Performance Report
+The tools generate detailed reports comparing:
+- Encoding performance (H.264, H.265, audio)
+- Resource usage (CPU, memory)
+- Build characteristics (size, dependencies)
+- Use case recommendations
+
+For detailed usage instructions, see [docs/PERFORMANCE_COMPARISON.md](docs/PERFORMANCE_COMPARISON.md).
