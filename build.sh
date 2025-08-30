@@ -27,7 +27,7 @@ GIT_BRANCH="${GIT_BRANCH_OVERRIDE:-$GIT_BRANCH}"
 BUILD_SCRIPT="$(mktemp)"
 trap "rm -f -- '$BUILD_SCRIPT'" EXIT
 
-cat <<'EOF' >"$BUILD_SCRIPT"
+cat <<EOF >"$BUILD_SCRIPT"
     set -xe
     
     case "${1:-}" in
