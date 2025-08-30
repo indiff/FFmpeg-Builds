@@ -45,7 +45,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd /ffbuild
     rm -rf ffmpeg prefix
 
-    git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
+    git clone --filter=blob:none --depth=1 --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
     cd ffmpeg
 
     BRANCH_NAME=\$(basename '$GIT_BRANCH')
@@ -53,10 +53,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     if [ -f "/patches/ffmpeg/\$BRANCH_NAME.patch" ]; then
         git apply "/patches/ffmpeg/\$BRANCH_NAME.patch"
     fi
-    # Modify configure so that unknown flags get silently ignored:
-    sed -e '/    echo "See $0 --help for available options."/ a \    return 0' ./configure >./configure.new
-    chmod +x ./configure.new
-    mv -f ./configure.new ./configure
+    
 
 
      #./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
