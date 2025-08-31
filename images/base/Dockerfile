@@ -11,9 +11,15 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 # install llvm lastest
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+# RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" && \
+#     apt-get clean -y && \
+#     rm -rf /var/lib/apt/lists/*
+
+RUN  wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc && \
+     apt-get install -qqy --no-install-recommends \
+     clang llvm lld && \
+     apt-get clean -y && \
+     rm -rf /var/lib/apt/lists/*
     
 # clang llvm lcov lld \
 RUN \
