@@ -4,7 +4,7 @@ FROM $GH_REPO/base:latest
 RUN \
    export CFLAGS="$CFLAGS -O3 -DNDEBUG" && \
    export CXXFLAGS="$CXXFLAGS -O3 -DNDEBUG" && \
-    export LLVM_CMAKEFLAGS="-DLLVM_TOOL_BUGPOINT_BUILD=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF" && \
+    export LLVM_CMAKEFLAGS="-DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
     ./build-all.sh --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \
