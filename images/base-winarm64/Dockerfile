@@ -2,7 +2,7 @@ ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN \
-    export LLVM_CMAKEFLAGS="-DLLVM_TOOL_BUGPOINT_BUILD=OFF -DLLVM_ENABLE_SFRAME=OFF" && \
+    export LLVM_CMAKEFLAGS="-DLLVM_TOOL_BUGPOINT_BUILD=OFF -DCMAKE_C_FLAGS_RELEASE='-O3 -DNDEBUG -gno-sframe' -DCMAKE_CXX_FLAGS_RELEASE='-O3 -DNDEBUG -gno-sframe'" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
     ./build-all.sh --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \
