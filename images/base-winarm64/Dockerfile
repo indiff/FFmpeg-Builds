@@ -2,10 +2,10 @@ ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN \
-    export CFLAGS="$CFLAGS -O3 -DNDEBUG" && \
-    export CXXFLAGS="$CXXFLAGS -O3 -DNDEBUG" && \
+    export CFLAGS="$CFLAGS -O2 -DNDEBUG" && \
+    export CXXFLAGS="$CXXFLAGS -O2 -DNDEBUG" && \
     export LDFLAGS="$LDFLAGS -Wl,--no-gc-sections" && \
-    export LLVM_CMAKEFLAGS="-DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF" && \
+    export LLVM_CMAKEFLAGS="-DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF -DLLVM_BUILD_TOOLS=OFF" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
     ./build-all.sh --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \

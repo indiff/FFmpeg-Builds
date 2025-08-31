@@ -3,6 +3,19 @@ FROM ubuntu:25.10
 ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -qqy --no-install-recommends \
+    lsb-release wget software-properties-common gnupg && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# install llvm lastest
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+    
+# clang llvm lcov lld \
 RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
@@ -12,7 +25,7 @@ RUN \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \
-        clang llvm lcov lld \
+        lcov \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
