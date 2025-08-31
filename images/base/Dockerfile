@@ -25,7 +25,7 @@ RUN \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \
-        clang-19 llvm-19 lld-19 lcov \
+        clang-20 llvm-20 lld-20 lcov \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
