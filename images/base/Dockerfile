@@ -14,12 +14,6 @@ RUN apt-get update -qq && \
 # RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" && \
 #     apt-get clean -y && \
 #     rm -rf /var/lib/apt/lists/*
-
-RUN  wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc && \
-     apt-get install -qqy --no-install-recommends \
-     clang llvm lld && \
-     apt-get clean -y && \
-     rm -rf /var/lib/apt/lists/*
     
 # clang llvm lcov lld \
 RUN \
@@ -31,7 +25,7 @@ RUN \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \
-        lcov \
+        clang-19 llvm-19 lld-19 lcov \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
