@@ -3,6 +3,14 @@ FROM $GH_REPO/base:latest
 
 #  export LLVM_CMAKEFLAGS="-DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF -DLLVM_BUILD_TOOLS=OFF" && \
 
+# clang llvm lcov lld \
+RUN \
+    apt-get -y update && \
+    apt-get -y dist-upgrade && \
+    apt-remove -y clang llvm lld && \
+    apt-get -y install --no-install-recommends \
+    clang-21 llvm-21 lld-21
+
 RUN \
     export CFLAGS="$CFLAGS -O2 -DNDEBUG" && \
     export CXXFLAGS="$CXXFLAGS -O2 -DNDEBUG" && \
