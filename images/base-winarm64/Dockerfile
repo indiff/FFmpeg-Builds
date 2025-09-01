@@ -6,10 +6,13 @@ FROM $GH_REPO/base:latest
 # clang llvm lcov lld \
 RUN \
     apt-get -y update && \
+    apt-get purge -y clang llvm lld && \
+    apt-get autoremove -y --purge && \
     apt-get -y dist-upgrade && \
-    apt-remove -y clang llvm lld && \
     apt-get -y install --no-install-recommends \
-    clang-20 llvm-20 lld-20
+    clang-20 llvm-20 lld-20 && \                       
+    apt-get clean && rm -rf /var/lib/apt/lists/
+    
 
 RUN \
     export CFLAGS="$CFLAGS -O2 -DNDEBUG" && \
