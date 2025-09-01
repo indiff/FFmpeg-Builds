@@ -10,8 +10,9 @@ RUN \
     apt-get autoremove -y --purge && \
     apt-get -y dist-upgrade && \
     apt-get -y install --no-install-recommends \
-    clang-20 llvm-20 lld-20 && \                       
-    apt-get clean && rm -rf /var/lib/apt/lists/
+    clang-20 llvm-20 lld-20 && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*            
     
 
 RUN \
