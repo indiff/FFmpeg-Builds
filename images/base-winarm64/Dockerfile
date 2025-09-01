@@ -9,7 +9,7 @@ RUN \
     apt-get -y dist-upgrade && \
     apt-remove -y clang llvm lld && \
     apt-get -y install --no-install-recommends \
-    clang-21 llvm-21 lld-21
+    clang-20 llvm-20 lld-20
 
 RUN \
     export CFLAGS="$CFLAGS -O2 -DNDEBUG" && \
