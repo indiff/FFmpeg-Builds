@@ -1,18 +1,6 @@
 ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
-
-# update clang llvm lcov  \
-RUN \
-    apt-get -y update && \
-    apt-get purge -y clang llvm lld && \
-    apt-get autoremove -y --purge && \
-    apt-get -y dist-upgrade && \
-    apt-get -y install --no-install-recommends \
-    clang-20 llvm-20 lld-20 && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*  
-
 RUN --mount=src=ct-ng-config,dst=/.config \
     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
     ./bootstrap && \

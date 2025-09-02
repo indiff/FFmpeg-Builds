@@ -60,6 +60,10 @@ jobs:
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h && docker search ubuntu
       - name: Checkout
         uses: actions/checkout@v5
+      - name: Check update
+        id: checkupdate
+        run: |
+          sh util/update_scripts.sh || true
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
