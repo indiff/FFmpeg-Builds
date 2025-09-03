@@ -5,7 +5,7 @@ on:
   #  paths-ignore:
   #    - '**.md'
   #    - 'LICENSE'
-  workflow_dispatch: # 手动执行时候可以配置的参数
+  workflow_dispatch: # �ֶ�ִ��ʱ��������õĲ���
     inputs:
       doRelease:
         description: 'Publish new release'
@@ -18,7 +18,7 @@ on:
         default: false
         required: false
   schedule:
-    - cron: '07 5 * * *' # 每天凌晨2点（UTC），对应每天上午10点（CST）, 这里对应的是中国时区的是 13 点
+    - cron: '07 5 * * *' # ÿ���賿2�㣨UTC������Ӧÿ������10�㣨CST��, �����Ӧ�����й�ʱ������ 13 ��
 
 env:
   DOCKER_BUILDKIT: 1
@@ -63,6 +63,10 @@ jobs:
       - name: Check update
         id: checkupdate
         run: |
+          sudo apt-get update -y
+          sudo apt-get -y install --no-install-recommends git subversion mercurial
+          sudo apt-get -y clean autoclean 
+          sudo rm -rf /var/lib/apt/lists/*
           sh util/update_scripts.sh || true
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
@@ -311,7 +315,7 @@ jobs:
           path: artifacts
       - name: Create release
         id: create_release
-        run: | # timedatectl set-timezone Asia/Shanghai 设置中国时区
+        run: | # timedatectl set-timezone Asia/Shanghai �����й�ʱ��
           set -xe
           shopt -s nullglob
           sudo timedatectl set-timezone Asia/Shanghai

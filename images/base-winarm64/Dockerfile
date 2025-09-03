@@ -1,26 +1,24 @@
 ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
-#  export LLVM_CMAKEFLAGS="-DLLVM_INCLUDE_TESTS=OFF -DLLVM_BUILD_TESTS=OFF -DLLVM_BUILD_TOOLS=OFF" && \
-
 # clang llvm lcov lld \
-RUN \
-    apt-get -y update && \
-    apt-get purge -y clang llvm lld && \
-    apt-get autoremove -y --purge && \
-    apt-get -y dist-upgrade && \
-    apt-get -y install --no-install-recommends \
-    clang-20 llvm-20 lld-20 && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*            
+# RUN \
+#     apt-get -y update && \
+#     apt-get purge -y clang llvm lld && \
+#     apt-get autoremove -y --purge && \
+#     apt-get -y dist-upgrade && \
+#     apt-get -y install --no-install-recommends \
+#     clang-20 llvm-20 lld-20 && \
+#     apt-get clean -y && \
+#     rm -rf /var/lib/apt/lists/*            
     
 
 RUN \
-    export CFLAGS="$CFLAGS -O2 -DNDEBUG" && \
-    export CXXFLAGS="$CXXFLAGS -O2 -DNDEBUG" && \
+    export CFLAGS="$CFLAGS -O3 -DNDEBUG" && \
+    export CXXFLAGS="$CXXFLAGS -O3 -DNDEBUG" && \
     export LDFLAGS="$LDFLAGS -Wl,--no-gc-sections" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
-    ./build-all.sh --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
+    ./build-all.sh --with-clang --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \
     rm -rf llvm-mingw
 
