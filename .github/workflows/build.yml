@@ -234,7 +234,10 @@ jobs:
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Generate Dockerfile
-        run: ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
+        run: |
+          ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
+          ls Docker*
+          cat Dockerfile
       - name: Cache
         uses: actions/cache/restore@v4
         with:
