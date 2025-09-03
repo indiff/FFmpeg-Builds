@@ -62,8 +62,8 @@ ENV PATH="/opt/llvm-mingw/bin:${PATH}" \
     NM="${FFBUILD_TOOLCHAIN}-nm" \
     DLLTOOL="${FFBUILD_TOOLCHAIN}-dlltool" \
     GENDEF="gendef" \
-    CFLAGS="-I/opt/ffbuild/include -O2 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    CXXFLAGS="-I/opt/ffbuild/include -O2 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    LDFLAGS="-L/opt/ffbuild/lib -O2 -pipe -march=armv8-a -fstack-protector-strong" \
+    CFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
+    CXXFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
+    LDFLAGS="-L/opt/ffbuild/lib -O3 -pipe -march=armv8-a -fstack-protector-strong" \
     STAGE_CFLAGS="" \
     STAGE_CXXFLAGS=""
