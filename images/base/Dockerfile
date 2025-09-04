@@ -25,7 +25,7 @@ RUN \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \
-        clang llvm lld lcov \
+        clang-20 clangd-20 llvm-20 lld-20 llvm-20-dev lcov \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
@@ -35,7 +35,8 @@ RUN \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
-    rm -rf /var/lib/apt/lists/* && \
+    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200 && \
+    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200 && \
     locale-gen zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	echo 'Asia/Shanghai' > /etc/timezone && \

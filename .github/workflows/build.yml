@@ -238,6 +238,14 @@ jobs:
           ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
           ls Docker*
           cat Dockerfile
+
+      - name: Upload Dockerfile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dockerfile-${{ matrix.target }}-${{ matrix.variant }}
+          overwrite: true
+          path: Dockerfile
+
       - name: Cache
         uses: actions/cache/restore@v4
         with:
