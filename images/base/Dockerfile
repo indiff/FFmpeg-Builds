@@ -35,8 +35,8 @@ RUN \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
-    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200 && \
-    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200 && \
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200 && \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200 && \
     locale-gen zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	echo 'Asia/Shanghai' > /etc/timezone && \
