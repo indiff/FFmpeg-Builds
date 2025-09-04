@@ -25,12 +25,13 @@ RUN \
         systemd language-pack-zh-hans language-pack-zh-hans-base tzdata locales  \
         xxd pkgconf curl wget unzip zip git subversion mercurial rsync jq \
         autoconf automake libtool libtool-bin autopoint gettext cmake meson ninja-build \
-        clang-20 clangd-20 llvm-20 lld-20 llvm-20-dev lcov \
+        lcov \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
-        ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full zstd \
-        python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
+        ocaml ocamlbuild ocaml-nox ocaml-findlib libnum-ocaml-dev indent p7zip-full zstd \
+        python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
+        clang-20 llvm-20 lld-20 && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
