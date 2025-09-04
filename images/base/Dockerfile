@@ -31,7 +31,7 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         ocaml ocamlbuild ocaml-nox ocaml-findlib libnum-ocaml-dev indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
-        clang-20 llvm-20 lld-20 && \
+        clang llvm lld && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
