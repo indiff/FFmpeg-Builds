@@ -17,6 +17,11 @@ on:
         type: boolean
         default: false
         required: false
+      updateScript:
+        description: 'Update Script'
+        type: boolean
+        default: false
+        required: false
   schedule:
     - cron: '07 5 * * *' 
 
@@ -61,6 +66,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Check update
+        if: ${{ github.event.inputs.updateScript == 'true' }}
         id: checkupdate
         run: |
           sudo apt-get update -y
