@@ -31,13 +31,13 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         ocaml ocamlbuild ocaml-nox ocaml-findlib libnum-ocaml-dev indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
-        clang llvm lld && \
+        clang-20 llvm-20 lld-20 sudo && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
-    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200 && \
-    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200 && \
+    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200 && \
+    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200 && \
     locale-gen zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	echo 'Asia/Shanghai' > /etc/timezone && \
