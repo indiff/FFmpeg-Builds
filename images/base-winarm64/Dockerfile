@@ -18,7 +18,7 @@ RUN \
     export CXXFLAGS="$CXXFLAGS -O3 -DNDEBUG" && \
     export LDFLAGS="$LDFLAGS -Wl,--no-gc-sections" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
-    ./build-all.sh --with-clang --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
+    ./build-all.sh --use-linker=bfd --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \
     rm -rf llvm-mingw
 
