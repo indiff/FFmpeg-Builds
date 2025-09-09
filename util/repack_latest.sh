@@ -53,7 +53,10 @@ while [[ $# -gt 0 ]]; do
         mv "$INAME" "$ONAME"
 
         if [[ $INPUT == *.zip ]]; then
-            zip -9 -r "$RELEASE_DIR/$ONAME.zip" "$ONAME"
+            # zip -9 -r "$RELEASE_DIR/$ONAME.zip" "$ONAME"
+            # 切换到目标目录的父目录，然后压缩目录内容
+            # (cd "$REPACK_DIR" && zip -q -9 -r "$RELEASE_DIR/$ONAME.zip" "$ONAME"/*)
+            (cd "$ONAME" && zip -q -9 -r "$RELEASE_DIR/$ONAME.zip" .)
         elif [[ $INPUT == *.tar.xz ]]; then
             tar cvJf "$RELEASE_DIR/$ONAME.tar.xz" "$ONAME"
         fi

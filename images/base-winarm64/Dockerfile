@@ -1,9 +1,12 @@
-ARG GH_REPO=ghcr.io/btbn/ffmpeg-builds
+ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN \
+    export CFLAGS="$CFLAGS -O3 -DNDEBUG" && \
+    export CXXFLAGS="$CXXFLAGS -O3 -DNDEBUG" && \
+    export LDFLAGS="$LDFLAGS -Wl,--no-gc-sections" && \
     git clone --filter=blob:none https://github.com/mstorsjo/llvm-mingw /llvm-mingw && cd /llvm-mingw && \
-    ./build-all.sh --use-linker=bfd --disable-lldb --disable-lldb-mi /opt/llvm-mingw && \
+    ./build-all.sh --use-linker=bfd --disable-lldb --disable-lldb-mi --disable-clang-tools-extra /opt/llvm-mingw && \
     cd / && \
     rm -rf llvm-mingw
 
@@ -47,8 +50,8 @@ ENV PATH="/opt/llvm-mingw/bin:${PATH}" \
     NM="${FFBUILD_TOOLCHAIN}-nm" \
     DLLTOOL="${FFBUILD_TOOLCHAIN}-dlltool" \
     GENDEF="gendef" \
-    CFLAGS="-I/opt/ffbuild/include -O2 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    CXXFLAGS="-I/opt/ffbuild/include -O2 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    LDFLAGS="-L/opt/ffbuild/lib -O2 -pipe -march=armv8-a -fstack-protector-strong" \
+    CFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
+    CXXFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
+    LDFLAGS="-L/opt/ffbuild/lib -O3 -pipe -march=armv8-a -fstack-protector-strong" \
     STAGE_CFLAGS="" \
     STAGE_CXXFLAGS=""

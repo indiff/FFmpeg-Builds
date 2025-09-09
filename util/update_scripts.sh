@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eo pipefail
-shopt -s globstar
+# set -eo pipefail
+set -ex
+# shopt -s globstar
 export LC_ALL=C
 
 cd "$(dirname "$0")"/..

@@ -10,18 +10,24 @@ on:
       doRelease:
         description: 'Publish new release'
         type: boolean
-        default: false
+        default: true
         required: false
       buildOnly:
         description: 'Only build ffmpeg'
         type: boolean
         default: false
         required: false
+      updateScript:
+        description: 'Update Script'
+        type: boolean
+        default: false
+        required: false
   schedule:
-    - cron: '0 12 * * *'
+    - cron: '07 5 * * *' 
 
 env:
   DOCKER_BUILDKIT: 1
+  BUILDX_EXPERIMENTAL: 1
 
 jobs:
   pre_check:
@@ -32,7 +38,7 @@ jobs:
       - name: Repo Check
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          if [[ "$GITHUB_REPOSITORY" != "BtbN/FFmpeg-Builds" ]]; then
+          if [[ "$GITHUB_REPOSITORY" != "indiff/FFmpeg-Builds" ]]; then
             echo "When forking this repository to make your own builds, you have to adjust this check."
             echo "When doing so make sure to randomize the scheduled cron time above, in order to spread out the various build times as much as possible."
             echo "This has been put in place due to the enormous amounts of traffic hundreds/thousands of parallel builds can cause on external infrastructure."
@@ -56,9 +62,18 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
+        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h && docker search ubuntu
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+      - name: Check update
+        if: ${{ github.event.inputs.updateScript == 'true' }}
+        id: checkupdate
+        run: |
+          sudo apt-get update -y
+          sudo apt-get -y install --no-install-recommends git subversion mercurial
+          sudo apt-get -y clean autoclean 
+          sudo rm -rf /var/lib/apt/lists/*
+          bash util/update_scripts.sh || true
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -134,12 +149,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win32,win64,winarm64,linux32,linux64,linuxarm64]
+        target: [win64,winarm64,linux64] # [win64,winarm64,linux64,linuxarm64]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -191,13 +206,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win64,winarm64,linux64,linuxarm64]
-        variant: [gpl,lgpl,gpl 8.0,gpl 7.1,lgpl 8.0,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 8.0,gpl-shared 7.1,lgpl-shared 8.0,lgpl-shared 7.1]
+        target: [win64,winarm64,linux64] # [win64,winarm64,linux64,linuxarm64]
+        variant: [gpl,lgpl,gpl-shared,lgpl-shared] # [gpl,lgpl,gpl 5.1,gpl 6.1,gpl 7.1,lgpl 5.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 5.1,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 5.1,lgpl-shared 6.1,lgpl-shared 7.1]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -223,7 +238,18 @@ jobs:
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Generate Dockerfile
-        run: ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
+        run: |
+          ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
+          ls Docker*
+          cat Dockerfile
+
+      - name: Upload Dockerfile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dockerfile-${{ matrix.target }}-${{ matrix.variant }}
+          overwrite: true
+          path: Dockerfile
+
       - name: Cache
         uses: actions/cache/restore@v4
         with:
@@ -258,13 +284,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win64,winarm64,linux64,linuxarm64]
-        variant: [gpl,lgpl,gpl 8.0,gpl 7.1,lgpl 8.0,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 8.0,gpl-shared 7.1,lgpl-shared 8.0,lgpl-shared 7.1]
+        target: [win64,winarm64,linux64] # [win64,winarm64,linux64,linuxarm64]
+        variant: [gpl,lgpl,gpl-shared,lgpl-shared] # [gpl,lgpl,gpl 5.1,gpl 6.1,gpl 7.1,lgpl 5.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 5.1,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 5.1,lgpl-shared 6.1,lgpl-shared 7.1]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
@@ -295,7 +321,7 @@ jobs:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -307,6 +333,8 @@ jobs:
         run: |
           set -xe
           shopt -s nullglob
+          sudo timedatectl set-timezone Asia/Shanghai
+          timedatectl status
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
@@ -330,10 +358,10 @@ jobs:
           gh release create "$TAGNAME" --target "master" --title "$NAME" latest_artifacts/*
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Update Wiki
-        run: ./util/update_wiki.sh artifacts ${{ steps.create_release.outputs.tag_name }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      # - name: Update Wiki
+      #   run: ./util/update_wiki.sh artifacts ${{ steps.create_release.outputs.tag_name }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
       - name: Prune old releases
         run: ./util/prunetags.sh
         env:

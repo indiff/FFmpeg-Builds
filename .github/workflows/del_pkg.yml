@@ -1,0 +1,86 @@
+name: Delete Package (container)
+
+on:
+  #push:
+  #  paths-ignore:
+  #    - '**.md'
+  #    - 'LICENSE'
+  workflow_dispatch: # 手动执行时候可以配置的参数
+    inputs:
+      pkgName:
+        description: 'Delete pkg name'
+        type: choice
+        default: "ffmpeg-builds/base"
+        required: false
+        options: 
+        - ffmpeg-builds/base
+        - ffmpeg-builds/base-win64
+        - ffmpeg-builds/win64-gpl
+        - ffmpeg-builds/win64-lgpl
+        - ffmpeg-builds/win64-gpl-shared
+        - ffmpeg-builds/win64-lgpl-shared
+        - all
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  del_pkg:
+    name: Delete packages ${{ github.event.inputs.pkgName }}
+    if: ${{ github.event.inputs.pkgName != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete image ${{ github.event.inputs.pkgName }}
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: "${{ github.event.inputs.pkgName }}"
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'false'
+  del_pkg_all:
+    name: Delete all packages
+    if: ${{ github.event.inputs.pkgName != 'all' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete image  ffmpeg-builds/win64-lgpl-shared
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/win64-lgpl-shared'
+          package-type: 'container'
+          min-versions-to-keep: 0
+      - name: Delete image  ffmpeg-builds/win64-gpl-shared
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/win64-gpl-shared'
+          package-type: 'container'
+          min-versions-to-keep: 0
+      - name: Delete image ffmpeg-builds/win64-lgpl
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/win64-lgpl'
+          package-type: 'container'
+          min-versions-to-keep: 0
+      - name: Delete image ffmpeg-builds/win64-gpl
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/win64-lgpl-shared'
+          package-type: 'container'
+          min-versions-to-keep: 0
+      - name: Delete image ffmpeg-builds/win64-gpl
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/win64-gpl'
+          package-type: 'container'
+          min-versions-to-keep: 0
+      - name: Delete image ffmpeg-builds/base-win64
+        uses: actions/delete-package-versions@v5
+        with: 
+          owner: 'indiff'
+          package-name: 'ffmpeg-builds/base-win64'
+          package-type: 'container'
+          min-versions-to-keep: 0
