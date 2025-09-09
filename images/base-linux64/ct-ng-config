@@ -492,7 +492,7 @@ CT_GLIBC_PATCH_ORDER="global"
 # CT_GLIBC_V_2_31 is not set
 # CT_GLIBC_V_2_30 is not set
 # CT_GLIBC_V_2_29 is not set
-CT_GLIBC_V_2_28=y
+# CT_GLIBC_V_2_28=y
 # CT_GLIBC_V_2_27 is not set
 # CT_GLIBC_V_2_26 is not set
 # CT_GLIBC_V_2_25 is not set
@@ -500,48 +500,49 @@ CT_GLIBC_V_2_28=y
 # CT_GLIBC_V_2_23 is not set
 # CT_GLIBC_V_2_19 is not set
 # CT_GLIBC_V_2_17 is not set
-CT_GLIBC_VERSION="2.28"
+CT_GLIBC_V_2_17=y
+CT_GLIBC_VERSION="2.17"
 CT_GLIBC_MIRRORS="$(CT_Mirrors GNU glibc)"
 CT_GLIBC_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_GLIBC_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
 CT_GLIBC_ARCHIVE_FORMATS=".tar.xz .tar.bz2 .tar.gz"
 CT_GLIBC_SIGNATURE_FORMAT="packed/.sig"
-CT_GLIBC_2_42_or_older=y
-CT_GLIBC_older_than_2_42=y
-CT_GLIBC_2_41_or_older=y
-CT_GLIBC_older_than_2_41=y
-CT_GLIBC_2_38_or_older=y
-CT_GLIBC_older_than_2_38=y
-CT_GLIBC_2_37_or_older=y
-CT_GLIBC_older_than_2_37=y
-CT_GLIBC_2_36_or_older=y
-CT_GLIBC_older_than_2_36=y
-CT_GLIBC_2_34_or_older=y
-CT_GLIBC_older_than_2_34=y
-CT_GLIBC_2_32_or_older=y
-CT_GLIBC_older_than_2_32=y
-CT_GLIBC_2_31_or_older=y
-CT_GLIBC_older_than_2_31=y
-CT_GLIBC_2_30_or_older=y
-CT_GLIBC_older_than_2_30=y
-CT_GLIBC_2_29_or_older=y
-CT_GLIBC_older_than_2_29=y
-CT_GLIBC_2_28_or_later=y
-CT_GLIBC_2_28_or_older=y
-CT_GLIBC_later_than_2_27=y
-CT_GLIBC_2_27_or_later=y
-CT_GLIBC_later_than_2_26=y
-CT_GLIBC_2_26_or_later=y
-CT_GLIBC_later_than_2_25=y
-CT_GLIBC_2_25_or_later=y
-CT_GLIBC_later_than_2_24=y
-CT_GLIBC_2_24_or_later=y
-CT_GLIBC_later_than_2_23=y
-CT_GLIBC_2_23_or_later=y
-CT_GLIBC_later_than_2_20=y
-CT_GLIBC_2_20_or_later=y
-CT_GLIBC_later_than_2_17=y
-CT_GLIBC_2_17_or_later=y
+# CT_GLIBC_2_42_or_older=y
+# CT_GLIBC_older_than_2_42=y
+# CT_GLIBC_2_41_or_older=y
+# CT_GLIBC_older_than_2_41=y
+# CT_GLIBC_2_38_or_older=y
+# CT_GLIBC_older_than_2_38=y
+# CT_GLIBC_2_37_or_older=y
+# CT_GLIBC_older_than_2_37=y
+# CT_GLIBC_2_36_or_older=y
+# CT_GLIBC_older_than_2_36=y
+# CT_GLIBC_2_34_or_older=y
+# CT_GLIBC_older_than_2_34=y
+# CT_GLIBC_2_32_or_older=y
+# CT_GLIBC_older_than_2_32=y
+# CT_GLIBC_2_31_or_older=y
+# CT_GLIBC_older_than_2_31=y
+# CT_GLIBC_2_30_or_older=y
+# CT_GLIBC_older_than_2_30=y
+# CT_GLIBC_2_29_or_older=y
+# CT_GLIBC_older_than_2_29=y
+# CT_GLIBC_2_28_or_later=y
+# CT_GLIBC_2_28_or_older=y
+# CT_GLIBC_later_than_2_27=y
+# CT_GLIBC_2_27_or_later=y
+# CT_GLIBC_later_than_2_26=y
+# CT_GLIBC_2_26_or_later=y
+# CT_GLIBC_later_than_2_25=y
+# CT_GLIBC_2_25_or_later=y
+# CT_GLIBC_later_than_2_24=y
+# CT_GLIBC_2_24_or_later=y
+# CT_GLIBC_later_than_2_23=y
+# CT_GLIBC_2_23_or_later=y
+# CT_GLIBC_later_than_2_20=y
+# CT_GLIBC_2_20_or_later=y
+# CT_GLIBC_later_than_2_17=y
+CT_GLIBC_2_17_or_older=y
 CT_GLIBC_later_than_2_14=y
 CT_GLIBC_2_14_or_later=y
 CT_GLIBC_DEP_KERNEL_HEADERS_VERSION=y
@@ -569,7 +570,8 @@ CT_GLIBC_FORCE_UNWIND=y
 # CT_GLIBC_KERNEL_VERSION_NONE is not set
 CT_GLIBC_KERNEL_VERSION_AS_HEADERS=y
 # CT_GLIBC_KERNEL_VERSION_CHOSEN is not set
-CT_GLIBC_MIN_KERNEL="4.18.20"
+# CT_GLIBC_MIN_KERNEL="4.18.20"
+CT_GLIBC_MIN_KERNEL="3.10.0"
 # CT_GLIBC_SSP_DEFAULT is not set
 # CT_GLIBC_SSP_NO is not set
 # CT_GLIBC_SSP_YES is not set
@@ -638,7 +640,7 @@ CT_GCC_V_15=y
 # CT_GCC_V_6 is not set
 # CT_GCC_V_5 is not set
 # CT_GCC_V_4_9 is not set
-CT_GCC_VERSION="15.1.0"
+CT_GCC_VERSION="15.2.0"
 CT_GCC_MIRRORS="$(CT_Mirrors GNU gcc/gcc-${CT_GCC_VERSION}) $(CT_Mirrors sourceware gcc/releases/gcc-${CT_GCC_VERSION})"
 CT_GCC_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_GCC_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
@@ -692,7 +694,7 @@ CT_CC_GCC_ENABLE_DEFAULT_PIE=y
 # CT_CC_GCC_ENABLE_TARGET_OPTSPACE is not set
 CT_CC_GCC_LIBSTDCXX=m
 # CT_CC_GCC_LIBSTDCXX_HOSTED_DISABLE is not set
-CT_CC_GCC_LIBSTDCXX_TARGET_CXXFLAGS="-O2 -pipe"
+CT_CC_GCC_LIBSTDCXX_TARGET_CXXFLAGS="-O3 -pipe"
 # CT_CC_GCC_LIBMUDFLAP is not set
 CT_CC_GCC_LIBGOMP=y
 CT_CC_GCC_LIBSSP=m
@@ -757,7 +759,7 @@ CT_MOLD_PATCH_GLOBAL=y
 # CT_MOLD_PATCH_LOCAL_BUNDLED is not set
 # CT_MOLD_PATCH_NONE is not set
 CT_MOLD_PATCH_ORDER="global"
-CT_MOLD_V_2_40_1=y
+CT_MOLD_V_2_40_4=y
 # CT_MOLD_V_2_39_1 is not set
 # CT_MOLD_V_2_38_1 is not set
 # CT_MOLD_V_2_37_1 is not set
@@ -765,7 +767,7 @@ CT_MOLD_V_2_40_1=y
 # CT_MOLD_V_2_33_0 is not set
 # CT_MOLD_V_2_32_0 is not set
 # CT_MOLD_V_2_31_0 is not set
-CT_MOLD_VERSION="2.40.3"
+CT_MOLD_VERSION="2.40.4"
 CT_MOLD_MIRRORS="https://github.com/rui314/mold/archive/refs/tags"
 CT_MOLD_ARCHIVE_FILENAME="v@{version}"
 CT_MOLD_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
@@ -805,12 +807,12 @@ CT_GETTEXT_PATCH_GLOBAL=y
 # CT_GETTEXT_PATCH_LOCAL_BUNDLED is not set
 # CT_GETTEXT_PATCH_NONE is not set
 CT_GETTEXT_PATCH_ORDER="global"
-CT_GETTEXT_V_0_23_1=y
+CT_GETTEXT_V_0_26_0=y
 # CT_GETTEXT_V_0_22_5 is not set
 # CT_GETTEXT_V_0_21 is not set
 # CT_GETTEXT_V_0_20_1 is not set
 # CT_GETTEXT_V_0_19_8_1 is not set
-CT_GETTEXT_VERSION="0.23.1"
+CT_GETTEXT_VERSION="0.26"
 CT_GETTEXT_MIRRORS="$(CT_Mirrors GNU gettext)"
 CT_GETTEXT_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_GETTEXT_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
@@ -884,7 +886,7 @@ CT_ISL_V_0_26=y
 # CT_ISL_V_0_16 is not set
 # CT_ISL_V_0_15 is not set
 # CT_ISL_V_0_11 is not set
-CT_ISL_VERSION="0.26"
+CT_ISL_VERSION="0.27"
 CT_ISL_MIRRORS="https://libisl.sourceforge.io"
 CT_ISL_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_ISL_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
@@ -954,7 +956,7 @@ CT_MPFR_PATCH_GLOBAL=y
 # CT_MPFR_PATCH_NONE is not set
 CT_MPFR_PATCH_ORDER="global"
 CT_MPFR_V_4_2=y
-CT_MPFR_VERSION="4.2.1"
+CT_MPFR_VERSION="4.2.2"
 CT_MPFR_MIRRORS="https://www.mpfr.org/mpfr-${CT_MPFR_VERSION} $(CT_Mirrors GNU mpfr)"
 CT_MPFR_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_MPFR_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"

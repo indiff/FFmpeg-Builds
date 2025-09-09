@@ -591,6 +591,9 @@ CT_MOLD_V_2_40_4=y
 # CT_MOLD_V_2_38_1 is not set
 # CT_MOLD_V_2_37_1 is not set
 # CT_MOLD_V_2_36_0 is not set
+# CT_MOLD_V_2_33_0 is not set
+# CT_MOLD_V_2_32_0 is not set
+# CT_MOLD_V_2_31_0 is not set
 CT_MOLD_VERSION="2.40.4"
 CT_MOLD_MIRRORS="https://github.com/rui314/mold/archive/refs/tags"
 CT_MOLD_ARCHIVE_FILENAME="v@{version}"
@@ -709,6 +712,7 @@ CT_ISL_V_0_26=y
 # CT_ISL_V_0_17 is not set
 # CT_ISL_V_0_16 is not set
 # CT_ISL_V_0_15 is not set
+# CT_ISL_V_0_11 is not set
 CT_ISL_VERSION="0.27"
 CT_ISL_MIRRORS="https://libisl.sourceforge.io"
 CT_ISL_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
