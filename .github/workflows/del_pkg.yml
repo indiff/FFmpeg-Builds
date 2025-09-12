@@ -20,6 +20,7 @@ on:
         - ffmpeg-builds/win64-gpl-shared
         - ffmpeg-builds/win64-lgpl-shared
         - all
+        - all-new
 env:
   DOCKER_BUILDKIT: 1
 
@@ -84,3 +85,17 @@ jobs:
           package-name: 'ffmpeg-builds/base-win64'
           package-type: 'container'
           min-versions-to-keep: 0
+      - name: Delete pkg by github api
+        if: ${{ github.event.inputs.pkgName != 'all_new' }}
+        run: |
+          # delete packages by github api
+          # 使用 GitHub API 获取最后一次提交信息 
+          #   https://api.github.com/users/USERNAME/packages/PACKAGE_TYPE/PACKAGE_NAME
+          commit_info=$(curl -s -H "X-GitHub-Api-Version: 2022-11-28" \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -X DELETE \
+          https://api.github.com/users/indiff/packages/container/ffmpeg-builds/base-linux32 \
+          | jq -r '.[0]')
+        env:
+            GITHUB_TOKEN: ${{ github.token }}
