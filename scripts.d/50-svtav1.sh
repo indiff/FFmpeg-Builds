@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_REPO="https://gitlab.com/AOMediaCodec/SVT-AV1.git"
-SCRIPT_COMMIT="380af5574f9b47665a931b763247f80f91feab9e"
+SCRIPT_COMMIT="724d061f5d6463bd1061595d7004747cd01a480a"
 SCRIPT_REPO="https://github.com/nekotrix/SVT-AV1-Essential.git"
 SCRIPT_COMMIT="0d3bca9cec9fcb662edd3eb32442cdfbe557fc15"
 SCRIPT_BRANCH="Essential-v3.1.0"
