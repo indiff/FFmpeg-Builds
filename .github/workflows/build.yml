@@ -10,7 +10,7 @@ on:
       forceDownload:
         description: 'Force Download'
         type: boolean
-        default: true
+        default: false
         required: false
       doRelease:
         description: 'Publish new release'
