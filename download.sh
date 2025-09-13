@@ -40,6 +40,11 @@ for STAGE in scripts.d/*.sh scripts.d/*/*.sh; do
 		fi
 
 		TGT="/dldir/\${DLNAME}_\${DLHASH}.tar.xz"
+		
+		if [[ "$1" == "true" ]]; then
+			rm -f "\$TGT"
+		fi
+
 		if [[ -f "\$TGT" ]]; then
 			rm -f "/dldir/\${DLNAME}.tar.xz"
 			ln -s "\${DLNAME}_\${DLHASH}.tar.xz" "/dldir/\${DLNAME}.tar.xz"

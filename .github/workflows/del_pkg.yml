@@ -40,7 +40,7 @@ jobs:
           delete-only-untagged-versions: 'false'
   del_pkg_all:
     name: Delete all packages
-    if: ${{ github.event.inputs.pkgName != 'all' }}
+    if: ${{ github.event.inputs.pkgName == 'all' }}
     runs-on: ubuntu-latest
     steps:
       - name: Delete image  ffmpeg-builds/win64-lgpl-shared
@@ -86,7 +86,7 @@ jobs:
           package-type: 'container'
           min-versions-to-keep: 0
       - name: Delete pkg by github api
-        if: ${{ github.event.inputs.pkgName != 'all_new' }}
+        if: ${{ github.event.inputs.pkgName == 'all_new' }}
         run: |
           # delete packages by github api
           # 使用 GitHub API 获取最后一次提交信息 

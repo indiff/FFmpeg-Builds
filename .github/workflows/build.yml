@@ -7,6 +7,11 @@ on:
       - 'LICENSE'
   workflow_dispatch:
     inputs:
+      forceDownload:
+        description: 'Force Download'
+        type: boolean
+        default: true
+        required: false
       doRelease:
         description: 'Publish new release'
         type: boolean
@@ -123,7 +128,7 @@ jobs:
         if: ${{ !cancelled() && !contains(matrix.runner, 'arm') }}
         run: |
           set -e
-          ./download.sh
+          ./download.sh ${{ github.event.inputs.forceDownload }}
           ./util/clean_cache.sh
           tar czf .cache/cache.tar.gz .cache/downloads/*
       - name: Upload cache artifact
