@@ -19,12 +19,6 @@ RUN \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
         pkg-config sudo && \
-    bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
-    bash -c "eval $(opam env --switch=default)"  && \
-    opam init --disable-sandboxing --bare && \
-    opam switch create ocaml-base-compiler && \
-    opam install xmlm -y && \
-    opam switch create num && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
@@ -37,6 +31,14 @@ RUN \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
 
+RUN \    
+    bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
+    bash -c "eval $(opam env --switch=default)"  && \
+    opam init --disable-sandboxing --bare && \
+    opam switch create ocaml-base-compiler && \
+    opam install xmlm -y && \
+    opam switch create num
+    
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
