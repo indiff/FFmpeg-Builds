@@ -57,8 +57,6 @@ jobs:
           fi
           exit 0
   build_base:
-    permissions:
-      packages: write
     name: Build base image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
     needs: pre_check
@@ -149,8 +147,6 @@ jobs:
           owner_type: user
           untagged_only: true
   build_target_bases:
-    permissions:
-      packages: write
     name: Build target base image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
     needs: build_base
@@ -208,8 +204,6 @@ jobs:
           owner_type: user
           untagged_only: true
   build_targets:
-    permissions:
-      packages: write
     name: Build target-variant image
     if: ${{ github.event.inputs.buildOnly != 'true' }}
     needs: build_target_bases
