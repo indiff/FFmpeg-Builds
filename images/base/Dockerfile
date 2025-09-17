@@ -18,7 +18,6 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
-        ca-certificates m4 \
         bubblewrap pkg-config sudo && \
     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
     bash -c "eval $(opam env --switch=default)"  && \
