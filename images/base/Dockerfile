@@ -20,7 +20,7 @@ RUN \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
         ocaml ocamlbuild libnum-ocaml-dev  ca-certificates m4 ocaml-nox ocaml-native-compilers \
         bubblewrap pkg-config sudo && \
-    yes "" | sh <(curl -fsSL https://opam.ocaml.org/install.sh) --fresh --dev --no-backup && \
+    yes "" | bash -c "sh <(curl -fsSL https://opam.ocaml.org/install.sh)" --fresh --dev --no-backup && \
     opam init --disable-sandboxing -a -y && \
     eval "$(opam env)" && \
     opam switch create num && \
