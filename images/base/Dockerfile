@@ -19,9 +19,9 @@ RUN \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
         ocaml ocamlbuild libnum-ocaml-dev  ca-certificates m4 ocaml-nox ocaml-native-compilers \
-  bubblewrap pkg-config && \
-    bash -c "sh <(curl -fsSL https://opam.ocaml.org/install.sh)" -- -y && \
-    export PATH="$HOME/.opam/default/bin:$PATH" && \
+        bubblewrap pkg-config && \
+    curl -#Lo opam "https://github.com/ocaml/opam/releases/download/2.4.0/opam-2.4.0-x86_64-linux" && \
+    install opam /usr/local/bin/opam && \
     eval "$(opam env)" && \
     opam init --disable-sandboxing -a -y && \
     eval "$(opam env)" && \
