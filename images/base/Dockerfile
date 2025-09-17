@@ -36,8 +36,11 @@ RUN \
     bash -c "eval $(opam env --switch=default)"  && \
     opam init --disable-sandboxing --bare && \
     opam switch create ocaml-base-compiler && \
-    opam install xmlm -y && \
-    opam switch create num
+    bash -c "eval $(opam env --switch=default)"  && \
+    opam install ocamlbuild && \
+    bash -c "eval $(opam env --switch=default)"  && \
+    opam switch create num && \
+    bash -c "eval $(opam env --switch=default)"
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
