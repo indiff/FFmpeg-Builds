@@ -35,6 +35,8 @@ RUN \
     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
     bash -c "eval $(opam env --switch=default)"  && \
     opam init --disable-sandboxing --bare && \
+    opam switch create default && \
+    echo 'eval $(opam env)' && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
     # 确保 PATH 包含 opam 的 bin 目录
     echo 'eval $(opam env)' >> ~/.bashrc
