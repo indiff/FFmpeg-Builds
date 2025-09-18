@@ -37,9 +37,9 @@ RUN \
     opam init --disable-sandboxing --bare && \
     opam switch create ocaml-base-compiler && \
     bash -c "eval $(opam env --switch=default)"  && \
-    opam install ocamlbuild && \
-    bash -c "eval $(opam env --switch=default)"  && \
-    opam switch create num ocamlfind && \
+    opam switch create ocamlfind && \
+    opam switch create ocamlbuild && \
+    opam switch create num && \
     bash -c "eval $(opam env --switch=default)"
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
