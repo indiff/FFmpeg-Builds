@@ -35,11 +35,11 @@ RUN \
     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
     bash -c "eval $(opam env --switch=default)"  && \
     opam init --disable-sandboxing --bare && \
-    opam switch create default && \
     echo 'eval $(opam env)' && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-    # 确保 PATH 包含 opam 的 bin 目录
-    echo 'eval $(opam env)' >> ~/.bashrc
+    echo 'eval $(opam env)' >> ~/.bashrc && \
+    OCAMLBULD_PATH=$(find ~/.opam -name ocamlbuild -type f | grep ocamlbuild/bin/ocamlbuild) && \
+    ln -s $OCAMLBULD_PATH /usr/local/bin/ocamlbuild
 
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
