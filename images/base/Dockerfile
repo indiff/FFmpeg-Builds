@@ -40,7 +40,7 @@ RUN \
     opam switch create ocamlfind && \
     bash -c "eval $(opam env --switch=ocamlfind)" && \
     opam switch create ocamlbuild && \
-    bash -c "eval $(opam env)"  && \
+    bash -c "eval $(opam env --switch=ocamlbuild)"  && \
     opam switch create num && \
     bash -c "eval $(opam env --switch=num)"
     
