@@ -39,7 +39,7 @@ RUN \
     bash -c "eval $(opam env --switch=default)"  && \
     opam install ocamlbuild && \
     bash -c "eval $(opam env --switch=default)"  && \
-    opam switch create num && \
+    opam switch create num ocamlfind && \
     bash -c "eval $(opam env --switch=default)"
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
