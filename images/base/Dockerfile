@@ -36,11 +36,13 @@ RUN \
     bash -c "eval $(opam env --switch=default)"  && \
     opam init --disable-sandboxing --bare && \
     opam switch create ocaml-base-compiler && \
-    bash -c "eval $(opam env --switch=default)"  && \
+    bash -c "eval $(opam env --switch=ocaml-base-compiler)"  && \
     opam switch create ocamlfind && \
+    bash -c "eval $(opam env --switch=ocamlfind)" && \
     opam switch create ocamlbuild && \
+    bash -c "eval $(opam env)"  && \
     opam switch create num && \
-    bash -c "eval $(opam env --switch=default)"
+    bash -c "eval $(opam env --switch=num)"
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/cargo/bin:${PATH}"
