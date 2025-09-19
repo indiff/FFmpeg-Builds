@@ -55,12 +55,12 @@ RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocaml-base-compiler
 
 # 假设之前已安装 opam 并 opam init、opam install 已做过
-RUN tree /opt/opam && \
-    eval "$(opam env --root=/opt/opam --set-root)" && \
-    /opt/opam/default/bin/ocamlfind --version && \
-    /opt/opam/default/bin/ocamlfind list | grep -E '^num$' && \
+RUN tree /opt/opam/default/bin && \
+    eval $(opam env --root=/opt/opam --set-root) && \
+    ocamlfind --version && \
+    ocamlfind list | grep -E '^num$' && \
     printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 42))\n' > /tmp/number.ml && \
-    /opt/opam/default/bin/ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
+    ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
     /tmp/test_num
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
