@@ -58,7 +58,8 @@ RUN tree /opt/opam/default/bin && \
     echo $(opam env --root=/opt/opam --set-root) && \
     eval $(opam env --root=/opt/opam --set-root) && \
     ocamlfind list  && \
-    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 42))\n' > /tmp/number.ml && \
+    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
+    eval $(opam env --root=/opt/opam --set-root) && \
     ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
     /tmp/test_num
     
