@@ -18,7 +18,7 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
-        pkg-config sudo libncurses5-dev libgavl-dev && \
+        pkg-config sudo libncurses5-dev libgavl-dev tree && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
@@ -37,13 +37,14 @@ RUN \
     bash -c "eval $(opam env)" && \
     opam switch create ocamlbuild && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-    bash -c "echo $(opam env)" && \
+    bash -c "echo $(opam env)"  && \
     bash -c "eval $(opam env)"  && \
-    echo 'eval $(opam env)' >> ~/.bashrc
+    echo 'eval $(opam env)' >> ~/.bashrc && \
+    tree $OPAM_LAST_ENV
     
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
-ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/root/.opam/default/bin:/opt/cargo/bin:${PATH}"
+ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="$$OPAM_LAST_ENV:/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
 
