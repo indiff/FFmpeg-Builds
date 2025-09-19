@@ -55,7 +55,7 @@ RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocaml-base-compiler
 
 # 假设之前已安装 opam 并 opam init、opam install 已做过
-RUN tree /opt/spam && \
+RUN tree /opt/opam && \
     eval "$(opam env --root=/opt/opam --set-root)" && \
     echo "OPAM_BIN=$(opam var bin --root=/opt/opam --set-root)" && \
     ocamlfind --version && \
