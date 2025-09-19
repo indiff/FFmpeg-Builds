@@ -37,6 +37,7 @@ RUN \
     bash -c "eval $(opam env)" && \
     opam switch create ocamlbuild && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
+    bash -c "echo $(opam env)" && \
     bash -c "eval $(opam env)"
     
     
