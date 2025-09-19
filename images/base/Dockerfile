@@ -53,18 +53,25 @@ RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlbuild \
       num \
       ocaml-base-compiler
-
+# ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 RUN tree /opt/opam/default/bin && \
     echo $(opam env --root=/opt/opam --set-root) && \
     eval $(opam env --root=/opt/opam --set-root) && \
     ocamlfind list  && \
     printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
     eval $(opam env --root=/opt/opam --set-root) && \
-    ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
+    /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /test/number.ml && /tmp/test_num && \
+    opam env --root=/opt/opam --set-root > /etc/profile.d/opam.sh && chmod +x /etc/profile.d/opam.sh && \
     /tmp/test_num
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/opam/default/bin:/opt/cargo/bin:${PATH}"
+ENV OPAMROOT=/opt/opam
+ENV OPAM_SWITCH_PREFIX=/opt/opam/default
+ENV CAML_LD_LIBRARY_PATH="/opt/opam/default/lib/stublibs:/opt/opam/default/lib/ocaml/stublibs:/opt/opam/default/lib/ocaml"
+ENV OCAML_TOPLEVEL_PATH=/opt/opam/default/lib/toplevel
+ENV MANPATH="/opt/opam/default/man:${MANPATH}"
+
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
 
@@ -78,3 +85,6 @@ ENV HOST_CC="gcc" \
 
 RUN which ocamlbuild
 RUN ocamlbuild --version
+RUN printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 88))\n' > /tmp/number.ml && \
+    /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /test/number.ml && /tmp/test_num && \
+    /tmp/test_num
