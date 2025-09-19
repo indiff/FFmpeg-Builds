@@ -34,11 +34,12 @@ RUN \
 RUN \    
     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
     opam init --disable-sandboxing --bare && \
-    bash -c "eval $(opam env --switch=default)" && \
+    bash -c "echo $(opam env)" && \
+    bash -c "eval $(opam env)" && \
     opam init -y  && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-    bash -c "eval $(opam env --switch=default)"  && \
-    echo 'eval $(opam env --switch=default)' >> ~/.bashrc
+    bash -c "eval $(opam env)"  && \
+    echo 'eval $(opam env)' >> ~/.bashrc
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/root/.opam/default/bin:/opt/cargo/bin:${PATH}"
