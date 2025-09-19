@@ -31,16 +31,38 @@ RUN \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false
 
-RUN \    
-    bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
-    opam init --disable-sandboxing --bare && \
-    bash -c "eval $(opam env)" && \
-    opam switch create ocamlbuild && \
-    opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-    bash -c "echo $(opam env)" && \
-    bash -c "eval $(opam env)" && \
-    ocamlfind ocamlopt -package num -linkpkg -c number.ml
-    
+# RUN \    
+#     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
+#     opam init --disable-sandboxing --bare && \
+#     bash -c "eval $(opam env)" && \
+#     opam switch create ocamlbuild && \
+#     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
+#     bash -c "echo $(opam env)" && \
+#     bash -c "eval $(opam env)" && \
+#     bash -c "eval $(opam env) && ocamlfind ocamlopt -package num -linkpkg -c number.ml"
+# Installing OCaml needed to compile libvyosconfig
+
+RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
+      --output /tmp/opam_install.sh --retry 10 --retry-delay 5 && \
+    sed -i 's/read_tty BINDIR/BINDIR=""/' /tmp/opam_install.sh && sh /tmp/opam_install.sh && \
+    opam init --root=/opt/opam --disable-sandboxing --no-setup \
+    && rm /tmp/opam_install.sh
+
+RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
+      ocamlfind \
+      ocamlbuild \
+      num \
+      ocaml-base-compiler
+
+# 假设之前已安装 opam 并 opam init、opam install 已做过
+RUN tree /opt/spam && \
+    eval "$(opam env --root=/opt/opam --set-root)" && \
+    echo "OPAM_BIN=$(opam var bin --root=/opt/opam --set-root)" && \
+    ocamlfind --version && \
+    ocamlfind list | grep -E '^num$' && \
+    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 42))\n' > /tmp/number.ml && \
+    ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
+    /tmp/test_num
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/root/.opam/ocamlbuild/bin:/opt/cargo/bin:${PATH}"
