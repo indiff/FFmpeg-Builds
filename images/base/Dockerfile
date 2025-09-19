@@ -37,9 +37,9 @@ RUN \
     bash -c "eval $(opam env)" && \
     opam switch create ocamlbuild && \
     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-    bash -c "echo $(opam --switch=default)" && \
-    bash -c "eval $(opam --switch=default)"  && \
-    echo 'eval $(opam env --switch=default)' >> ~/.bashrc
+    bash -c "echo $(opam env)" && \
+    bash -c "eval $(opam env)"  && \
+    echo 'eval $(opam env)' >> ~/.bashrc
     
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
