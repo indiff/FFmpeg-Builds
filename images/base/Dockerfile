@@ -65,7 +65,7 @@ RUN tree /opt/opam && \
     /tmp/test_num
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
-ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/root/.opam/ocamlbuild/bin:/opt/cargo/bin:${PATH}"
+ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/opam/default/bin:/opt/cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
 
