@@ -60,9 +60,9 @@ RUN tree /opt/opam/default/bin && \
     ocamlfind list  && \
     printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
     eval $(opam env --root=/opt/opam --set-root) && \
-    /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /test/number.ml && /tmp/test_num && \
+    /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
     opam env --root=/opt/opam --set-root > /etc/profile.d/opam.sh && chmod +x /etc/profile.d/opam.sh && \
-    /tmp/test_num
+    rm -f /tmp/test_num
     
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/opam/default/bin:/opt/cargo/bin:${PATH}"
@@ -87,4 +87,4 @@ RUN which ocamlbuild
 RUN ocamlbuild --version
 RUN printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 88))\n' > /tmp/number.ml && \
     /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /test/number.ml && /tmp/test_num && \
-    /tmp/test_num
+    rm -f /tmp/test_num
