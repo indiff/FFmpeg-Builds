@@ -51,9 +51,8 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
+      num \
       ocaml-base-compiler
-RUN eval $(opam env --root=/opt/opam --set-root) && opam install . --deps-only -y \
-      num
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
     
@@ -64,6 +63,15 @@ ENV OPAM_SWITCH_PREFIX=/opt/opam/default
 ENV CAML_LD_LIBRARY_PATH="/opt/opam/default/lib/stublibs:/opt/opam/default/lib/ocaml/stublibs:/opt/opam/default/lib/ocaml"
 ENV OCAML_TOPLEVEL_PATH=/opt/opam/default/lib/toplevel
 ENV MANPATH="/opt/opam/default/man:${MANPATH}"
+
+
+RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
+    cd /usr/local/src/ocaml_num && \
+    eval $(opam env --root=/opt/opam --set-root) && \
+    make all && \
+    make test && \
+    make install && \
+    make clean
 
 RUN tree /opt/opam/default/bin && \
     echo $(opam env --root=/opt/opam --set-root) && \
