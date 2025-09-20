@@ -51,8 +51,9 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
-      num \
       ocaml-base-compiler
+RUN eval $(opam env --root=/opt/opam --set-root) && opam install . --deps-only -y \
+      num
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
     
