@@ -67,7 +67,6 @@ ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
     cd /usr/local/src/ocaml_num && \
     eval $(opam env --root=/opt/opam --set-root) && \
-    make all && \
     make install && \
     make clean
 
