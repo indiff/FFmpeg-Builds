@@ -48,10 +48,19 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
     opam init --root=/opt/opam --disable-sandboxing --no-setup \
     && rm /tmp/opam_install.sh
 
+RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
+    cd /usr/local/src/ocaml-num && \
+    eval $(opam env --root=/opt/opam --set-root) && opam install -y dune \
+    eval $(opam env --root=/opt/opam --set-root) && opam pin add num . --no-action \
+    eval $(opam env --root=/opt/opam --set-root) && opam exec -- make PROFILE=dev \
+    eval $(opam env --root=/opt/opam --set-root) && opam exec -- dune build @install \
+    eval $(opam env --root=/opt/opam --set-root) && opam install -y num \
+    # make all PROFILE=release && \
+    # make install && \
+    # make clean
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
-      dune \
       ocaml-base-compiler
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
@@ -70,14 +79,7 @@ ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 #     eval $(opam env --root=/opt/opam --set-root) && \
 #     make install && \
 #     make clean
-RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
-    cd /usr/local/src/ocaml-num && \
-    eval $(opam env --root=/opt/opam --set-root) && \
-    make all PROFILE=release && \
-    rm -f META.num && \
-    make clean && \
-    make install && \
-    make clean
+
 
 
 RUN tree /opt/opam/default/bin && \
