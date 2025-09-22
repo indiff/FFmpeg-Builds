@@ -50,6 +50,7 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 
 RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
     cd /usr/local/src/ocaml-num && \
+    opam init --disable-sandboxing --bare && \
     opam switch create . 5.3.0 && \
     opam install -y dune && \
     opam install -y . --deps-only --with-doc --with-test && \
