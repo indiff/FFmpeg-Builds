@@ -50,14 +50,12 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 
 RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
     cd /usr/local/src/ocaml-num && \
-    eval $(opam env --root=/opt/opam --set-root) && opam install -y dune \
-    eval $(opam env --root=/opt/opam --set-root) && opam pin add num . --no-action \
-    eval $(opam env --root=/opt/opam --set-root) && opam exec -- make PROFILE=dev \
-    eval $(opam env --root=/opt/opam --set-root) && opam exec -- dune build @install \
-    eval $(opam env --root=/opt/opam --set-root) && opam install -y num \
-    # make all PROFILE=release && \
-    # make install && \
-    # make clean
+    opam switch create . 5.3.0 && \
+    opam install -y dune && \
+    opam install -y . --deps-only --with-doc --with-test && \
+    opam pin add num . --no-action && \
+    opam exec -- dune build @install
+
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
