@@ -18,7 +18,7 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
-        pkg-config sudo libncurses5-dev libgavl-dev tree && \
+        pkg-config sudo libncurses5-dev libgavl-dev tree patch libgmp-dev libffi-dev dpkg-dev && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
@@ -51,6 +51,7 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
+      dune \
       ocaml-base-compiler
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
@@ -64,11 +65,19 @@ ENV OCAML_TOPLEVEL_PATH=/opt/opam/default/lib/toplevel
 ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 
 
-RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
-    cd /usr/local/src/ocaml_num && \
+# RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
+#     cd /usr/local/src/ocaml_num && \
+#     eval $(opam env --root=/opt/opam --set-root) && \
+#     make install && \
+#     make clean
+
+RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
+    cd /usr/local/src/ocaml-num && \
     eval $(opam env --root=/opt/opam --set-root) && \
+    make all PROFILE=release && \
     make install && \
     make clean
+
 
 RUN tree /opt/opam/default/bin && \
     echo $(opam env --root=/opt/opam --set-root) && \
