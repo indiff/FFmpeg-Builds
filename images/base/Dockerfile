@@ -70,11 +70,12 @@ ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 #     eval $(opam env --root=/opt/opam --set-root) && \
 #     make install && \
 #     make clean
-
 RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
     cd /usr/local/src/ocaml-num && \
     eval $(opam env --root=/opt/opam --set-root) && \
     make all PROFILE=release && \
+    rm -f META.num && \
+    make clean && \
     make install && \
     make clean
 
