@@ -98,7 +98,7 @@ RUN echo $(opam env) && \
     ocamlfind list  && \
     printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
     eval $(opam env) && \
-    ocamlopt.opt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
+    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
     rm -f /tmp/test_num
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
