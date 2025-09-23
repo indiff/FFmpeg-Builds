@@ -57,6 +57,7 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
     opam install -y . --deps-only --with-doc --with-test && \
     opam pin add -y num . --no-action && \
     opam exec -- make PROFILE=release && \
+    opam remove num || true && \
     opam exec -- make install && \
     opam exec -- make clean
 
