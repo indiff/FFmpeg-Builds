@@ -48,14 +48,21 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
     opam init --root=/opt/opam --disable-sandboxing --no-setup \
     && rm /tmp/opam_install.sh
 
-RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
-    cd /usr/local/src/ocaml-num && \
-    opam init --disable-sandboxing --bare -y && \
-    opam switch create . 5.3.0 && \
-    opam install -y dune && \
-    opam install -y . --deps-only --with-doc --with-test && \
-    opam pin add num . --no-action -y && \
-    opam exec -- dune build @install -y
+# RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
+#     cd /usr/local/src/ocaml-num && \
+#     opam init --disable-sandboxing --bare -y && \
+#     opam switch create . 5.3.0 && \
+#     opam install -y dune && \
+#     opam install -y . --deps-only --with-doc --with-test && \
+#     opam pin add num . --no-action -y && \
+#     opam exec -- dune build @install -y
+
+RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
+    cd /usr/local/src/ocaml_num && \
+    make all && \
+    make test && \
+    make install && \
+    make clean
 
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
