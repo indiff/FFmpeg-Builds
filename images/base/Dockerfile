@@ -18,6 +18,7 @@ RUN \
         gtk-doc-tools gobject-introspection gawk \
         indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python-is-python3 \
+        m4 opam ocaml-findlib \
         pkg-config sudo libncurses5-dev libgavl-dev tree patch libgmp-dev libffi-dev dpkg-dev && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get -y install nodejs && \
@@ -42,32 +43,34 @@ RUN \
 #     bash -c "eval $(opam env) && ocamlfind ocamlopt -package num -linkpkg -c number.ml"
 # Installing OCaml needed to compile libvyosconfig
 
-RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
-      --output /tmp/opam_install.sh --retry 10 --retry-delay 5 && \
-    sed -i 's/read_tty BINDIR/BINDIR=""/' /tmp/opam_install.sh && sh /tmp/opam_install.sh && \
-    opam init --root=/opt/opam --disable-sandboxing --no-setup \
-    && rm /tmp/opam_install.sh
+# RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
+#       --output /tmp/opam_install.sh --retry 10 --retry-delay 5 && \
+#     sed -i 's/read_tty BINDIR/BINDIR=""/' /tmp/opam_install.sh && sh /tmp/opam_install.sh && \
+#     opam init --root=/opt/opam --disable-sandboxing --no-setup \
+#     && rm /tmp/opam_install.sh
 
-# RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
-#     cd /usr/local/src/ocaml-num && \
-#     opam init --disable-sandboxing --bare -y && \
-#     opam switch create . 5.3.0 && \
-#     opam install -y dune && \
-#     opam install -y . --deps-only --with-doc --with-test && \
-#     opam pin add num . --no-action -y && \
-#     opam exec -- dune build @install -y
+RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
+    cd /usr/local/src/ocaml-num && \
+    opam init --disable-sandboxing --bare -y && \
+    opam switch create . 5.3.0 && \
+    opam install -y dune && \
+    opam install -y . --deps-only --with-doc --with-test && \
+    opam pin add -y num . --no-action && \
+    opam exec -- make PROFILE=release && \
+    opam exec -- make install && \
+    opam exec -- make clean
 
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
       ocamlbuild \
       ocaml-base-compiler
       
-RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
-    cd /usr/local/src/ocaml_num && \
-    make all && \
-    make test && \
-    make install && \
-    make clean
+# RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
+#     cd /usr/local/src/ocaml_num && \
+#     make all && \
+#     make test && \
+#     make install && \
+#     make clean
 
 
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
