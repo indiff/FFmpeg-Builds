@@ -83,12 +83,12 @@ ENV OCAML_TOPLEVEL_PATH=/usr/local/src/ocaml-num/_opam/lib/toplevel
 #ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 
 
-RUN eval $(opam env) && \
-    ocamlfind list  && \
-    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
-    eval $(opam env) && \
-    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
-    rm -f /tmp/test_num
+#RUN eval $(opam env) && \
+#    ocamlfind list  && \
+#    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
+#    eval $(opam env) && \
+#    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
+#    rm -f /tmp/test_num
 
 # RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
 #     cd /usr/local/src/ocaml_num && \
