@@ -57,6 +57,11 @@ RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
 #     opam pin add num . --no-action -y && \
 #     opam exec -- dune build @install -y
 
+RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
+      ocamlfind \
+      ocamlbuild \
+      ocaml-base-compiler
+      
 RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
     cd /usr/local/src/ocaml_num && \
     make all && \
@@ -64,10 +69,7 @@ RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
     make install && \
     make clean
 
-RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
-      ocamlfind \
-      ocamlbuild \
-      ocaml-base-compiler
+
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
     
