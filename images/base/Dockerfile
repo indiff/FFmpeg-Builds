@@ -60,10 +60,14 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
     opam remove num || true && \
     opam exec -- make install && \
     opam exec -- make clean && \
-    opam install -y \
-      ocamlfind \
-      ocamlbuild \
-      ocaml-base-compiler
+    opam install -y ocamlfind ocamlbuild  ocaml-base-compiler && \
+    echo $(opam env) && \
+    eval $(opam env) && \
+    ocamlfind list  && \
+    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
+    eval $(opam env) && \
+    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
+    rm -f /tmp/test_num
       
 # RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
 #     cd /usr/local/src/ocaml_num && \
@@ -91,15 +95,6 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
 #     make install && \
 #     make clean
 
-
-
-RUN echo $(opam env) && \
-    eval $(opam env) && \
-    ocamlfind list  && \
-    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
-    eval $(opam env) && \
-    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
-    rm -f /tmp/test_num
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
