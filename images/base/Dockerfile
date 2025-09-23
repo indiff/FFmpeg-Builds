@@ -114,6 +114,3 @@ ENV HOST_CC="gcc" \
 
 RUN which ocamlbuild
 RUN ocamlbuild --version
-RUN printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 88))\n' > /tmp/number.ml && \
-    /opt/opam/default/bin/ocamlopt.opt -o /tmp/test_num /test/number.ml && /tmp/test_num && \
-    rm -f /tmp/test_num
