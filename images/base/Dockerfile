@@ -61,13 +61,7 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
     opam exec -- make install && \
     opam exec -- make clean && \
     opam install -y ocamlfind ocamlbuild  ocaml-base-compiler && \
-    echo $(opam env) && \
-    eval $(opam env) && \
-    ocamlfind list  && \
-    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
-    eval $(opam env) && \
-    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
-    rm -f /tmp/test_num
+    echo $(opam env) 
       
 # RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
 #     cd /usr/local/src/ocaml_num && \
@@ -79,15 +73,22 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
 
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
 
+
     
-#ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
-#ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/opt/opam/default/bin:/opt/cargo/bin:${PATH}"
+ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
+ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/usr/local/src/ocaml-num/_opam/bin:/opt/cargo/bin:${PATH}"
 #ENV OPAMROOT=/opt/opam
-#ENV OPAM_SWITCH_PREFIX=/opt/opam/default
-#ENV CAML_LD_LIBRARY_PATH="/opt/opam/default/lib/stublibs:/opt/opam/default/lib/ocaml/stublibs:/opt/opam/default/lib/ocaml"
-#ENV OCAML_TOPLEVEL_PATH=/opt/opam/default/lib/toplevel
+ENV OPAM_SWITCH_PREFIX=/usr/local/src/ocaml-num/_opam
+ENV CAML_LD_LIBRARY_PATH="/usr/local/src/ocaml-num/_opam/lib/stublibs:/usr/local/src/ocaml-num/_opam/lib/ocaml/stublibs:/usr/local/src/ocaml-num/_opam/lib/ocaml"
+ENV OCAML_TOPLEVEL_PATH=/usr/local/src/ocaml-num/_opam/lib/toplevel
 #ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 
+
+RUN ocamlfind list  && \
+    printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
+    eval $(opam env) && \
+    ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
+    rm -f /tmp/test_num
 
 # RUN git clone https://github.com/ocaml/num.git /usr/local/src/ocaml_num && \
 #     cd /usr/local/src/ocaml_num && \
