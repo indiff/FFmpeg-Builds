@@ -52,13 +52,13 @@ RUN \
 RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
     cd /usr/local/src/ocaml-num && \
     opam init --disable-sandboxing --bare -y && \
-    opam switch create . 5.3.0 && \
+    bash -c "printf '\n\n' | opam switch create . 5.3.0" && \
     opam install -y dune && \
     opam install -y . --deps-only --with-doc --with-test && \
     opam pin add -y num . --no-action && \
-    bash -c "printf '\y\y' | opam exec -- make PROFILE=release" && \
-    bash -c "printf '\y\y' | opam exec -- make install" && \
-    bash -c "printf '\y\y' | opam exec -- make clean"
+    bash -c "printf '\n\n' | opam exec -- make PROFILE=release" && \
+    bash -c "printf '\n\n' | opam exec -- make install" && \
+    bash -c "printf '\n\n' | opam exec -- make clean"
 
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
