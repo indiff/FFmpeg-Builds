@@ -59,9 +59,8 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
     opam exec -- make PROFILE=release && \
     opam remove num || true && \
     opam exec -- make install && \
-    opam exec -- make clean
-
-RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
+    opam exec -- make clean && \
+    opam install -y \
       ocamlfind \
       ocamlbuild \
       ocaml-base-compiler
