@@ -57,7 +57,6 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
     opam install -y . --deps-only --with-doc --with-test && \
     opam pin add -y num . --no-action && \
     opam exec -- make PROFILE=release && \
-    opam remove num || true && \
     opam exec -- make install && \
     opam exec -- make clean && \
     opam install -y ocamlfind ocamlbuild  ocaml-base-compiler && \
@@ -84,7 +83,8 @@ ENV OCAML_TOPLEVEL_PATH=/usr/local/src/ocaml-num/_opam/lib/toplevel
 #ENV MANPATH="/opt/opam/default/man:${MANPATH}"
 
 
-RUN ocamlfind list  && \
+RUN eval $(opam env) && \
+    ocamlfind list  && \
     printf 'open Num\nlet () = print_endline (string_of_num (num_of_int 87))\n' > /tmp/number.ml && \
     eval $(opam env) && \
     ocamlopt -o /tmp/test_num /tmp/number.ml && /tmp/test_num && \
