@@ -55,7 +55,7 @@ RUN git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num &
     opam install -y dune && \
     opam install -y . --deps-only --with-doc --with-test && \
     opam pin add num . --no-action && \
-    opam exec -- dune build @install
+    opam exec -- dune build @install -y
 
 RUN eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       ocamlfind \
