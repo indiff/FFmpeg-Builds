@@ -40,7 +40,7 @@ ffbuild_dockerbuild() {
 
     sed -i 's/windows.h/process.h/' configure.ac
 
-    eval $(opam env --root=/opt/opam --set-root) || true
+    # eval $(opam env) || true
     
     ./bootstrap.sh "${myconf[@]}"
     make -j$(nproc)
