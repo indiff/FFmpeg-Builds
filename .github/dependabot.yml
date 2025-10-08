@@ -11,5 +11,5 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "01:50"  # 对应中国时区 15:00
+      time: "11:51"  # 对应中国时区 15:00
       timezone: "Asia/Shanghai"
