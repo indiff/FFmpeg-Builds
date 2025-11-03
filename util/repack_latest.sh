@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
 
         cd "$REPACK_DIR"
 
-        INAME="$(echo ffmpeg-*)"
+        INAME="$(echo nginx-*)"
         TAGNAME="$(cut -d- -f2 <<<"$INAME")"
 
         if [[ $TAGNAME == N ]]; then
@@ -45,9 +45,9 @@ while [[ $# -gt 0 ]]; do
         fi
 
         if [[ "$INAME" =~ -[0-9]+-g ]]; then
-            ONAME="ffmpeg-$TAGNAME-latest-$(cut -d- -f5- <<<"$INAME")"
+            ONAME="nginx-$TAGNAME-latest-$(cut -d- -f5- <<<"$INAME")"
         else
-            ONAME="ffmpeg-$TAGNAME-latest-$(cut -d- -f3- <<<"$INAME")"
+            ONAME="nginx-$TAGNAME-latest-$(cut -d- -f3- <<<"$INAME")"
         fi
 
         mv "$INAME" "$ONAME"
