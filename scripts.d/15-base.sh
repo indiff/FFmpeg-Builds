@@ -4,8 +4,6 @@ SCRIPT_SKIP="1"
 
 ffbuild_depends() {
     echo mingw
-    echo mingw-std-threads
-    echo xorg-macros
 }
 
 ffbuild_enabled() {
