@@ -45,8 +45,7 @@ cat <<EOF >"$BUILD_SCRIPT"
         --with-http_v2_module \\
         --with-stream \\
         --with-stream_ssl_module \\
-        --without-http_rewrite_module \\
-        --without-http_gzip_module
+        --without-http_rewrite_module
     
     make -j\$(nproc)
     make install
