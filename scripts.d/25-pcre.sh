@@ -1,32 +1,35 @@
 #!/bin/bash
 
-SCRIPT_REPO="https://github.com/xiph/ogg.git"
-SCRIPT_COMMIT="0288fadac3ac62d453409dfc83e9c4ab617d2472"
+SCRIPT_REPO="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz"
+SCRIPT_COMMIT="pcre2-10.42"
 
 ffbuild_enabled() {
     return 0
 }
 
 ffbuild_dockerbuild() {
-    ./autogen.sh
-
     local myconf=(
         --prefix="$FFBUILD_PREFIX"
-        --disable-shared
         --enable-static
-        --with-pic
+        --disable-shared
+        --enable-jit
     )
 
-    if [[ $TARGET == win* || $TARGET == linux* ]]; then
+    if [[ $TARGET == win* ]]; then
         myconf+=(
             --host="$FFBUILD_TOOLCHAIN"
         )
-    else
-        echo "Unknown target"
-        return -1
     fi
 
     ./configure "${myconf[@]}"
     make -j$(nproc)
     make install DESTDIR="$FFBUILD_DESTDIR"
+}
+
+ffbuild_configure() {
+    return 0
+}
+
+ffbuild_unconfigure() {
+    return 0
 }
