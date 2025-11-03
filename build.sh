@@ -21,6 +21,8 @@ mkdir ffbuild
 
 NGINX_VERSION="${NGINX_VERSION:-1.24.0}"
 NGINX_REPO="${NGINX_REPO:-http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz}"
+PCRE_VERSION="${PCRE_VERSION:-10.42}"
+PCRE_REPO="${PCRE_REPO:-https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VERSION}/pcre2-${PCRE_VERSION}.tar.gz}"
 
 BUILD_SCRIPT="$(mktemp)"
 trap "rm -f -- '$BUILD_SCRIPT'" EXIT
@@ -28,12 +30,18 @@ trap "rm -f -- '$BUILD_SCRIPT'" EXIT
 cat <<EOF >"$BUILD_SCRIPT"
     set -xe
     cd /ffbuild
-    rm -rf nginx prefix
+    rm -rf nginx prefix pcre2-src
 
     # Download and extract nginx
     wget -O nginx.tar.gz '$NGINX_REPO'
     tar xzf nginx.tar.gz
     mv nginx-* nginx
+    
+    # Download and extract PCRE2 source (nginx needs source for Windows builds)
+    wget -O pcre2.tar.gz '$PCRE_REPO'
+    tar xzf pcre2.tar.gz
+    mv pcre2-* pcre2-src
+    
     cd nginx
 
     # Configure nginx for Windows cross-compilation
@@ -44,7 +52,8 @@ cat <<EOF >"$BUILD_SCRIPT"
         --with-ld-opt="\$LDFLAGS -L/opt/ffbuild/lib" \\
         --with-http_ssl_module \\
         --with-openssl=/opt/ffbuild \\
-        --with-pcre \\
+        --with-pcre=../pcre2-src \\
+        --with-pcre-opt="-DPCRE2_STATIC" \\
         --with-zlib=/opt/ffbuild \\
         --without-http_rewrite_module \\
         --without-http_gzip_module
