@@ -36,15 +36,18 @@ cat <<EOF >"$BUILD_SCRIPT"
     mv nginx-* nginx
     cd nginx
 
-    # Configure nginx for Windows
-    auto/configure --prefix=/ffbuild/prefix \
-        --with-cc="\$CC" \
-        --with-cc-opt="\$CFLAGS" \
-        --with-ld-opt="\$LDFLAGS" \
-        --with-http_ssl_module \
-        --with-pcre \
-        --with-zlib=/opt/ffbuild \
-        --with-openssl=/opt/ffbuild
+    # Configure nginx for Windows cross-compilation
+    auto/configure \\
+        --prefix=/ffbuild/prefix \\
+        --with-cc="\$CC" \\
+        --with-cc-opt="\$CFLAGS -I/opt/ffbuild/include" \\
+        --with-ld-opt="\$LDFLAGS -L/opt/ffbuild/lib" \\
+        --with-http_ssl_module \\
+        --with-openssl=/opt/ffbuild \\
+        --with-pcre \\
+        --with-zlib=/opt/ffbuild \\
+        --without-http_rewrite_module \\
+        --without-http_gzip_module
     
     make -j\$(nproc)
     make install

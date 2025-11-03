@@ -1,10 +1,15 @@
 #!/bin/bash
 
-SCRIPT_REPO="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz"
+SCRIPT_REPO="https://github.com/PCRE2Project/pcre2.git"
 SCRIPT_COMMIT="pcre2-10.42"
 
 ffbuild_enabled() {
     return 0
+}
+
+ffbuild_dockerdl() {
+    default_dl .
+    echo "./autogen.sh"
 }
 
 ffbuild_dockerbuild() {
