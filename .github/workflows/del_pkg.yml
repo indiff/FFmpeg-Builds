@@ -10,15 +10,15 @@ on:
       pkgName:
         description: 'Delete pkg name'
         type: choice
-        default: "ffmpeg-builds/base"
+        default: "nginx-builds/base"
         required: false
         options: 
-        - ffmpeg-builds/base
-        - ffmpeg-builds/base-win64
-        - ffmpeg-builds/win64-gpl
-        - ffmpeg-builds/win64-lgpl
-        - ffmpeg-builds/win64-gpl-shared
-        - ffmpeg-builds/win64-lgpl-shared
+        - nginx-builds/base
+        - nginx-builds/base-win64
+        - nginx-builds/win64-gpl
+        - nginx-builds/win64-lgpl
+        - nginx-builds/win64-gpl-shared
+        - nginx-builds/win64-lgpl-shared
         - all
         - all-new
 env:
@@ -43,46 +43,46 @@ jobs:
     if: ${{ github.event.inputs.pkgName == 'all' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Delete image  ffmpeg-builds/win64-lgpl-shared
+      - name: Delete image nginx-builds/win64-lgpl-shared
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/win64-lgpl-shared'
+          package-name: 'nginx-builds/win64-lgpl-shared'
           package-type: 'container'
           min-versions-to-keep: 0
-      - name: Delete image  ffmpeg-builds/win64-gpl-shared
+      - name: Delete image nginx-builds/win64-gpl-shared
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/win64-gpl-shared'
+          package-name: 'nginx-builds/win64-gpl-shared'
           package-type: 'container'
           min-versions-to-keep: 0
-      - name: Delete image ffmpeg-builds/win64-lgpl
+      - name: Delete image nginx-builds/win64-lgpl
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/win64-lgpl'
+          package-name: 'nginx-builds/win64-lgpl'
           package-type: 'container'
           min-versions-to-keep: 0
-      - name: Delete image ffmpeg-builds/win64-gpl
+      - name: Delete image nginx-builds/win64-gpl
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/win64-lgpl-shared'
+          package-name: 'nginx-builds/win64-lgpl-shared'
           package-type: 'container'
           min-versions-to-keep: 0
-      - name: Delete image ffmpeg-builds/win64-gpl
+      - name: Delete image nginx-builds/win64-gpl
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/win64-gpl'
+          package-name: 'nginx-builds/win64-gpl'
           package-type: 'container'
           min-versions-to-keep: 0
-      - name: Delete image ffmpeg-builds/base-win64
+      - name: Delete image nginx-builds/base-win64
         uses: actions/delete-package-versions@v5
         with: 
           owner: 'indiff'
-          package-name: 'ffmpeg-builds/base-win64'
+          package-name: 'nginx-builds/base-win64'
           package-type: 'container'
           min-versions-to-keep: 0
       - name: Delete pkg by github api
@@ -95,7 +95,7 @@ jobs:
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           -X DELETE \
-          https://api.github.com/users/indiff/packages/container/ffmpeg-builds/base-linux32 \
+          https://api.github.com/users/indiff/packages/container/nginx-builds/base-win64 \
           | jq -r '.[0]')
         env:
             GITHUB_TOKEN: ${{ github.token }}
