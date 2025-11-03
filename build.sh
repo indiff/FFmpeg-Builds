@@ -45,21 +45,37 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd nginx
 
     # Configure nginx for Windows cross-compilation
+    # Nginx auto-detects the platform from CC, so we set it appropriately
+    export NGX_SYSTEM=WIN32
+    export NGX_RELEASE=\$(uname -r)
+    export NGX_MACHINE=\$(uname -m)
+    
     auto/configure \\
-        --prefix=/ffbuild/prefix \\
+        --prefix= \\
+        --conf-path=conf/nginx.conf \\
+        --pid-path=logs/nginx.pid \\
+        --http-log-path=logs/access.log \\
+        --error-log-path=logs/error.log \\
+        --sbin-path=nginx.exe \\
+        --http-client-body-temp-path=temp/client_body_temp \\
+        --http-proxy-temp-path=temp/proxy_temp \\
+        --http-fastcgi-temp-path=temp/fastcgi_temp \\
+        --http-scgi-temp-path=temp/scgi_temp \\
+        --http-uwsgi-temp-path=temp/uwsgi_temp \\
         --with-cc="\$CC" \\
-        --with-cc-opt="\$CFLAGS -I/opt/ffbuild/include" \\
+        --with-cc-opt="\$CFLAGS -I/opt/ffbuild/include -DFD_SETSIZE=1024" \\
         --with-ld-opt="\$LDFLAGS -L/opt/ffbuild/lib" \\
         --with-http_ssl_module \\
         --with-openssl=/opt/ffbuild \\
         --with-pcre=../pcre2-src \\
         --with-pcre-opt="-DPCRE2_STATIC" \\
         --with-zlib=/opt/ffbuild \\
+        --with-select_module \\
         --without-http_rewrite_module \\
         --without-http_gzip_module
     
     make -j\$(nproc)
-    make install
+    make install DESTDIR=/ffbuild/prefix
 EOF
 
 [[ -t 1 ]] && TTY_ARG="-t" || TTY_ARG=""
