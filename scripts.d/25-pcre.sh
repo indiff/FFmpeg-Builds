@@ -18,13 +18,8 @@ ffbuild_dockerbuild() {
         --enable-static
         --disable-shared
         --enable-jit
+        --host="$FFBUILD_TOOLCHAIN"
     )
-
-    if [[ $TARGET == win* ]]; then
-        myconf+=(
-            --host="$FFBUILD_TOOLCHAIN"
-        )
-    fi
 
     ./configure "${myconf[@]}"
     make -j$(nproc)

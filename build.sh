@@ -45,11 +45,6 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd nginx
 
     # Configure nginx for Windows cross-compilation
-    # Nginx auto-detects the platform from CC, so we set it appropriately
-    export NGX_SYSTEM=WIN32
-    export NGX_RELEASE=\$(uname -r)
-    export NGX_MACHINE=\$(uname -m)
-    
     auto/configure \\
         --prefix= \\
         --conf-path=conf/nginx.conf \\
@@ -66,13 +61,12 @@ cat <<EOF >"$BUILD_SCRIPT"
         --with-cc-opt="\$CFLAGS -I/opt/ffbuild/include -DFD_SETSIZE=1024" \\
         --with-ld-opt="\$LDFLAGS -L/opt/ffbuild/lib" \\
         --with-http_ssl_module \\
+        --with-http_rewrite_module \\
         --with-openssl=/opt/ffbuild \\
         --with-pcre=../pcre2-src \\
         --with-pcre-opt="-DPCRE2_STATIC" \\
         --with-zlib=/opt/ffbuild \\
-        --with-select_module \\
-        --without-http_rewrite_module \\
-        --without-http_gzip_module
+        --with-select_module
     
     make -j\$(nproc)
     make install DESTDIR=/ffbuild/prefix
