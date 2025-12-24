@@ -214,16 +214,16 @@ jobs:
         include:
           - target: win64
             variant: gpl 7.0
-          - target: win64
-            variant: gpl 6.1
-          - target: win64
-            variant: gpl 6.0
-          - target: win64
-            variant: gpl 5.1
-          - target: win64
-            variant: gpl 5.0
-          - target: win64
-            variant: gpl 4.4
+          # - target: win64
+          #   variant: gpl 6.1
+          # - target: win64
+          #   variant: gpl 6.0
+          # - target: win64
+          #   variant: gpl 5.1
+          # - target: win64
+          #   variant: gpl 5.0
+          # - target: win64
+          #   variant: gpl 4.4
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
