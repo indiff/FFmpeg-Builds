@@ -65,6 +65,6 @@ ENV PATH="/opt/ct-ng/bin:${PATH}" \
     NM="${FFBUILD_TOOLCHAIN}-gcc-nm" \
     CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
     CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
+    LDFLAGS="-fuse-ld=mold  -Wl,--strip-all -Wl,--gc-sections -static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
     STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
