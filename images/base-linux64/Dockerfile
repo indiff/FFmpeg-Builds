@@ -3,6 +3,8 @@ FROM $GH_REPO/base:latest
 
 RUN --mount=src=ct-ng-config,dst=/.config \
     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
+    git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
+    git show --summary && \
     ./bootstrap && \
     ./configure --enable-local && \
     make -j$(nproc) && \
@@ -10,6 +12,14 @@ RUN --mount=src=ct-ng-config,dst=/.config \
     ./ct-ng build && \
     cd / && \
     rm -rf ct-ng
+
+# Patches
+# https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
+RUN cd /opt/ct-ng && wget https://ftp.debian.org/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz -O- | \
+    tar xJ debian/patches/129_multiarch_libpath.patch && \
+    mkdir -p patches/binutils/2.45 && \
+    mv debian/patches/129_multiarch_libpath.patch patches/binutils/2.45 && \
+    rm -rf debian
 
 # Prepare "cross" environment to heavily favour static builds
 RUN \
