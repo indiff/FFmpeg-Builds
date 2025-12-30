@@ -38,6 +38,7 @@ ENV PATH=/home/dev/.local/bin:${PATH}
 RUN git clone -b master --single-branch \
         https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && \
     cd ct-ng && \
+    git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
@@ -69,7 +70,6 @@ RUN wget https://mirrors.tuxedocomputers.com/debian/pool/main/b/binutils/binutil
     mv debian/patches/129_multiarch_libpath.patch patches/binutils/2.45 && \
     rm -rf debian
 
-
 ARG PKG_VERSION="qwop"
 # Build the toolchain
 COPY ${HOST_TRIPLE}.defconfig .
@@ -78,7 +78,8 @@ RUN [ -n "${GCC_VERSION}" ] && { echo "CT_GCC_V_${GCC_VERSION}=y" >> ${HOST_TRIP
 RUN [ -n "${PKG_VERSION}" ] && { echo "CT_TOOLCHAIN_PKGVERSION=\"FFmpeg-Builds@${PKG_VERSION}\"" >> ${HOST_TRIPLE}.defconfig; }
 RUN cp ${HOST_TRIPLE}.defconfig defconfig && /ct-ng/build/ct-ng defconfig
 RUN . ./${HOST_TRIPLE}.env && \
-    /ct-ng/build/ct-ng build || { cat build.log && false; } && rm -rf .build    
+    cat defconfig && cat ./${HOST_TRIPLE}.env && \
+    /ct-ng/build/ct-ng build || { cat build.log && false; } && rm -rf .build
 
 # Prepare "cross" environment to heavily favour static builds
 RUN \
