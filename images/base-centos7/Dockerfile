@@ -44,7 +44,7 @@ RUN git clone -b master --single-branch \
     ../configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
     cp -rf ../samples . && \
-    cp -rf ../samples . && \
+    cp -rf ../scripts . && \
     cp -rf ../config . && \
     ls -lh && \
     /ct-ng/build/ct-ng version
