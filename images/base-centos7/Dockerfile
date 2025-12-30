@@ -14,7 +14,7 @@ RUN python3 gen-conan-profile.py ${HOST_TRIPLE} ${GCC_VERSION} /config-${HOST_TR
 RUN wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O- | tar xz && \
     cd autoconf-2.72 && \
     mkdir -p /home/dev/.local && \
-    ./configure --prefix=/home/dev/.local && \
+    ./configure --enable-local --prefix=/home/dev/.local && \
     make -j$(nproc) && \
     make install && \
     cd .. && \
