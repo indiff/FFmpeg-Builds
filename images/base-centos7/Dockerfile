@@ -54,7 +54,7 @@ RUN wget https://mirrors.tuxedocomputers.com/debian/pool/main/b/binutils/binutil
     rm -rf debian
 
 
-ARG PKG_VERSION
+ARG PKG_VERSION="qwop"
 # Build the toolchain
 COPY ${HOST_TRIPLE}.defconfig .
 COPY ${HOST_TRIPLE}.env .
