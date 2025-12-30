@@ -49,9 +49,9 @@ RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.gi
     ./configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
     whereis ./ct-ng && \
-    ./ct-ng version && \
-    cd / && \
-    rm -rf ct-ng
+    cp ./ct-ng /usr/bin/ct-ng && \
+    ct-ng version && \
+    rm -rf /ct-ng
 
 # Patches
 # https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
