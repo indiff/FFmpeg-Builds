@@ -44,7 +44,9 @@ RUN git clone -b master --single-branch \
     ../configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
     cp -rf ../samples . && \
-    cp -rf ../scripts . && \
+    cp -rf ../samples . && \
+    cp -rf ../config . && \
+    ls -lh && \
     /ct-ng/build/ct-ng version
 
 # RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
