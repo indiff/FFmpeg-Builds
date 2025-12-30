@@ -32,10 +32,10 @@ ENV PATH=/home/dev/.local/bin:${PATH}
 #     rm -rf ct-ng
 
 # Build crosstool-ng
+# git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
 RUN git clone -b master --single-branch \
         https://github.com/crosstool-ng/crosstool-ng.git && \
     cd crosstool-ng && \
-    git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
