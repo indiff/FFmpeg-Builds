@@ -13,12 +13,13 @@ RUN python3 gen-conan-profile.py ${HOST_TRIPLE} ${GCC_VERSION} /config-${HOST_TR
 # Install autoconf
 RUN wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O- | tar xz && \
     cd autoconf-2.72 && \
-    ./configure --prefix=/opt/autoconf && \
+    mkdir -p /home/dev/.local && \
+    ./configure --prefix=/home/dev/.local && \
     make -j$(nproc) && \
     make install && \
     cd .. && \
     rm -rf autoconf-2.72
-ENV PATH=/opt/autoconf/bin:${PATH}
+ENV PATH=/home/dev/.local/bin:${PATH}
 
 # RUN --mount=src=ct-ng-config,dst=/.config \
 #     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
@@ -38,10 +39,10 @@ RUN git clone -b master --single-branch \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
-    ../configure --prefix=/opt/ct-ng && \
+    ../configure --prefix=/home/dev/.local && \
     make -j$(($(nproc) * 2)) && \
     make install &&  \
-    cd /opt/ct-ng && rm -rf crosstool-ng
+    cd /home/dev && rm -rf crosstool-ng && ct-ng version
 
 # Patches
 # https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
@@ -59,11 +60,10 @@ ARG PKG_VERSION="qwop"
 COPY ${HOST_TRIPLE}.defconfig .
 COPY ${HOST_TRIPLE}.env .
 RUN [ -n "${GCC_VERSION}" ] && { echo "CT_GCC_V_${GCC_VERSION}=y" >> ${HOST_TRIPLE}.defconfig; }
-RUN [ -n "${PKG_VERSION}" ] && { echo "CT_TOOLCHAIN_PKGVERSION=\"qwop/FFmpeg-Builds@${PKG_VERSION}\"" >> ${HOST_TRIPLE}.defconfig; }
+RUN [ -n "${PKG_VERSION}" ] && { echo "CT_TOOLCHAIN_PKGVERSION=\"FFmpeg-Builds@${PKG_VERSION}\"" >> ${HOST_TRIPLE}.defconfig; }
 RUN cp ${HOST_TRIPLE}.defconfig defconfig && ct-ng defconfig
 RUN . ./${HOST_TRIPLE}.env && \
     ct-ng build || { cat build.log && false; } && rm -rf .build    
-
 
 # Prepare "cross" environment to heavily favour static builds
 RUN \
