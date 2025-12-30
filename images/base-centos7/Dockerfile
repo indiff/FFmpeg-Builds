@@ -43,6 +43,7 @@ RUN git clone -b master --single-branch \
     make -j$(($(nproc) * 2)) && \
     make install &&  \
     cp -rf ../samples /home/dev/.local/bin/ && \
+    cp -rf ../scripts /home/dev/.local/bin/ && \
     cd /home/dev && rm -rf crosstool-ng && ct-ng version
 
 # RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
