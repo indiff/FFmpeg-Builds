@@ -42,6 +42,8 @@ RUN git clone -b master --single-branch \
     ./bootstrap && \
     mkdir build && cd build && \
     ../configure --enable-local --prefix=/home/dev/.local && \
+    tree -d . && \
+    tree -d /home/dev/ && \
     make -j$(($(nproc) * 2)) && \
     make install &&  \
     cd /home/dev && /ct-ng/build/ct-ng version
