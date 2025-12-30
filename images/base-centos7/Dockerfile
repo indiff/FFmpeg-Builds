@@ -43,6 +43,26 @@ RUN git clone -b master --single-branch \
     make install &&  \
     cd /opt/ct-ng && rm -rf crosstool-ng
 
+# Patches
+# https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
+RUN wget https://ftp.debian.org/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz -O- | \
+    tar xJ debian/patches/129_multiarch_libpath.patch && \
+    mkdir -p patches/binutils/2.45 && \
+    mv debian/patches/129_multiarch_libpath.patch patches/binutils/2.45 && \
+    rm -rf debian
+
+
+ARG PKG_VERSION
+# Build the toolchain
+COPY ${HOST_TRIPLE}.defconfig .
+COPY ${HOST_TRIPLE}.env .
+RUN [ -n "${GCC_VERSION}" ] && { echo "CT_GCC_V_${GCC_VERSION}=y" >> ${HOST_TRIPLE}.defconfig; }
+RUN [ -n "${PKG_VERSION}" ] && { echo "CT_TOOLCHAIN_PKGVERSION=\"qwop/FFmpeg-Builds@${PKG_VERSION}\"" >> ${HOST_TRIPLE}.defconfig; }
+RUN cp ${HOST_TRIPLE}.defconfig defconfig && ct-ng defconfig
+RUN . ./${HOST_TRIPLE}.env && \
+    ct-ng build || { cat build.log && false; } && rm -rf .build    
+
+
 # Prepare "cross" environment to heavily favour static builds
 RUN \
     find /opt/ct-ng -type l \
@@ -100,3 +120,5 @@ ENV PATH="/opt/ct-ng/bin:${PATH}" \
     LDFLAGS="-fuse-ld=mold  -Wl,--strip-all -Wl,--gc-sections -static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
     STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
+
+RUN ${HOST_TRIPLE}-g++ --version
