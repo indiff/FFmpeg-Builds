@@ -41,12 +41,11 @@ RUN git clone -b master --single-branch \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
-    ../configure --enable-local --prefix=/home/dev/.local && \
-    tree -d . && \
-    tree -d /home/dev/ && \
+    ../configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
-    make install &&  \
-    cd /home/dev && /ct-ng/build/ct-ng version
+    cp -rf ../samples . && \
+    cp -rf ../scripts . && \
+    /ct-ng/build/ct-ng version
 
 # RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
 #     ./bootstrap && \
