@@ -33,18 +33,18 @@ ENV PATH=/home/dev/.local/bin:${PATH}
 
 # Build crosstool-ng
 # git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
+# cp -rf ../samples /home/dev/.local/bin/ && \
+# cp -rf ../scripts /home/dev/.local/bin/ && \
 RUN git clone -b master --single-branch \
-        https://github.com/crosstool-ng/crosstool-ng.git && \
-    cd crosstool-ng && \
+        https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && \
+    cd ct-ng && \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
     ../configure --enable-local --prefix=/home/dev/.local && \
     make -j$(($(nproc) * 2)) && \
     make install &&  \
-    cp -rf ../samples /home/dev/.local/bin/ && \
-    cp -rf ../scripts /home/dev/.local/bin/ && \
-    cd /home/dev && rm -rf crosstool-ng && ct-ng version
+    cd /home/dev && /ct-ng/build/ct-ng version
 
 # RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
 #     ./bootstrap && \
@@ -73,9 +73,9 @@ COPY ${HOST_TRIPLE}.defconfig .
 COPY ${HOST_TRIPLE}.env .
 RUN [ -n "${GCC_VERSION}" ] && { echo "CT_GCC_V_${GCC_VERSION}=y" >> ${HOST_TRIPLE}.defconfig; }
 RUN [ -n "${PKG_VERSION}" ] && { echo "CT_TOOLCHAIN_PKGVERSION=\"FFmpeg-Builds@${PKG_VERSION}\"" >> ${HOST_TRIPLE}.defconfig; }
-RUN cp ${HOST_TRIPLE}.defconfig defconfig && ct-ng defconfig
+RUN cp ${HOST_TRIPLE}.defconfig defconfig && /ct-ng/build/ct-ng defconfig
 RUN . ./${HOST_TRIPLE}.env && \
-    ct-ng build || { cat build.log && false; } && rm -rf .build    
+    /ct-ng/build/ct-ng build || { cat build.log && false; } && rm -rf .build    
 
 # Prepare "cross" environment to heavily favour static builds
 RUN \
