@@ -1,5 +1,5 @@
 # change my base
-ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
+ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN --mount=src=ct-ng-config,dst=/.config \

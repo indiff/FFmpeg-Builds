@@ -1,25 +1,47 @@
 ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
-RUN --mount=src=ct-ng-config,dst=/.config \
-    git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
+
+ARG HOST_TRIPLE="x86_64-centos7-linux-gnu"
+ARG GCC_VERSION="15"
+
+COPY *.py .
+RUN mkdir /config-${HOST_TRIPLE}
+RUN python3 gen-cmake-toolchain.py ${HOST_TRIPLE} /config-${HOST_TRIPLE}/${HOST_TRIPLE}.toolchain.cmake
+RUN python3 gen-conan-profile.py ${HOST_TRIPLE} ${GCC_VERSION} /config-${HOST_TRIPLE}/${HOST_TRIPLE}.profile.conan
+
+# Install autoconf
+RUN wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O- | tar xz && \
+    cd autoconf-2.72 && \
+    ./configure --prefix=/opt/autoconf && \
+    make -j$(nproc) && \
+    make install && \
+    cd .. && \
+    rm -rf autoconf-2.72
+ENV PATH=/opt/autoconf/bin:${PATH}
+
+# RUN --mount=src=ct-ng-config,dst=/.config \
+#     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
+#     ./bootstrap && \
+#     ./configure --enable-local && \
+#     make -j$(nproc) && \
+#     cp /.config .config && \
+#     ./ct-ng build && \
+#     cd / && \
+#     rm -rf ct-ng
+
+# Build crosstool-ng
+RUN git clone -b master --single-branch \
+        https://github.com/crosstool-ng/crosstool-ng.git && \
+    cd crosstool-ng && \
     git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
     git show --summary && \
     ./bootstrap && \
-    ./configure --enable-local && \
-    make -j$(nproc) && \
-    cp /.config .config && \
-    ./ct-ng build && \
-    cd / && \
-    rm -rf ct-ng
-
-# Patches
-# https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
-RUN cd /opt/ct-ng && wget https://ftp.debian.org/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz -O- | \
-    tar xJ debian/patches/129_multiarch_libpath.patch && \
-    mkdir -p patches/binutils/2.45 && \
-    mv debian/patches/129_multiarch_libpath.patch patches/binutils/2.45 && \
-    rm -rf debian
+    mkdir build && cd build && \
+    ../configure --prefix=/opt/ct-ng && \
+    make -j$(($(nproc) * 2)) && \
+    make install &&  \
+    cd /opt/ct-ng && rm -rf crosstool-ng
 
 # Prepare "cross" environment to heavily favour static builds
 RUN \
