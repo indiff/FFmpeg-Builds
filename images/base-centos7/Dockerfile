@@ -33,16 +33,25 @@ ENV PATH=/home/dev/.local/bin:${PATH}
 
 # Build crosstool-ng
 # git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
-RUN git clone -b master --single-branch \
-        https://github.com/crosstool-ng/crosstool-ng.git && \
-    cd crosstool-ng && \
-    git show --summary && \
+# RUN git clone -b master --single-branch \
+#         https://github.com/crosstool-ng/crosstool-ng.git && \
+#     cd crosstool-ng && \
+#     git show --summary && \
+#     ./bootstrap && \
+#     mkdir build && cd build && \
+#     ../configure --enable-local --prefix=/home/dev/.local && \
+#     make -j$(($(nproc) * 2)) && \
+#     make install &&  \
+#     cd /home/dev && rm -rf crosstool-ng && ct-ng version
+
+RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
     ./bootstrap && \
-    mkdir build && cd build && \
-    ../configure --enable-local --prefix=/home/dev/.local && \
+    ./configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
-    make install &&  \
-    cd /home/dev && rm -rf crosstool-ng && ct-ng version
+    whereis ./ct-ng && \
+    ./ct-ng version && \
+    cd / && \
+    rm -rf ct-ng
 
 # Patches
 # https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
