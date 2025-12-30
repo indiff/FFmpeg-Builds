@@ -49,6 +49,7 @@ RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.gi
     ./configure --enable-local && \
     make -j$(($(nproc) * 2)) && \
     whereis ./ct-ng && \
+    cp -rf /ct-ng/samples /usr/bin/ && \
     cp ./ct-ng /usr/bin/ct-ng && \
     ct-ng version && \
     rm -rf /ct-ng
