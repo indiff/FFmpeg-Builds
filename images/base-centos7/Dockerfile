@@ -45,7 +45,9 @@ RUN git clone -b master --single-branch \
 
 # Patches
 # https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
-RUN wget https://ftp.debian.org/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz -O- | \
+# https://mirrors.tuxedocomputers.com/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz
+# https://ftp.debian.org/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz
+RUN wget https://mirrors.tuxedocomputers.com/debian/pool/main/b/binutils/binutils_2.45-3.debian.tar.xz -O- | \
     tar xJ debian/patches/129_multiarch_libpath.patch && \
     mkdir -p patches/binutils/2.45 && \
     mv debian/patches/129_multiarch_libpath.patch patches/binutils/2.45 && \
