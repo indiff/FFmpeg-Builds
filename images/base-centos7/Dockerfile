@@ -5,29 +5,30 @@ FROM $GH_REPO/base:latest
 ARG HOST_TRIPLE="x86_64-centos7-linux-gnu"
 ARG GCC_VERSION="15"
 
-# 安装所有必要的构建工具
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive  && \
-    apt-get update -y && apt-get install -y \
-    build-essential \
-    gcc-12 g++-12 \
-    make \
-    autoconf automake libtool \
-    bison flex \
-    texinfo gperf \
-    gawk sed \
-    gettext \
-    git \
-    wget \
-    help2man \
-    file \
-    python3 \
-    libncurses-dev \
-    libtool-bin \
-    zlib1g-dev \
-    xz-utils && \
-    apt-get clean autoclean && \
-    apt-get autoremove -y && \
-    && rm -rf /var/lib/apt/lists/*
+RUN \
+    apt-get -y update && \
+    apt-get -y dist-upgrade && \
+    apt-get -y install --no-install-recommends \
+        build-essential \
+        gcc-12 g++-12 \
+        make \
+        autoconf automake libtool \
+        bison flex \
+        texinfo gperf \
+        gawk sed \
+        gettext \
+        git \
+        wget \
+        help2man \
+        file \
+        python3 \
+        libncurses-dev \
+        libtool-bin \
+        zlib1g-dev \
+        xz-utils && \
+        apt-get -y clean autoclean && \
+        apt-get autoremove -y && \
+        rm -rf /var/lib/apt/lists/*
 
 # 设置 gcc-12 为默认
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
