@@ -63,8 +63,8 @@ RUN \
     echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
     echo "[target.host]\nlinker = \"gcc\"\nar = \"ar\"\n" >> "$CARGO_HOME"/config.toml
 
-#ADD toolchain.cmake /toolchain.cmake
-ADD toolchain.cmake /x-tools.cmake
+ADD toolchain.cmake /toolchain.cmake
+# ADD toolchain.cmake /x-tools.cmake
 ADD cross.meson /cross.meson
 
 ADD gen-implib.sh /usr/bin/gen-implib
