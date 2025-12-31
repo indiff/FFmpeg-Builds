@@ -9,18 +9,11 @@ ARG GCC_VERSION="15"
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        autoconf automake libtool-bin make texinfo help2man \
-        sudo file gawk patch \
-        python3 \
-        g++ bison flex gperf \
-        libncurses5-dev \
-        perl libthread-queue-perl \
-        ca-certificates wget git \
-        bzip2 xz-utils unzip rsync && \
+        xz-utils && \
     apt-get clean autoclean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
-    
+
 COPY *.py .
 RUN mkdir /config-${HOST_TRIPLE}
 RUN python3 gen-cmake-toolchain.py ${HOST_TRIPLE} /config-${HOST_TRIPLE}/${HOST_TRIPLE}.toolchain.cmake
@@ -29,13 +22,13 @@ RUN python3 gen-conan-profile.py ${HOST_TRIPLE} ${GCC_VERSION} /config-${HOST_TR
 # Install autoconf
 RUN wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O- | tar xz && \
     cd autoconf-2.72 && \
-    mkdir -p /home/dev/.local && \
-    ./configure --prefix=/home/dev/.local && \
+    mkdir -p /opt/ct-ng/ && \
+    ./configure --prefix=/opt/ct-ng/ && \
     make -j$(nproc) && \
     make install && \
     cd .. && \
     rm -rf autoconf-2.72
-ENV PATH=/home/dev/.local/bin:${PATH}
+ENV PATH=/opt/ct-ng/bin:${PATH}
 
 # RUN --mount=src=ct-ng-config,dst=/.config \
 #     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
@@ -54,7 +47,6 @@ ENV PATH=/home/dev/.local/bin:${PATH}
 RUN git clone -b master --single-branch \
         https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && \
     cd ct-ng && \
-    git checkout f390dba6c73845389a3217169402d95a837fcee8 && \
     git show --summary && \
     ./bootstrap && \
     mkdir build && cd build && \
@@ -65,16 +57,6 @@ RUN git clone -b master --single-branch \
     cp -rf ../config . && \
     ls -lh && \
     /ct-ng/build/ct-ng version
-
-# RUN git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \
-#     ./bootstrap && \
-#     ./configure --enable-local && \
-#     make -j$(($(nproc) * 2)) && \
-#     whereis ./ct-ng && \
-#     cp -rf /ct-ng/samples /usr/bin/ && \
-#     cp ./ct-ng /usr/bin/ct-ng && \
-#     ct-ng version && \
-#     rm -rf /ct-ng
 
 # Patches
 # https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=280707&p=1700861#p1700861
