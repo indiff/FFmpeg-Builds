@@ -5,6 +5,22 @@ FROM $GH_REPO/base:latest
 ARG HOST_TRIPLE="x86_64-centos7-linux-gnu"
 ARG GCC_VERSION="15"
 
+# Install dependencies to build crosstool-ng and the toolchain
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        autoconf automake libtool-bin make texinfo help2man \
+        sudo file gawk patch \
+        python3 \
+        g++ bison flex gperf \
+        libncurses5-dev \
+        perl libthread-queue-perl \
+        ca-certificates wget git \
+        bzip2 xz-utils unzip rsync && \
+    apt-get clean autoclean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+    
 COPY *.py .
 RUN mkdir /config-${HOST_TRIPLE}
 RUN python3 gen-cmake-toolchain.py ${HOST_TRIPLE} /config-${HOST_TRIPLE}/${HOST_TRIPLE}.toolchain.cmake
