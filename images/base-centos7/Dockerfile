@@ -5,14 +5,34 @@ FROM $GH_REPO/base:latest
 ARG HOST_TRIPLE="x86_64-centos7-linux-gnu"
 ARG GCC_VERSION="15"
 
-# Install dependencies to build crosstool-ng and the toolchain
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update -y && \
-    apt-get install -y --no-install-recommends \
-        xz-utils && \
+# 安装所有必要的构建工具
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive  && \
+    apt-get update -y && apt-get install -y \
+    build-essential \
+    gcc-12 g++-12 \
+    make \
+    autoconf automake libtool \
+    bison flex \
+    texinfo gperf \
+    gawk sed \
+    gettext \
+    git \
+    wget \
+    help2man \
+    file \
+    python3 \
+    libncurses-dev \
+    libtool-bin \
+    zlib1g-dev \
+    xz-utils && \
     apt-get clean autoclean && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置 gcc-12 为默认
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+
 
 COPY *.py .
 RUN mkdir /config-${HOST_TRIPLE}
