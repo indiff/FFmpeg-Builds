@@ -91,4 +91,4 @@ ENV PATH="/opt/x-tools/x86_64-centos7-linux-gnu/bin:${PATH}" \
     STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
 
-RUN ${HOST_TRIPLE}-g++ --version
+RUN ${FFBUILD_TOOLCHAIN}-gcc -v
