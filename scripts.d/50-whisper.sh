@@ -17,7 +17,9 @@ ffbuild_enabled() {
 
 ffbuild_dockerbuild() {
     # 在文件开头添加 inttypes.h
+    sed -i '1s;^;#define __STDC_FORMAT_MACROS\n;' ggml/src/ggml-opencl/ggml-opencl.cpp
     sed -i '1s;^;#include <inttypes.h>\n;' ggml/src/ggml-opencl/ggml-opencl.cpp
+
 
     mkdir build && cd build
 
