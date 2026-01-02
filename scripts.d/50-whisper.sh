@@ -16,11 +16,14 @@ ffbuild_enabled() {
 }
 
 ffbuild_dockerbuild() {
+    # 在文件开头添加 inttypes.h
+    sed -i '1s;^;#include <inttypes.h>\n;' ggml/src/ggml-opencl/ggml-opencl.cpp
+
     mkdir build && cd build
-    # -DGGML_VULKAN=ON \
+
     cmake -GNinja -DCMAKE_TOOLCHAIN_FILE="$FFBUILD_CMAKE_TOOLCHAIN" -DCMAKE_INSTALL_PREFIX="$FFBUILD_PREFIX" -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=OFF -DWHISPER_BUILD_TESTS=OFF -DWHISPER_BUILD_EXAMPLES=OFF -DWHISPER_BUILD_SERVER=OFF -DWHISPER_USE_SYSTEM_GGML=OFF \
-        -DGGML_CCACHE=OFF -DGGML_OPENCL=ON -DGGML_VULKAN=OFF \
+        -DGGML_CCACHE=OFF -DGGML_OPENCL=ON -DGGML_VULKAN=ON \
         -DGGML_NATIVE=OFF -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_F16C=ON -DGGML_AVX2=ON -DGGML_BMI2=ON -DGGML_FMA=ON ..
 
     ninja -j$(nproc)
