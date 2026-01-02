@@ -17,6 +17,7 @@ ffbuild_dockerbuild() {
     # stop the static library from exporting symbols when linked into a shared lib
     sed -i 's/SUPPORT_ATTRIBUTE_VISIBILITY_DEFAULT/SUPPORT_ATTRIBUTE_VISIBILITY_DEFAULT_DISABLED/g' meson.build
     sed -i 's/-DLIBDVDCSS_EXPORTS/-DLIBDVDCSS_EXPORTS_DISABLED/g' src/meson.build
+    sed -i '1 a #include <string.h>' src/device.c
 
     mkdir build && cd build
 
