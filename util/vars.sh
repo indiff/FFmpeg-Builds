@@ -44,6 +44,9 @@ export BUILDX_EXPERIMENTAL=1
 
 ffbuild_ffver() {
     case "$ADDINS_STR" in
+    *4.3*)
+        echo 403
+        ;;
     *4.4*)
         echo 404
         ;;
