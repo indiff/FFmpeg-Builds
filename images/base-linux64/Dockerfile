@@ -26,7 +26,7 @@ RUN \
         apt-get autoremove -y && \
         rm -rf /var/lib/apt/lists/*
 RUN \
-    cd /opt && wget https://github.com/qwop/toolchains/releases/download/beta-20/x-tools-x86_64-centos7-linux-gnu-gcc15.tar.xz && \
+    cd /opt && wget https://github.com/qwop/toolchains/releases/download/beta-21/x-tools-x86_64-centos7-linux-gnu-gcc15.tar.xz && \
     tar -xvf x-tools-x86_64-centos7-linux-gnu-gcc15.tar.xz
 
 
