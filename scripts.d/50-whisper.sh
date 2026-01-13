@@ -16,6 +16,14 @@ ffbuild_enabled() {
 }
 
 ffbuild_dockerbuild() {
+    # 在文件开头添加 inttypes.h
+    
+    sed -i '1s;^;#include <inttypes.h>\n;' ggml/src/ggml-opencl/ggml-opencl.cpp
+
+    sed -i '1s;^;#define __STDC_FORMAT_MACROS\n;' ggml/src/ggml-opencl/ggml-opencl.cpp
+    cat ggml/src/ggml-opencl/ggml-opencl.cpp
+    
+
     mkdir build && cd build
 
     cmake -GNinja -DCMAKE_TOOLCHAIN_FILE="$FFBUILD_CMAKE_TOOLCHAIN" -DCMAKE_INSTALL_PREFIX="$FFBUILD_PREFIX" -DCMAKE_BUILD_TYPE=Release \

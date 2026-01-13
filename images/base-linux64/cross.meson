@@ -1,10 +1,10 @@
 [binaries]
-c = 'x86_64-ffbuild-linux-gnu-gcc'
-cpp = 'x86_64-ffbuild-linux-gnu-g++'
-ld = 'x86_64-ffbuild-linux-gnu-ld'
-ar = 'x86_64-ffbuild-linux-gnu-gcc-ar'
-ranlib = 'x86_64-ffbuild-linux-gnu-gcc-ranlib'
-strip = 'x86_64-ffbuild-linux-gnu-strip'
+c = 'x86_64-centos7-linux-gnu-gcc'
+cpp = 'x86_64-centos7-linux-gnu-g++'
+ld = 'x86_64-centos7-linux-gnu-ld'
+ar = 'x86_64-centos7-linux-gnu-gcc-ar'
+ranlib = 'x86_64-centos7-linux-gnu-gcc-ranlib'
+strip = 'x86_64-centos7-linux-gnu-strip'
 
 [host_machine]
 system = 'linux'

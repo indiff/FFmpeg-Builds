@@ -21,7 +21,7 @@ ffbuild_dockerdl() {
 
 ffbuild_dockerbuild() {
     # No automake 1.18 packaged anywhere yet.
-    sed -i 's/-1.18/-1.17/' Makefile.devel libcharset/Makefile.devel
+    # sed     #sed -i 's/-1.18/-1.17/' Makefile.devel libcharset/Makef
 
     (unset CC CFLAGS GMAKE && ./autogen.sh)
 

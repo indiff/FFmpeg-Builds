@@ -1,4 +1,4 @@
-ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
+ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN \
