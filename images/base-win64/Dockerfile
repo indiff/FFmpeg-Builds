@@ -20,11 +20,22 @@ RUN \
         -delete && \
     mkdir /opt/ffbuild
 
-RUN \
+# fix winehq-stable
+RUN dpkg --add-architecture i386 && \
     apt-get -y update && \
-    apt-get -y install --no-install-recommends wine-stable && \
+    apt-get -y install --no-install-recommends wget gnupg2 software-properties-common && \
+    wget -nc https://dl.winehq.org/wine-builds/winehq.key && \
+    apt-key add winehq.key && \
+    add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && \
+    apt-get -y update && \
+    apt-get -y install --install-recommends winehq-stable && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/*
+# RUN \
+#     apt-get -y update && \
+#     apt-get -y install --no-install-recommends wine-stable && \
+#     apt-get -y clean autoclean && \
+#     rm -rf /var/lib/apt/lists/*
 
 ENV FFBUILD_TOOLCHAIN=x86_64-w64-mingw32 \
     FFBUILD_RUST_TARGET=x86_64-pc-windows-gnu
