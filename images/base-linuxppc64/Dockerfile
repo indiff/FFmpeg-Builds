@@ -1,4 +1,4 @@
-ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
+ARG GH_REPO=ghcr.io/btbn/ffmpeg-builds
 FROM $GH_REPO/base:latest
 
 RUN --mount=src=ct-ng-config,dst=/.config \
@@ -33,8 +33,8 @@ RUN \
         \) -delete && \
     mkdir /opt/ffbuild
 
-ENV FFBUILD_TOOLCHAIN=aarch64-ffbuild-linux-gnu \
-    FFBUILD_RUST_TARGET="aarch64-unknown-linux-gnu"
+ENV FFBUILD_TOOLCHAIN=powerpc64-ffbuild-linux-gnu \
+    FFBUILD_RUST_TARGET="powerpc64-unknown-linux-gnu"
 
 RUN \
     rustup target add "$FFBUILD_RUST_TARGET" && \
@@ -47,7 +47,7 @@ ADD gen-implib.sh /usr/bin/gen-implib
 RUN git clone --filter=blob:none --depth=1 https://github.com/yugr/Implib.so /opt/implib
 
 ENV PATH="/opt/ct-ng/bin:${PATH}" \
-    FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=aarch64 --cpu=armv8-a --target-os=linux" \
+    FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=ppc64 --target-os=linux" \
     FFBUILD_CROSS_PREFIX="${FFBUILD_TOOLCHAIN}-" \
     FFBUILD_PREFIX=/opt/ffbuild \
     FFBUILD_DESTDIR=/opt/ffdest \
@@ -61,8 +61,8 @@ ENV PATH="/opt/ct-ng/bin:${PATH}" \
     AR="${FFBUILD_TOOLCHAIN}-gcc-ar" \
     RANLIB="${FFBUILD_TOOLCHAIN}-gcc-ranlib" \
     NM="${FFBUILD_TOOLCHAIN}-gcc-nm" \
-    CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -march=armv8-a -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -march=armv8-a -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -march=armv8-a -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
+    CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
+    CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
+    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
     STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"

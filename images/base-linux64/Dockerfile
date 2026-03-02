@@ -49,7 +49,7 @@ RUN \
         -or -name 'libmvec.a' \
         -or -name 'librt.a' \
         -or -name 'libpthread.a' \
-        -delete && \
+        \) -delete && \
     mkdir /opt/ffbuild
 
 ENV FFBUILD_TOOLCHAIN=x86_64-centos7-linux-gnu \
