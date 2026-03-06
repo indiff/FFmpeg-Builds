@@ -80,7 +80,7 @@ jobs:
           sudo rm -rf /var/lib/apt/lists/*
           bash util/update_scripts.sh || true
       - name: Install buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
         with:
           buildkitd-config: .github/buildkit.toml
       - name: Login to Docker
@@ -160,7 +160,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Install buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
         with:
           buildkitd-config: .github/buildkit.toml
       - name: Login to Docker
@@ -232,7 +232,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Install buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
         with:
           buildkitd-config: .github/buildkit.toml
       - name: Login to Docker
