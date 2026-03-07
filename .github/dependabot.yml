@@ -10,7 +10,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "08:58"  # 瀵瑰簲涓浗鏃跺尯 15:00
+      time: "08:58"  # 对应中国时区 15:00
       timezone: "Asia/Shanghai"
 
   # Enable version updates for Docker
@@ -20,5 +20,5 @@ updates:
     # Check for updates once a week
     schedule:
       interval: "daily"
-      time: "08:58"  # 瀵瑰簲涓浗鏃跺尯 15:00
+      time: "08:58"  # 对应中国时区 15:00
       timezone: "Asia/Shanghai"
