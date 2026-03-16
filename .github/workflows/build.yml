@@ -93,7 +93,7 @@ jobs:
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/base"
-          IMG="${IMG/ /-}"
+          IMG="${IMG// /-}"
           echo "name=ghcr.io/${IMG}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG#*/}" >> $GITHUB_OUTPUT
       - name: Stop Commands
@@ -173,7 +173,7 @@ jobs:
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/base-${{ matrix.target }}"
-          IMG="${IMG/ /-}"
+          IMG="${IMG// /-}"
           echo "name=ghcr.io/${IMG}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG#*/}" >> $GITHUB_OUTPUT
           echo "gh_repo=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
@@ -245,7 +245,7 @@ jobs:
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/${{ matrix.target }}-${{ matrix.variant }}"
-          IMG="${IMG/ /-}"
+          IMG="${IMG// /-}"
           echo "name=ghcr.io/${IMG}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG#*/}" >> $GITHUB_OUTPUT
       - name: Get download cache key
