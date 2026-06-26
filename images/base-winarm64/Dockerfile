@@ -1,5 +1,6 @@
 ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
-FROM $GH_REPO/base:latest
+ARG BASE_TAG_SUFFIX=
+FROM $GH_REPO/base:latest${BASE_TAG_SUFFIX}
 
 RUN \
     export CFLAGS="$CFLAGS -O3 -DNDEBUG" && \

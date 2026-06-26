@@ -1,5 +1,6 @@
 ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
-FROM $GH_REPO/base:latest
+ARG BASE_TAG_SUFFIX=
+FROM $GH_REPO/base:latest${BASE_TAG_SUFFIX}
 
 RUN \
     apt-get -y update && \
