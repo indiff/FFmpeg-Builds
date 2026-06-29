@@ -119,7 +119,7 @@ jobs:
           echo "dltagname=$(./util/get_dl_cache_tag.sh)" >> $GITHUB_OUTPUT
       - name: Cache
         if: ${{ !cancelled() && !contains(matrix.runner, 'arm') }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .cache/downloads
           key: download-cache-${{ steps.dl_cache.outputs.dltagname }}
@@ -225,6 +225,9 @@ jobs:
         include:
           - runner: ubuntu-latest
             target: win64
+            variant: gpl 9.0
+          - runner: ubuntu-latest
+            target: win64
             variant: gpl 8.0
           # - runner: ubuntu-latest
             # target: win64
@@ -293,7 +296,7 @@ jobs:
           path: Dockerfile
 
       - name: Cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: .cache/downloads
           key: download-cache-${{ steps.dl_cache.outputs.dltagname }}
