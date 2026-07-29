@@ -27,7 +27,7 @@ RUN \
         apt-get autoremove -y && \
         rm -rf /var/lib/apt/lists/*
 RUN \
-    cd /opt && wget https://github.com/indiff/toolchains/releases/download/beta-2/x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz && \
+    cd /opt && wget https://github.com/indiff/toolchains/releases/download/beta-4/x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz && \
     tar -xvf x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz
 # https://github.com/indiff/toolchains/releases/download/beta-2/x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz
 # https://github.com/qwop/toolchains/releases/download/beta-21/x-tools-x86_64-centos7-linux-gnu-gcc15.tar.xz
