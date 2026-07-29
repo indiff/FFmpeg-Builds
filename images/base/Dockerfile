@@ -1,8 +1,27 @@
-FROM ubuntu:26.04
+FROM ubuntu:26.10
 
 ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+# 设置语言环境变量
+ENV LANG=zh_CN.UTF-8 \
+    LANGUAGE=zh_CN:zh \
+    TZ=Asia/Shanghai \
+    LC_ALL=zh_CN.UTF-8 \
+    LC_CTYPE=zh_CN.UTF-8 \
+    LC_NUMERIC=zh_CN.UTF-8 \
+    LC_TIME=zh_CN.UTF-8 \
+    LC_COLLATE=zh_CN.UTF-8 \
+    LC_MONETARY=zh_CN.UTF-8 \
+    LC_MESSAGES=zh_CN.UTF-8 \
+    LC_PAPER=zh_CN.UTF-8 \
+    LC_NAME=zh_CN.UTF-8 \
+    LC_ADDRESS=zh_CN.UTF-8 \
+    LC_TELEPHONE=zh_CN.UTF-8 \
+    LC_MEASUREMENT=zh_CN.UTF-8 \
+    LC_IDENTIFICATION=zh_CN.UTF-8
+
 RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
@@ -20,17 +39,30 @@ RUN \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python3-dev python-is-python3 \
         m4 opam ocaml-findlib \
         pkg-config sudo libncurses5-dev libgavl-dev tree patch libgmp-dev libffi-dev dpkg-dev && \
+        manpages-zh && \
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/* && \
+    # 生成中文语言包
     locale-gen zh_CN.UTF-8 && \
+    locale-gen zh_CN.GBK && \
+    locale-gen zh_CN.GB2312 && \
+    # 更新语言环境
+    update-locale LANG=zh_CN.UTF-8 LANGUAGE=zh_CN:zh LC_ALL=zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    # 配置中文 man 手册（可选）
+    echo "Chinese" > /etc/manpath.config 2>/dev/null || true && \
     echo 'Asia/Shanghai' > /etc/timezone && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
-    git config --global advice.detachedHead false
+    git config --global advice.detachedHead false && \
+    # 设置终端编码（可选）
+    echo "export LANG=zh_CN.UTF-8" >> /etc/profile && \
+    echo "export LANGUAGE=zh_CN:zh" >> /etc/profile && \
+    echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile && \
+    echo "export TZ=Asia/Shanghai" >> /etc/profile
 
 # RUN \    
 #     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
