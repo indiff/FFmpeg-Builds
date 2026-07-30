@@ -163,15 +163,15 @@ jobs:
           - runner: ubuntu-24.04-arm
             target: linuxarm64
             tag_suffix: -arm
-          # - runner: ubuntu-24.04-arm
-          #   target: linuxppc64
-          #   tag_suffix: -arm
-          # - runner: ubuntu-24.04-arm
-          #   target: linuxmips64
-          #   tag_suffix: -arm
-          # - runner: ubuntu-24.04-arm
-          #   target: linuxriscv64
-          #   tag_suffix: -arm
+          - runner: ubuntu-24.04-arm
+            target: linuxppc64
+            tag_suffix: -arm
+          - runner: ubuntu-24.04-arm
+            target: linuxmips64
+            tag_suffix: -arm
+          - runner: ubuntu-24.04-arm
+            target: linuxriscv64
+            tag_suffix: -arm
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
@@ -229,8 +229,8 @@ jobs:
       fail-fast: false
       matrix:
         runner: [ubuntu-latest]
-        target: [win64,winarm64,linux64] # ,linuxarm64
-        variant: [gpl,lgpl,gpl-shared] # ,gpl 8.1,gpl 7.1,lgpl 8.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 8.1,gpl-shared 7.1,lgpl-shared 8.1,lgpl-shared 7.1
+        target: [win64,winarm64,linux64,linuxarm64]
+        variant: [gpl,lgpl,gpl-shared,lgpl-shared] # ,gpl 8.1,gpl 7.1,lgpl 8.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 8.1,gpl-shared 7.1,lgpl-shared 8.1,lgpl-shared 7.1
         # include:
           # - runner: ubuntu-latest
           #   target: win64
@@ -292,18 +292,7 @@ jobs:
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
       - name: Generate Dockerfile
-        run: |
-          ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
-          ls Docker*
-          cat Dockerfile
-
-      - name: Upload Dockerfile artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: Dockerfile-${{ matrix.target }}-${{ matrix.variant }}
-          overwrite: true
-          path: Dockerfile
-
+        run: DOCKER_TAG_SUFFIX=${{ matrix.tag_suffix || '' }} ./generate.sh ${{ matrix.target }} ${{ matrix.variant }}
       - name: Cache
         uses: actions/cache/restore@v6
         with:

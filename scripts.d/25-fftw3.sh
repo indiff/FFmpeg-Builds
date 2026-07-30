@@ -42,8 +42,6 @@ ffbuild_dockerbuild() {
 
     sed -i 's/windows.h/process.h/' configure.ac
 
-    # eval $(opam env) || true
-    
     ./bootstrap.sh "${myconf[@]}"
     make -j$(nproc)
     make install DESTDIR="$FFBUILD_DESTDIR"

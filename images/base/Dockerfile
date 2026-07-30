@@ -35,7 +35,7 @@ RUN \
         texinfo texi2html help2man flex bison groff \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
-        ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full zstd \
+        ocaml ocaml-findlib ocamlbuild libnum-ocaml-dev indent p7zip-full zstd \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python3-dev python-is-python3 \
         m4 opam ocaml-findlib \
         pkg-config sudo libncurses5-dev libgavl-dev tree patch libgmp-dev libffi-dev dpkg-dev && \

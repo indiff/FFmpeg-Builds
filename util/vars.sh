@@ -40,7 +40,7 @@ IMAGE="${REGISTRY}/${REPO}/${TARGET}-${VARIANT}${ADDINS_STR:+-}${ADDINS_STR}:lat
 # BUILDX_EXPERIMENTAL=1 fixes many issues in case the the host is running an older version of docker
 #  Instead of duplicating this line to all scripts using docker, it was put here in vars.sh, which is
 #   included by all scripts that use docker before docker is used.
-export BUILDX_EXPERIMENTAL=1
+# export BUILDX_EXPERIMENTAL=1
 
 ffbuild_ffver() {
     case "$ADDINS_STR" in

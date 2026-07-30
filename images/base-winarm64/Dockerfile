@@ -1,4 +1,4 @@
-ARG GH_REPO=ghcr.io/qwop/ffmpeg-builds
+ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 ARG BASE_TAG_SUFFIX=
 FROM $GH_REPO/base:latest${BASE_TAG_SUFFIX}
 
