@@ -4,7 +4,7 @@ ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# è®¾ç½®è¯­è¨€çŽ¯å¢ƒå˜é‡
+# ÉèÖÃÓïÑÔ»·¾³±äÁ¿
 ENV LANG=zh_CN.UTF-8 \
     LANGUAGE=zh_CN:zh \
     TZ=Asia/Shanghai \
@@ -45,41 +45,29 @@ RUN \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    # ç”Ÿæˆä¸­æ–‡è¯­è¨€åŒ…
+    # Éú³ÉÖÐÎÄÓïÑÔ°ü
     locale-gen zh_CN.UTF-8 && \
     locale-gen zh_CN.GBK && \
     locale-gen zh_CN.GB2312 && \
-    # æ›´æ–°è¯­è¨€çŽ¯å¢ƒ
+    # ¸üÐÂÓïÑÔ»·¾³
     update-locale LANG=zh_CN.UTF-8 LANGUAGE=zh_CN:zh LC_ALL=zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    # é…ç½®ä¸­æ–‡ man æ‰‹å†Œï¼ˆå¯é€‰ï¼‰
+    # ÅäÖÃÖÐÎÄ man ÊÖ²á£¨¿ÉÑ¡£©
     echo "Chinese" > /etc/manpath.config 2>/dev/null || true && \
     echo 'Asia/Shanghai' > /etc/timezone && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false && \
-    # è®¾ç½®ç»ˆç«¯ç¼–ç ï¼ˆå¯é€‰ï¼‰
+    # ÉèÖÃÖÕ¶Ë±àÂë£¨¿ÉÑ¡£©
     echo "export LANG=zh_CN.UTF-8" >> /etc/profile && \
     echo "export LANGUAGE=zh_CN:zh" >> /etc/profile && \
     echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile && \
     echo "export TZ=Asia/Shanghai" >> /etc/profile
 
-# RUN \    
-#     bash -c "printf '\n\n' | sh <(curl -fsSL https://opam.ocaml.org/install.sh)" && \
-#     opam init --disable-sandboxing --bare && \
-#     bash -c "eval $(opam env)" && \
-#     opam switch create ocamlbuild && \
-#     opam install -y ocamlfind ocamlbuild num ocaml-base-compiler && \
-#     bash -c "echo $(opam env)" && \
-#     bash -c "eval $(opam env)" && \
-#     bash -c "eval $(opam env) && ocamlfind ocamlopt -package num -linkpkg -c number.ml"
-# Installing OCaml needed to compile libvyosconfig
+RUN wget https://archive.ubuntu.com/ubuntu/pool/main/a/autoconf/autoconf_2.73-2_all.deb -O autoconf.deb && \
+    dpkg -i autoconf.deb && \
+    rm autoconf.deb
 
-# RUN curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
-#       --output /tmp/opam_install.sh --retry 10 --retry-delay 5 && \
-#     sed -i 's/read_tty BINDIR/BINDIR=""/' /tmp/opam_install.sh && sh /tmp/opam_install.sh && \
-#     opam init --root=/opt/opam --disable-sandboxing --no-setup \
-#     && rm /tmp/opam_install.sh
 RUN python3 -m pip install --break-system-packages meson
 RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/ocaml-num && \
     cd /usr/local/src/ocaml-num && \
