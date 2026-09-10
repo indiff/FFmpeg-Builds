@@ -4,7 +4,7 @@ ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# ÉèÖÃÓïÑÔ»·¾³±äÁ¿
+# è®¾ç½®è¯­è¨€çŽ¯å¢ƒå˜é‡
 ENV LANG=zh_CN.UTF-8 \
     LANGUAGE=zh_CN:zh \
     TZ=Asia/Shanghai \
@@ -38,27 +38,27 @@ RUN \
         ocaml ocaml-findlib ocamlbuild libnum-ocaml-dev indent p7zip-full zstd libarchive-tools \
         python3-setuptools python3-pip python3-venv python3-jinja2 python3-jsonschema python3-apt python3-dev python-is-python3 \
         m4 opam ocaml-findlib \
-        pkg-config sudo libncurses5-dev libgavl-dev tree patch libgmp-dev libffi-dev dpkg-dev && \
+        pkg-config sudo tree patch dpkg-dev && \
         manpages-zh && \
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
     apt-get -y install nodejs && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    # Éú³ÉÖÐÎÄÓïÑÔ°ü
+    # ç”Ÿæˆä¸­æ–‡è¯­è¨€åŒ…
     locale-gen zh_CN.UTF-8 && \
     locale-gen zh_CN.GBK && \
     locale-gen zh_CN.GB2312 && \
-    # ¸üÐÂÓïÑÔ»·¾³
+    # æ›´æ–°è¯­è¨€çŽ¯å¢ƒ
     update-locale LANG=zh_CN.UTF-8 LANGUAGE=zh_CN:zh LC_ALL=zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    # ÅäÖÃÖÐÎÄ man ÊÖ²á£¨¿ÉÑ¡£©
+    # é…ç½®ä¸­æ–‡ man æ‰‹å†Œï¼ˆå¯é€‰ï¼‰
     echo "Chinese" > /etc/manpath.config 2>/dev/null || true && \
     echo 'Asia/Shanghai' > /etc/timezone && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false && \
-    # ÉèÖÃÖÕ¶Ë±àÂë£¨¿ÉÑ¡£©
+    # è®¾ç½®ç»ˆç«¯ç¼–ç ï¼ˆå¯é€‰ï¼‰
     echo "export LANG=zh_CN.UTF-8" >> /etc/profile && \
     echo "export LANGUAGE=zh_CN:zh" >> /etc/profile && \
     echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile && \
@@ -88,6 +88,14 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
 #     make test && \
 #     make install && \
 #     make clean
+      
+# RUN git clone --filter=blob:none --depth 1 https://github.com/https://github.com/microsoft/vcpkg.git /opt/vcpkg && \
+#     cd /opt/vcpkg/ && \
+#     bash bootstrap-vcpkg.sh && /opt/vcpkg install curl[core,http2,http3,ssl,openssl,zstd] openssl \
+#	 libaio \
+#	 zstd \
+#	 zlib \
+#     --clean-after-build
 
 
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \

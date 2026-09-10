@@ -21,18 +21,6 @@ RUN \
         \) -delete && \
     mkdir /opt/ffbuild
 
-# fix winehq-stable
-# RUN dpkg --add-architecture i386 && \
-#     apt-get -y update && \
-#     apt-get -y install --no-install-recommends wget gnupg2 software-properties-common && \
-#     wget -nc https://dl.winehq.org/wine-builds/winehq.key && \
-#     apt-key add winehq.key && \
-#     add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && \
-#     apt-get -y update && \
-#     apt-get -y install --install-recommends winehq-stable && \
-#     apt-get -y clean autoclean && \
-#     rm -rf /var/lib/apt/lists/*
-
 RUN \
     apt-get -y update && \
     apt-get -y install --no-install-recommends wine && \
@@ -68,6 +56,6 @@ ENV PATH="/opt/ct-ng/bin:${PATH}" \
     GENDEF="${FFBUILD_TOOLCHAIN}-gendef" \
     CFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O3 -pipe -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
     CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O3 -pipe -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    LDFLAGS="-Wl,--strip-all -Wl,--gc-sections -static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O3 -pipe -fstack-protector-strong" \
+    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O3 -pipe -fstack-protector-strong -Wl,--strip-all -Wl,--gc-sections " \
     STAGE_CFLAGS="-fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fno-semantic-interposition"

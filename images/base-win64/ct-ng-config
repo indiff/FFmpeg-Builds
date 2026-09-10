@@ -609,10 +609,7 @@ CT_MOLD_V_2_42_0=y
 # CT_MOLD_V_2_38_1 is not set
 # CT_MOLD_V_2_37_1 is not set
 # CT_MOLD_V_2_36_0 is not set
-# CT_MOLD_V_2_33_0 is not set
-# CT_MOLD_V_2_32_0 is not set
-# CT_MOLD_V_2_31_0 is not set
-CT_MOLD_VERSION="2.40.4"
+CT_MOLD_VERSION="2.42.0"
 CT_MOLD_MIRRORS="https://github.com/rui314/mold/archive/refs/tags"
 CT_MOLD_ARCHIVE_FILENAME="v@{version}"
 CT_MOLD_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
@@ -652,7 +649,7 @@ CT_GETTEXT_PATCH_GLOBAL=y
 # CT_GETTEXT_PATCH_LOCAL_BUNDLED is not set
 # CT_GETTEXT_PATCH_NONE is not set
 CT_GETTEXT_PATCH_ORDER="global"
-CT_GETTEXT_V_0_26_0=y
+CT_GETTEXT_V_0_26=y
 # CT_GETTEXT_V_0_23_1 is not set
 # CT_GETTEXT_V_0_22_5 is not set
 # CT_GETTEXT_V_0_21 is not set

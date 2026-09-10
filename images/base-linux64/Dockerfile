@@ -88,7 +88,7 @@ ENV PATH="/opt/x-tools/x86_64-centos7-linux-gnu/bin:${PATH}" \
     NM="${FFBUILD_TOOLCHAIN}-gcc-nm" \
     CFLAGS="-static-libgcc -static-libstdc++ -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
     CXXFLAGS="-static-libgcc -static-libstdc++ -I/opt/ffbuild/include -O2 -pipe -fPIC -DPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -pthread" \
-    LDFLAGS="-Wl,--strip-all -Wl,--gc-sections -static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm" \
+    LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O2 -pipe -fstack-protector-strong -fstack-clash-protection -Wl,-z,relro,-z,now -pthread -lm -Wl,--strip-all -Wl,--gc-sections " \
     STAGE_CFLAGS="-fvisibility=hidden -fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
 
