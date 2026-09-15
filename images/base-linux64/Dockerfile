@@ -2,30 +2,7 @@ ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 ARG BASE_TAG_SUFFIX=
 FROM $GH_REPO/base:latest${BASE_TAG_SUFFIX}
 
-RUN \
-    apt-get -y update && \
-    apt-get -y dist-upgrade && \
-    apt-get -y install --no-install-recommends \
-        build-essential \
-        gcc-12 g++-12 \
-        make \
-        autoconf automake libtool \
-        bison flex \
-        texinfo gperf \
-        gawk sed \
-        gettext \
-        git \
-        wget \
-        help2man \
-        file \
-        python3 \
-        libncurses-dev \
-        libtool-bin \
-        zlib1g-dev \
-        xz-utils && \
-        apt-get -y clean autoclean && \
-        apt-get autoremove -y && \
-        rm -rf /var/lib/apt/lists/*
+
 RUN \
     cd /opt && wget https://github.com/indiff/toolchains/releases/download/beta-5/x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz && \
     tar -xvf x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz

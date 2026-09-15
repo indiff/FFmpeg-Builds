@@ -53,6 +53,6 @@ ENV PATH="/opt/llvm-mingw/bin:${PATH}" \
     GENDEF="gendef" \
     CFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
     CXXFLAGS="-I/opt/ffbuild/include -O3 -pipe -march=armv8-a -D_FORTIFY_SOURCE=2 -fstack-protector-strong" \
-    LDFLAGS="-L/opt/ffbuild/lib -O3 -pipe -march=armv8-a -fstack-protector-strong" \
+    LDFLAGS="-L/opt/ffbuild/lib -O3 -pipe -march=armv8-a -fstack-protector-strong  -Wl,--strip-all -Wl,--gc-sections " \
     STAGE_CFLAGS="" \
     STAGE_CXXFLAGS=""

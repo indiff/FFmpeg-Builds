@@ -3,9 +3,9 @@
 SCRIPT_REPO="https://gitlab.com/AOMediaCodec/SVT-AV1.git"
 SCRIPT_COMMIT="fb0ed7e5999caef1c4b51b7b4c8dc2c8c10f9291"
 
-SCRIPT_REPO="https://github.com/nekotrix/SVT-AV1-Essential.git"
-SCRIPT_COMMIT="0d3bca9cec9fcb662edd3eb32442cdfbe557fc15"
-SCRIPT_BRANCH="Essential-v3.1.0"
+#SCRIPT_REPO="https://github.com/nekotrix/SVT-AV1-Essential.git"
+#SCRIPT_COMMIT="0d3bca9cec9fcb662edd3eb32442cdfbe557fc15"
+#SCRIPT_BRANCH="Essential-v3.1.0"
 ffbuild_enabled() {
     [[ $TARGET == win32 ]] && return -1
     (( $(ffbuild_ffver) > 700 )) || return -1
