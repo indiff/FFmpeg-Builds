@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 SCRIPT_SKIP="1"
 
 ffbuild_depends() {

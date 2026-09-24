@@ -99,9 +99,6 @@ RUN set -xe && git clone https://github.com/indiff/ocaml-num.git /usr/local/src/
 
 
 # ocamlfind ocamlopt -package num -linkpkg -o /tmp/test_num /tmp/number.ml && \
-
-
-    
 ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 TZ=Asia/Shanghai LANGUAGE=zh_CN:en
 ENV CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/rustup" PATH="/usr/local/src/ocaml-num/_opam/bin:/opt/cargo/bin:${PATH}"
 #ENV OPAMROOT=/opt/opam
@@ -123,7 +120,6 @@ ENV OCAML_TOPLEVEL_PATH=/usr/local/src/ocaml-num/_opam/lib/toplevel
 #     eval $(opam env --root=/opt/opam --set-root) && \
 #     make install && \
 #     make clean
-
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
     cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git

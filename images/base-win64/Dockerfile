@@ -59,3 +59,6 @@ ENV PATH="/opt/ct-ng/bin:${PATH}" \
     LDFLAGS="-static-libgcc -static-libstdc++ -L/opt/ffbuild/lib -O3 -pipe -fstack-protector-strong -Wl,--strip-all -Wl,--gc-sections " \
     STAGE_CFLAGS="-fno-semantic-interposition" \
     STAGE_CXXFLAGS="-fno-semantic-interposition"
+
+
+ RUN ${FFBUILD_TOOLCHAIN}-gcc -v

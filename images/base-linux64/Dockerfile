@@ -2,7 +2,6 @@ ARG GH_REPO=ghcr.io/indiff/ffmpeg-builds
 ARG BASE_TAG_SUFFIX=
 FROM $GH_REPO/base:latest${BASE_TAG_SUFFIX}
 
-
 RUN \
     cd /opt && wget https://github.com/indiff/toolchains/releases/download/beta-5/x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz && \
     tar -xvf x-tools-x86_64-centos7-linux-gnu-gcc16.tar.xz
@@ -37,7 +36,7 @@ ENV FFBUILD_TOOLCHAIN=x86_64-centos7-linux-gnu \
 RUN \
     rustup default nightly && \
     echo "[unstable]\ntarget-applies-to-host = true\nhost-config = true\n" > "$CARGO_HOME"/config.toml && \
-    echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
+    echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \55-rustdedup.sh"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
     echo "[target.host]\nlinker = \"gcc\"\nar = \"ar\"\n" >> "$CARGO_HOME"/config.toml
 
 ADD toolchain.cmake /toolchain.cmake
@@ -70,3 +69,5 @@ ENV PATH="/opt/x-tools/x86_64-centos7-linux-gnu/bin:${PATH}" \
     STAGE_CXXFLAGS="-fvisibility=hidden -fno-semantic-interposition"
 
 RUN ${FFBUILD_TOOLCHAIN}-gcc -v
+RUN ${FFBUILD_TOOLCHAIN}-g++ -v
+

@@ -38,7 +38,7 @@ jobs:
   pre_check:
     name: Pre Checks
     if: ${{ github.event.inputs.buildOnly != 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Repo Check
         if: ${{ github.event_name == 'schedule' }}
@@ -66,23 +66,14 @@ jobs:
         include:
           - runner: ubuntu-latest
             tag_suffix: ''
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-26.04-arm
             tag_suffix: -arm
     runs-on: ${{ matrix.runner }}
     steps:
-      - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h && docker search ubuntu
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Check update
-        if: ${{ github.event.inputs.updateScript == 'true' }}
-        id: checkupdate
-        run: |
-          sudo apt-get update -y
-          sudo apt-get -y install --no-install-recommends git subversion mercurial
-          sudo apt-get -y clean autoclean 
-          sudo rm -rf /var/lib/apt/lists/*
-          bash util/update_scripts.sh || true
+      - name: Free Disk-Space
+        run: ./util/free_disk_space.sh
       - name: Install buildx
         uses: docker/setup-buildx-action@v4
         with:
@@ -160,23 +151,23 @@ jobs:
         runner: [ubuntu-latest]
         target: [win64,linux64] # [win64,winarm64,linux64,linuxarm64,linuxppc64,linuxmips64,linuxriscv64]
         include:
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-26.04-arm
             target: linuxarm64
             tag_suffix: -arm
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-26.04-arm
             target: linuxppc64
             tag_suffix: -arm
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-26.04-arm
             target: linuxmips64
             tag_suffix: -arm
-          - runner: ubuntu-24.04-arm
+          - runner: ubuntu-26.04-arm
             target: linuxriscv64
             tag_suffix: -arm
     steps:
-      - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Free Disk-Space
+        run: ./util/free_disk_space.sh
       - name: Install buildx
         uses: docker/setup-buildx-action@v4
         with:
@@ -232,42 +223,42 @@ jobs:
         target: [win64,winarm64,linux64,linuxarm64]
         variant: [gpl,lgpl,gpl-shared,lgpl-shared] # ,gpl 8.1,gpl 7.1,lgpl 8.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 8.1,gpl-shared 7.1,lgpl-shared 8.1,lgpl-shared 7.1
         # include:
-          # - runner: ubuntu-latest
-          #   target: win64
-          #   variant: gpl 9.0
-          # - runner: ubuntu-latest
-          #   target: win64
-          #   variant: gpl 8.0
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 7.0
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 6.1
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 6.0
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 5.1
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 5.0
-          # - runner: ubuntu-latest
-          #   target: win64
-          #   variant: gpl 4.4
-          # - runner: ubuntu-latest
-            # target: win64
-            # variant: gpl 4.3
-          # - runner: ubuntu-24.04-arm
-            # target: linuxarm64
-            # variant: gpl
-            # tag_suffix: -arm
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 8.0
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 7.1
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 7.0
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 6.1
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 6.0
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 5.1
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 5.0
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 4.4
+        #   - runner: ubuntu-latest
+        #     target: win64
+        #     variant: gpl 4.3
+        #   - runner: ubuntu-26.04-arm
+        #     target: linuxarm64
+        #     variant: gpl
+        #     tag_suffix: -arm
     steps:
-      - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Free Disk-Space
+        run: ./util/free_disk_space.sh
       - name: Install buildx
         uses: docker/setup-buildx-action@v4
         with:
@@ -298,7 +289,7 @@ jobs:
         with:
           path: .cache/downloads
           key: download-cache-${{ steps.dl_cache.outputs.dltagname }}
-          # fail-on-cache-miss: true
+          fail-on-cache-miss: true
       - name: Build target base image
         uses: docker/build-push-action@v7
         with:
@@ -330,10 +321,10 @@ jobs:
         target: [win64,winarm64,linux64] # [win64,winarm64,linux64,linuxarm64]
         variant: [gpl,lgpl,gpl-shared,lgpl-shared] # [gpl,lgpl,gpl 5.1,gpl 6.1,gpl 7.1,lgpl 5.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 5.1,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 5.1,lgpl-shared 6.1,lgpl-shared 7.1]
     steps:
-      - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Free Disk-Space
+        run: ./util/free_disk_space.sh
       - name: Login to Docker
         uses: docker/login-action@v4.6.0
         with:
@@ -363,10 +354,10 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y libarchive-tools p7zip-full
-      - name: Free Disk-Space
-        run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /opt/ghc /usr/local/.ghcup /usr/local/lib/android && df -h
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Free Disk-Space
+        run: ./util/free_disk_space.sh
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
