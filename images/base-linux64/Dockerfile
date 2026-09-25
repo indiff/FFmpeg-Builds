@@ -33,10 +33,11 @@ RUN \
 ENV FFBUILD_TOOLCHAIN=x86_64-centos7-linux-gnu \
     FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"
 
+# ========== 【修复这一段】 ==========
 RUN \
     rustup default nightly && \
     echo "[unstable]\ntarget-applies-to-host = true\nhost-config = true\n" > "$CARGO_HOME"/config.toml && \
-    echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \55-rustdedup.sh"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
+    echo "[target.$FFBUILD_RUST_TARGET]\nlinker = \"${FFBUILD_TOOLCHAIN}-gcc\"\nar = \"${FFBUILD_TOOLCHAIN}-gcc-ar\"\n" >> "$CARGO_HOME"/config.toml && \
     echo "[target.host]\nlinker = \"gcc\"\nar = \"ar\"\n" >> "$CARGO_HOME"/config.toml
 
 ADD toolchain.cmake /toolchain.cmake
@@ -46,7 +47,7 @@ ADD cross.meson /cross.meson
 ADD gen-implib.sh /usr/bin/gen-implib
 RUN git clone --filter=blob:none --depth=1 https://github.com/yugr/Implib.so /opt/implib
 
-# -fuse-ld=mold  
+# -fuse-ld=mold
 ENV PATH="/opt/x-tools/x86_64-centos7-linux-gnu/bin:${PATH}" \
     FFBUILD_TARGET_FLAGS="--pkg-config=pkg-config --cross-prefix=${FFBUILD_TOOLCHAIN}- --arch=x86_64 --target-os=linux" \
     FFBUILD_CROSS_PREFIX="${FFBUILD_TOOLCHAIN}-" \
@@ -70,4 +71,3 @@ ENV PATH="/opt/x-tools/x86_64-centos7-linux-gnu/bin:${PATH}" \
 
 RUN ${FFBUILD_TOOLCHAIN}-gcc -v
 RUN ${FFBUILD_TOOLCHAIN}-g++ -v
-
