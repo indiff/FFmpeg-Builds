@@ -163,6 +163,9 @@ jobs:
           - runner: ubuntu-26.04-arm
             target: linuxriscv64
             tag_suffix: -arm
+          - runner: ubuntu-26.04-arm
+            target: linuxloongarch64
+            tag_suffix: -arm
     steps:
       - name: Checkout
         uses: actions/checkout@v7
