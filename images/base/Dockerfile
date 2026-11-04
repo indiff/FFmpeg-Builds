@@ -4,7 +4,7 @@ ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# è®¾ç½®è¯­è¨€çŽ¯å¢ƒå˜é‡
+# ÉèÖÃÓïÑÔ»·¾³±äÁ¿
 ENV LANG=zh_CN.UTF-8 \
     LANGUAGE=zh_CN:zh \
     TZ=Asia/Shanghai \
@@ -41,25 +41,29 @@ RUN \
         m4 opam ocaml-findlib \
         pkg-config sudo tree patch dpkg-dev && \
         manpages-zh && \
-    curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
-    apt-get -y install nodejs && \
+    if [ "$TARGETPLATFORM" = "linux/riscv64" ]; then \
+        curl -fsSL https://unofficial-builds.nodejs.org/install-node.sh | bash -s -- -l 24 -d /usr; \
+    else \
+        curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
+        apt-get -y install nodejs; \
+    fi && \
     apt-get -y autoremove && \
     apt-get -y clean autoclean && \
     rm -rf /var/lib/apt/lists/* && \
-    # ç”Ÿæˆä¸­æ–‡è¯­è¨€åŒ…
+    # Éú³ÉÖÐÎÄÓïÑÔ°ü
     locale-gen zh_CN.UTF-8 && \
     locale-gen zh_CN.GBK && \
     locale-gen zh_CN.GB2312 && \
-    # æ›´æ–°è¯­è¨€çŽ¯å¢ƒ
+    # ¸üÐÂÓïÑÔ»·¾³
     update-locale LANG=zh_CN.UTF-8 LANGUAGE=zh_CN:zh LC_ALL=zh_CN.UTF-8 && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    # é…ç½®ä¸­æ–‡ man æ‰‹å†Œï¼ˆå¯é€‰ï¼‰
+    # ÅäÖÃÖÐÎÄ man ÊÖ²á£¨¿ÉÑ¡£©
     echo "Chinese" > /etc/manpath.config 2>/dev/null || true && \
     echo 'Asia/Shanghai' > /etc/timezone && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \
     git config --global advice.detachedHead false && \
-    # è®¾ç½®ç»ˆç«¯ç¼–ç ï¼ˆå¯é€‰ï¼‰
+    # ÉèÖÃÖÕ¶Ë±àÂë£¨¿ÉÑ¡£©
     echo "export LANG=zh_CN.UTF-8" >> /etc/profile && \
     echo "export LANGUAGE=zh_CN:zh" >> /etc/profile && \
     echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile && \
@@ -123,7 +127,8 @@ ENV OCAML_TOPLEVEL_PATH=/usr/local/src/ocaml-num/_opam/lib/toplevel
 #     make clean
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path && \
-    cargo install cargo-c && rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
+    ( [ "$TARGETPLATFORM" = "linux/riscv64" ] || cargo install cargo-c ) && \
+    rm -rf "${CARGO_HOME}"/registry "${CARGO_HOME}"/git
 
 RUN --mount=src=.,dst=/input \
     for s in /input/*.sh; do cp $s /usr/bin/$(echo $s | sed -e 's|.*/||' -e 's/\.sh$//'); done
