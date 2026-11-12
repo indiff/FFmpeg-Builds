@@ -33,7 +33,7 @@ RUN \
 ENV FFBUILD_TOOLCHAIN=x86_64-centos7-linux-gnu \
     FFBUILD_RUST_TARGET="x86_64-unknown-linux-gnu"
 
-# ========== ã€ä¿®å¤è¿™ä¸€æ®µã€‘ ==========
+# ========== ¡¾ÐÞ¸´ÕâÒ»¶Î¡¿ ==========
 RUN \
     rustup default nightly && \
     echo "[unstable]\ntarget-applies-to-host = true\nhost-config = true\n" > "$CARGO_HOME"/config.toml && \
